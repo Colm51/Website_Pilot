@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Naples and Pompeii | Travel Notes</title>
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-title" href="#top" aria-label="Travel Notes home">Travel Notes</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        <a href="#essay">Essay</a>
+        <a href="#photographs">Photographs</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="opening" aria-labelledby="page-title">
+        <div class="measure">
+          <p class="kicker">Naples and Pompeii</p>
+          <h1 id="page-title">Naples</h1>
+          <p class="lede">Summary of an eventful trip to Naples in summer 2026.</p>
+        </div>
+      </section>
+
+      <article id="essay" class="essay measure" aria-labelledby="essay-title">
+        <h2 id="essay-title">Travel essay</h2>
+        <!-- Text/Naples.md is the source file for the converted content below. -->
+        <p>Summary of an eventful trip to Naples in summer 2026.</p>
+      </article>
+
+      <section id="photographs" class="photographs" aria-labelledby="photographs-title">
+        <div class="measure">
+          <h2 id="photographs-title">Photographs</h2>
+        </div>
+        <div class="photo-grid" aria-label="Photographs from Naples and Pompeii">
+          <figure>
+            <button class="photo-button" type="button" data-full="Photos/Naples/Smallphotos/PompeiiStones.jpeg" data-caption="Pompeii stones" aria-label="Open larger image: Pompeii stones">
+              <img src="Photos/Naples/Smallphotos/PompeiiStones.jpeg" alt="Pompeii stones" loading="lazy">
+            </button>
+            <figcaption>Pompeii stones</figcaption>
+          </figure>
+
+          <figure>
+            <button class="photo-button" type="button" data-full="Photos/Naples/Smallphotos/PompeiiVolcano.jpeg" data-caption="View toward the volcano from Pompeii" aria-label="Open larger image: view toward the volcano from Pompeii">
+              <img src="Photos/Naples/Smallphotos/PompeiiVolcano.jpeg" alt="View toward the volcano from Pompeii" loading="lazy">
+            </button>
+            <figcaption>View toward the volcano from Pompeii</figcaption>
+          </figure>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Travel notes and photographs.</p>
+    </footer>
+
+    <div class="lightbox" id="lightbox" hidden>
+      <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption">
+        <button class="lightbox-close" type="button" aria-label="Close image viewer">Close</button>
+        <img class="lightbox-image" src="" alt="">
+        <p id="lightbox-caption" class="lightbox-caption"></p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
