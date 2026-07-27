@@ -1,5 +1,10 @@
 (function () {
   const lightbox = document.getElementById("lightbox");
+
+  if (!lightbox) {
+    return;
+  }
+
   const lightboxImage = lightbox.querySelector(".lightbox-image");
   const lightboxCaption = document.getElementById("lightbox-caption");
   const closeButton = lightbox.querySelector(".lightbox-close");

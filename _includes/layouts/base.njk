@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="{{ summary or 'Travel essays and photographs.' }}">
+    <title>{% if title == "Travel Notes" %}Travel Notes{% else %}{{ title }} | Travel Notes{% endif %}</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-title" href="/" aria-label="Travel Notes home">Travel Notes</a>
+      <nav class="site-nav" aria-label="Primary navigation">
+        {% if isTrip %}
+          <a href="#essay">Essay</a>
+          {% if photos %}<a href="#photographs">Photographs</a>{% endif %}
+        {% else %}
+          <a href="#trips">Trips</a>
+        {% endif %}
+      </nav>
+    </header>
+
+    <main id="top">
+      {{ content | safe }}
+    </main>
+
+    <footer class="site-footer">
+      <p>Travel notes and photographs.</p>
+    </footer>
+
+    <script src="/script.js"></script>
+  </body>
+</html>

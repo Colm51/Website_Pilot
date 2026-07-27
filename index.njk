@@ -1,0 +1,27 @@
+---
+title: Travel Notes
+summary: Travel essays and photographs.
+layout: layouts/base.njk
+permalink: /index.html
+---
+<section class="opening" aria-labelledby="page-title">
+  <div class="measure">
+    <p class="kicker">Journeys and photographs</p>
+    <h1 id="page-title">Travel Notes</h1>
+    <p class="lede">Essays and photographs from places visited.</p>
+  </div>
+</section>
+
+<section id="trips" class="essay measure" aria-labelledby="trips-title">
+  <h2 id="trips-title">Trips</h2>
+  <div class="trip-list">
+    {% for trip in collections.trips | reverse %}
+      <article class="trip-card">
+        <h3><a href="{{ trip.url }}">{{ trip.data.title }}</a></h3>
+        <p>{{ trip.data.summary }}</p>
+      </article>
+    {% else %}
+      <p>No trips have been added yet.</p>
+    {% endfor %}
+  </div>
+</section>

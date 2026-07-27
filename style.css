@@ -140,6 +140,33 @@ h2 {
   margin: 0 0 1.25rem;
 }
 
+.trip-list {
+  display: grid;
+  gap: 1.25rem;
+  margin-top: 1.6rem;
+}
+
+.trip-card {
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.trip-card:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.trip-card h3 {
+  margin: 0;
+  font-size: clamp(1.25rem, 3vw, 1.65rem);
+  line-height: 1.2;
+}
+
+.trip-card p {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+}
+
 .photographs {
   padding: clamp(2.8rem, 8vw, 5rem) clamp(1rem, 4vw, 3rem);
   border-top: 1px solid var(--rule);

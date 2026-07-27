@@ -1,0 +1,48 @@
+---
+layout: layouts/base.njk
+isTrip: true
+---
+<section class="opening" aria-labelledby="page-title">
+  <div class="measure">
+    <p class="kicker">{{ tripName or title }}</p>
+    <h1 id="page-title">{{ title }}</h1>
+    <p class="lede">{{ summary }}</p>
+  </div>
+</section>
+
+<article id="essay" class="essay measure" aria-labelledby="essay-title">
+  <h2 id="essay-title">Travel essay</h2>
+  {{ content | safe }}
+</article>
+
+{% if photos %}
+<section id="photographs" class="photographs" aria-labelledby="photographs-title">
+  <div class="measure">
+    <h2 id="photographs-title">Photographs</h2>
+  </div>
+  <div class="photo-grid" aria-label="Photographs from {{ tripName or title }}">
+    {% for photo in photos %}
+      <figure>
+        <button
+          class="photo-button"
+          type="button"
+          data-full="{{ photo.full | htmlBaseUrl }}"
+          data-caption="{{ photo.caption }}"
+          aria-label="Open larger image: {{ photo.alt | lower }}"
+        >
+          <img src="{{ photo.thumbnail }}" alt="{{ photo.alt }}" loading="lazy">
+        </button>
+        <figcaption>{{ photo.caption }}</figcaption>
+      </figure>
+    {% endfor %}
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox" hidden>
+  <div class="lightbox-panel" role="dialog" aria-modal="true" aria-labelledby="lightbox-caption">
+    <button class="lightbox-close" type="button" aria-label="Close image viewer">Close</button>
+    <img class="lightbox-image" src="" alt="">
+    <p id="lightbox-caption" class="lightbox-caption"></p>
+  </div>
+</div>
+{% endif %}

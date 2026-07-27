@@ -1,0 +1,14 @@
+{
+  "name": "travel-notes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Travel essays and photographs built with Eleventy.",
+  "type": "module",
+  "scripts": {
+    "start": "eleventy --serve",
+    "build": "eleventy"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6"
+  }
+}
