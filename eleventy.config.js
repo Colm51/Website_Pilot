@@ -17,7 +17,7 @@ function getPathPrefix() {
 }
 
 export default function (eleventyConfig) {
-  eleventyConfig.addPlugin(HtmlBasePlugin);
+  eleventyConfig.addPlugin(HtmlBasePlugin, { extensions: "" });
 
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("script.js");

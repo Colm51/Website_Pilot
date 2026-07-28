@@ -30,7 +30,7 @@ isTrip: true
           data-caption="{{ photo.caption }}"
           aria-label="Open larger image: {{ photo.alt | lower }}"
         >
-          <img src="{{ photo.thumbnail }}" alt="{{ photo.alt }}" loading="lazy">
+          <img src="{{ photo.thumbnail | htmlBaseUrl }}" alt="{{ photo.alt }}" loading="lazy">
         </button>
         <figcaption>{{ photo.caption }}</figcaption>
       </figure>

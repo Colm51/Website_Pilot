@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="{{ summary or 'Travel essays and photographs.' }}">
     <title>{% if title == "Travel Notes" %}Travel Notes{% else %}{{ title }} | Travel Notes{% endif %}</title>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="{{ '/style.css' | htmlBaseUrl }}">
   </head>
   <body>
     <header class="site-header">
-      <a class="site-title" href="/" aria-label="Travel Notes home">Travel Notes</a>
+      <a class="site-title" href="{{ '/' | htmlBaseUrl }}" aria-label="Travel Notes home">Travel Notes</a>
       <nav class="site-nav" aria-label="Primary navigation">
         {% if isTrip %}
           <a href="#essay">Essay</a>
@@ -28,6 +28,6 @@
       <p>Travel notes and photographs.</p>
     </footer>
 
-    <script src="/script.js"></script>
+    <script src="{{ '/script.js' | htmlBaseUrl }}"></script>
   </body>
 </html>

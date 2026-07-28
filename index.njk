@@ -17,7 +17,7 @@ permalink: /index.html
   <div class="trip-list">
     {% for trip in collections.trips | reverse %}
       <article class="trip-card">
-        <h3><a href="{{ trip.url }}">{{ trip.data.title }}</a></h3>
+        <h3><a href="{{ trip.url | htmlBaseUrl }}">{{ trip.data.title }}</a></h3>
         <p>{{ trip.data.summary }}</p>
       </article>
     {% else %}
