@@ -21,7 +21,8 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("script.js");
-  eleventyConfig.addPassthroughCopy("Photos");
+  eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
+  eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
 
   eleventyConfig.ignores.add("README.md");
   eleventyConfig.ignores.add("index-original.html");
