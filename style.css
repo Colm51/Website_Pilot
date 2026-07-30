@@ -167,6 +167,16 @@ h2 {
   color: var(--muted);
 }
 
+.about-content {
+  display: grid;
+  gap: clamp(2.8rem, 8vw, 5rem);
+}
+
+.about-content section + section {
+  padding-top: clamp(2.8rem, 8vw, 5rem);
+  border-top: 1px solid var(--rule);
+}
+
 .photographs {
   padding: clamp(2.8rem, 8vw, 5rem) clamp(1rem, 4vw, 3rem);
   border-top: 1px solid var(--rule);

@@ -14,9 +14,10 @@
         {% if isTrip %}
           <a href="#essay">Essay</a>
           {% if photos %}<a href="#photographs">Photographs</a>{% endif %}
-        {% else %}
+        {% elif not isAbout %}
           <a href="#trips">Trips</a>
         {% endif %}
+        <a href="{{ '/about/' | htmlBaseUrl }}"{% if isAbout %} aria-current="page"{% endif %}>About</a>
       </nav>
     </header>
 
