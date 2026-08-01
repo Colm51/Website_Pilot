@@ -30,6 +30,42 @@ photos:
     full: /Photos/Naples/SmallPhotos/Orgab.jpeg
     alt: Organ
     caption: Organ
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesCaravaggio.jpg
+    full: /Photos/Naples/SmallPhotos/NaplesCaravaggio.jpg
+    alt: Naples Caravaggio
+    caption: Pio Monte della Misericordia
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesChurch.jpeg
+    full: /Photos/Naples/SmallPhotos/NaplesChurch.jpeg
+    alt: Naples Church
+    caption: Naples Church
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesColumn.jpg
+    full: /Photos/Naples/SmallPhotos/NaplesColumn.jpg
+    alt: Naples Column
+    caption: San Paolo Maggiore
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesCrypt.jpg
+    full: /Photos/Naples/SmallPhotos/NaplesCrypt.jpg
+    alt: Naples Crypt
+    caption: Santa Maria delle Anime del Purgatorio ad Arco
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesLaundry.jpg
+    full: /Photos/Naples/SmallPhotos/NaplesLaundry.jpg
+    alt: Naples Laundry
+    caption: Naples Laundry
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesRelics3.jpeg
+    full: /Photos/Naples/SmallPhotos/NaplesRelics3.jpeg
+    alt: Naples Relics
+    caption: Naples Relics
+  - thumbnail: /Photos/Naples/SmallPhotos/NaplesTiles.jpg
+    full: /Photos/Naples/SmallPhotos/NaplesTiles.jpg
+    alt: Naples Tiles
+    caption: Naples Tiles
+  - thumbnail: /Photos/Naples/SmallPhotos/PompeiiMural.jpg
+    full: /Photos/Naples/SmallPhotos/PompeiiMural.jpg
+    alt: Pompeii Mural
+    caption: Pompeii Mural
+  - thumbnail: /Photos/Naples/SmallPhotos/PompeiiStreet.jpg
+    full: /Photos/Naples/SmallPhotos/PompeiiStreet.jpg
+    alt: Pompeii Street
+    caption: Pompeii Street
 ---
 
 Towards the end of a trip to the Netherlands, I spent a few days in Naples, including a side trip to Pompeii. 
