@@ -177,6 +177,13 @@ h2 {
   border-top: 1px solid var(--rule);
 }
 
+.map-embed {
+  display: block;
+  width: 100%;
+  height: clamp(28rem, 70vh, 44rem);
+  border: 1px solid var(--rule);
+}
+
 .photographs {
   padding: clamp(2.8rem, 8vw, 5rem) clamp(1rem, 4vw, 3rem);
   border-top: 1px solid var(--rule);

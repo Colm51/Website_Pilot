@@ -12,6 +12,8 @@ isAbout: true
     <h1 id="page-title">About Me</h1>
     <p class="lede">Sharing some of my travel experiences and other things I work on in my spare time. Practicing coding a basic website.</p>
 
+  
+
     <p class="lede">I am also interested in civic tech - applying basic programing etc to addressing local issues. Check out the source code for my iPhone app for submitting local issues such as bike lane issues at the following link:</p>
 
 
@@ -21,6 +23,9 @@ isAbout: true
    rel="noopener noreferrer">
   Local Issue Reporter
 </a>
+
+  <p class="lede">AI Use disclosure: I use agentic AI extensively for coding. In fact, part of the purpose of this site is to create a prototype that I can then use to learn some of the coding of. I do not use generative AI to generate content such as the written copy or photographs. The exception to this is some of the technical documentation such as READMEs, as well as placeholder text.</p>
+
 
   </div>
 </section>

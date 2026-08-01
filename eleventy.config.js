@@ -21,6 +21,7 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("script.js");
+  eleventyConfig.addPassthroughCopy("Maps/local-issue-reporter-map.html");
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Amsterdam/SmallPhotos");
