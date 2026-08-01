@@ -8,6 +8,10 @@ const trips = [
     markdownPath: "Text/Naples.md",
     photoFolder: "Photos/Naples/SmallPhotos",
   },
+  {
+    markdownPath: "Text/Amsterdam.md",
+    photoFolder: "Photos/Amsterdam/SmallPhotos",
+  },
 ];
 
 function normalizeImagePath(imagePath) {
@@ -151,7 +155,7 @@ try {
   if (added.length === 0) {
     console.log("No new photographs found");
   } else {
-    console.log(`Added ${added.length} new photograph${added.length === 1 ? "" : "s"} to Text/Naples.md`);
+    console.log(`Added ${added.length} new photograph${added.length === 1 ? "" : "s"}`);
     for (const filename of added) {
       console.log(`- ${filename}`);
     }

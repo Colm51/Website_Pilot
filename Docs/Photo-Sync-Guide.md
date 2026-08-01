@@ -1,22 +1,22 @@
 # Photo synchronization script guide
 
-This guide explains the current `scripts/sync-photos.js` file. The script is a small Node.js utility for keeping the Naples photograph list in sync with the files in the Naples photo folder. It is separate from Eleventy's build process: synchronization changes the Markdown source, while Eleventy later reads that source to build the site.
+This guide explains the current `scripts/sync-photos.js` file. The script is a small Node.js utility for keeping the Naples and Amsterdam photograph lists in sync with the files in their photo folders. It is separate from Eleventy's build process: synchronization changes the Markdown sources, while Eleventy later reads those sources to build the site.
 
 ## 1. What the script is for
 
-The Naples gallery needs two things to agree with each other:
+Each configured gallery needs two things to agree with each other:
 
-- image files must exist in `Photos/Naples/SmallPhotos/`;
-- matching YAML entries must exist under `photos:` in `Text/Naples.md`.
+- image files must exist in the trip's configured photo folder;
+- matching YAML entries must exist under `photos:` in the trip's configured Markdown file.
 
 Adding an image file alone does not add it to the gallery. Manually writing the same four YAML lines for every new file is repetitive and can lead to path mistakes. The synchronization script discovers image files that are not yet represented in the YAML and creates starter entries for them.
 
 The complete workflow is:
 
-1. Copy web-sized photographs into `Photos/Naples/SmallPhotos/`.
+1. Copy web-sized photographs into `Photos/Naples/SmallPhotos/` or `Photos/Amsterdam/SmallPhotos/`.
 2. Run `npm run sync-photos` from the repository root.
 3. The script reads the directory and discovers supported image files.
-4. It compares those files with the `thumbnail` and `full` paths already in `Text/Naples.md`, then adds YAML entries for missing files.
+4. It compares those files with the `thumbnail` and `full` paths in the matching trip Markdown file, then adds YAML entries for missing files.
 5. Review the new entries and replace the generated `alt` and `caption` values with useful human-written text.
 6. Run Eleventy. The trip layout loops over the `photos` data and builds the gallery.
 
@@ -40,7 +40,7 @@ When `npm run sync-photos` is entered:
 2. It finds `sync-photos` inside the `scripts` object.
 3. It runs `node scripts/sync-photos.js` with the repository root as the working directory.
 
-That working directory matters because the script uses relative paths such as `Text/Naples.md`. The project also declares `"type": "module"` in `package.json`, so Node treats `.js` files as ES modules and accepts the script's `import` syntax.
+That working directory matters because the script uses relative paths such as `Text/Naples.md` and `Text/Amsterdam.md`. The project also declares `"type": "module"` in `package.json`, so Node treats `.js` files as ES modules and accepts the script's `import` syntax.
 
 There are currently no README files in the repository and therefore no existing README instructions for this command.
 
@@ -56,7 +56,7 @@ An ES module import makes code exported by another module available in this file
 
 The `node:` prefix identifies a module supplied by Node.js itself. `node:fs` is Node's built-in file-system module, so this import does not require an npm dependency.
 
-- `readFileSync(path, encoding)` reads an entire file and waits until reading is complete. The script uses it to load `Text/Naples.md` as UTF-8 text.
+- `readFileSync(path, encoding)` reads an entire file and waits until reading is complete. The script uses it to load each configured trip Markdown file as UTF-8 text.
 - `readdirSync(path, options)` reads a directory and waits for the result. With `{ withFileTypes: true }`, it returns directory-entry objects that can say whether each entry is a file.
 - `writeFileSync(path, data)` writes the supplied data and waits until the operation finishes. Here it replaces the Markdown file with the updated text.
 
@@ -107,17 +107,21 @@ const trips = [
     markdownPath: "Text/Naples.md",
     photoFolder: "Photos/Naples/SmallPhotos",
   },
+  {
+    markdownPath: "Text/Amsterdam.md",
+    photoFolder: "Photos/Amsterdam/SmallPhotos",
+  },
 ];
 ```
 
-An array is an ordered collection. Here it currently has one object, for Naples. An object groups related named values:
+An array is an ordered collection. Here it currently has one object for Naples and one for Amsterdam. Each object groups related named values:
 
 - `markdownPath` is the Markdown file whose YAML will be inspected and updated.
 - `photoFolder` is the directory whose image files will be discovered.
 
 Keeping these values in configuration separates “which trip should be processed?” from “how is a trip processed?” The `syncTrip` function can therefore receive an object instead of containing Naples paths throughout its logic.
 
-In theory, another object with another Markdown path and photo folder could be added to the array later. `trips.flatMap(syncTrip)` would call `syncTrip` for each object. That would require careful review: the current success message always says additions went to `Text/Naples.md`, so the reporting logic is Naples-specific even though the processing function accepts configuration. This guide does not change or extend the array.
+In theory, another object with another Markdown path and photo folder could be added to the array later. `trips.flatMap(syncTrip)` would call `syncTrip` for each object. The combined success message reports the total additions without claiming that every file went to a single Markdown destination.
 
 ## 6. Function-by-function explanation
 
@@ -571,11 +575,11 @@ Starting with `npm run sync-photos`, execution proceeds as follows:
 2. Node loads the ES module because the package uses `"type": "module"`.
 3. Node imports the three file-system functions and the path module.
 4. JavaScript creates the supported-extension Set.
-5. JavaScript creates the one-item `trips` configuration array.
+5. JavaScript creates the two-item `trips` configuration array.
 6. Function declarations are established. Their bodies do not run yet.
 7. Execution reaches the outer `try` and calls `trips.flatMap(syncTrip)`.
-8. `flatMap` passes the Naples configuration object to `syncTrip`.
-9. `syncTrip` reads `Text/Naples.md` as the `original` string.
+8. `flatMap` passes each configured trip object to `syncTrip`, beginning with Naples and then Amsterdam.
+9. For each trip, `syncTrip` reads the configured Markdown file as the `original` string.
 10. `getFrontMatter` divides the file into delimiters, YAML, and body.
 11. `getPhotosBlock` locates the `photos:` content.
 12. `existingPhotoPaths` builds a normalized Set from current `thumbnail` and `full` values.
@@ -738,7 +742,7 @@ The entry is inserted after the existing content of the `photos:` section and be
 ### 5. Final console output
 
 ```text
-Added 1 new photograph to Text/Naples.md
+Added 1 new photograph
 - CaravaggioChurch.jpg
 ```
 
@@ -763,7 +767,7 @@ It also does not run the Eleventy build or preview server. Those remain separate
 ## 17. Safe usage checklist
 
 - [ ] Keep original, full-quality photographs somewhere outside this website folder.
-- [ ] Copy only appropriately web-sized versions into `Photos/Naples/SmallPhotos/`.
+- [ ] Copy only appropriately web-sized versions into the matching Naples or Amsterdam photo folder.
 - [ ] Run `git status` before synchronization so existing work is understood.
 - [ ] Run `npm run sync-photos` from the repository root.
 - [ ] Inspect the resulting diff.
@@ -776,7 +780,7 @@ It also does not run the Eleventy build or preview server. Those remain separate
 
 ### `npm run sync-photos`
 
-Runs the npm script that executes `node scripts/sync-photos.js`. It discovers missing supported images and may rewrite `Text/Naples.md`.
+Runs the npm script that executes `node scripts/sync-photos.js`. It discovers missing supported images and may rewrite `Text/Naples.md` and `Text/Amsterdam.md`.
 
 ### `git diff -- Text/Naples.md`
 
@@ -825,11 +829,15 @@ import path from "node:path";
 // Only regular files with one of these extensions are candidates for the gallery.
 const supportedImageExtensions = new Set([".jpg", ".jpeg", ".png", ".webp", ".avif"]);
 
-// Configuration currently connects the Naples Markdown file to its photo folder.
+// Configuration connects each trip Markdown file to its photo folder.
 const trips = [
   {
     markdownPath: "Text/Naples.md",
     photoFolder: "Photos/Naples/SmallPhotos",
+  },
+  {
+    markdownPath: "Text/Amsterdam.md",
+    photoFolder: "Photos/Amsterdam/SmallPhotos",
   },
 ];
 
@@ -990,7 +998,7 @@ try {
   if (added.length === 0) {
     console.log("No new photographs found");
   } else {
-    console.log(`Added ${added.length} new photograph${added.length === 1 ? "" : "s"} to Text/Naples.md`);
+    console.log(`Added ${added.length} new photograph${added.length === 1 ? "" : "s"}`);
     for (const filename of added) {
       console.log(`- ${filename}`);
     }
