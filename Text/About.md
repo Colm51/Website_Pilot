@@ -9,7 +9,18 @@ isAbout: true
   <div class="measure">
     <p class="kicker">About</p>
     <h1 id="page-title">About Me</h1>
-    <p class="lede">Sharing some of my travel experiences. Practicing set-up of a basic website as an alternative to social media. No aspirations to be a content creator!</p>
+    <p class="lede">Sharing some of my travel experiences and other things I work on in my spare time. Practicing coding a basic website.</p>
+
+    <p class="lede">I am also interested in civic tech - applying basic programing etc to addressing local issues. Check out the source code for my iPhone app for submitting local issues such as bike lane issues at the following link:</p>
+
+
+
+<a href="https://github.com/Colm51/local-issue-reporter"
+   target="_blank"
+   rel="noopener noreferrer">
+  Local Issue Reporter
+</a>
+
   </div>
 </section>
 
