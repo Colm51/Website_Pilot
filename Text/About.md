@@ -1,6 +1,7 @@
 ---
 title: About Me
 summary: About the author of these travel notes.
+description: About the author, this travel website, and related personal projects.
 layout: layouts/base.njk
 permalink: /about/index.html
 isAbout: true

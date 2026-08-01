@@ -3,6 +3,7 @@ title: Naples
 tripName: Naples and Pompeii
 date: 2026-06-18
 summary: An memorable trip to Naples in summer 2026.
+description: Travel notes and photographs from a visit to Naples and Pompeii in summer 2026.
 layout: layouts/trip.njk
 permalink: /trips/naples/index.html
 tags:

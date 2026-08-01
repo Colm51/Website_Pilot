@@ -3,8 +3,18 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ summary or 'Travel essays and photographs.' }}">
-    <title>{% if title == "Travel Notes" %}Travel Notes{% else %}{{ title }} | Travel Notes{% endif %}</title>
+    {% set siteName = "Travel Notes" %}
+    {% set pageTitle = title or siteName %}
+    {% if siteName in pageTitle %}
+      {% set metadataTitle = pageTitle %}
+    {% else %}
+      {% set metadataTitle = pageTitle + " | " + siteName %}
+    {% endif %}
+    <title>{{ metadataTitle }}</title>
+    {% if description %}<meta name="description" content="{{ description }}">{% endif %}
+    <meta property="og:title" content="{{ metadataTitle }}">
+    {% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
+    <meta property="og:type" content="website">
     <link rel="stylesheet" href="{{ '/style.css' | htmlBaseUrl }}">
   </head>
   <body>
