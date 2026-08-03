@@ -12,7 +12,7 @@ isAbout: true
     <h1 id="page-title">About Me</h1>
     <p class="lede">Sharing some of my travel experiences and other things I work on in my spare time. Practicing coding a basic website.</p>
 
-  
+  <p class="lede">This is a prototype website made using open-source programmes. It not intended as a polished offical website - its mainly for practice.</p>
 
     <p class="lede">I am also interested in civic tech - applying basic programing etc to addressing local issues. Check out the source code for my iPhone app for submitting local issues such as bike lane issues at the following link:</p>
 
