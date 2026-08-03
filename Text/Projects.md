@@ -18,7 +18,7 @@ isProjects: true
   <div class="trip-list">
     <article class="trip-card">
       <h3><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h3>
-      <p>Demo of a Free Phone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
+      <p>Demo of an iPhone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
     </article>
     
 
