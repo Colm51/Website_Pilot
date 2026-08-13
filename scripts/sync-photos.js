@@ -12,6 +12,15 @@ const trips = [
     markdownPath: "Text/Amsterdam.md",
     photoFolder: "Photos/Amsterdam/SmallPhotos",
   },
+
+  {
+    markdownPath: "Text/Guanajuato.md",
+    photoFolder: "Photos/Guanajuato/SmallPhotos",
+  },
+
+
+
+
 ];
 
 function normalizeImagePath(imagePath) {
