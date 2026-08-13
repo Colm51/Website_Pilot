@@ -2,7 +2,7 @@
 title: Utila
 tripName: Utila
 date: 2026-06-18
-summary: A trip to Utila in 202.
+summary: A trip to Utila in 2022.
 description: Travel notes and photographs from a visit to Utila in 2022.
 layout: layouts/trip.njk
 permalink: /trips/utila/index.html
