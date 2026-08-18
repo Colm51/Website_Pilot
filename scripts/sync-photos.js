@@ -23,6 +23,10 @@ const trips = [
     photoFolder: "Photos/Utila/SmallPhotos",
   },
 
+  {
+    markdownPath: "Text/SantaFe.md",
+    photoFolder: "Photos/SantaFe/SmallPhotos",
+  },
 
 
 ];

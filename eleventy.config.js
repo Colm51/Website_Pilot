@@ -27,6 +27,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("Photos/Amsterdam/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Guanajuato/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Utila/SmallPhotos");
+  eleventyConfig.addWatchTarget("Photos/SantaFe/SmallPhotos");
 
 
   eleventyConfig.ignores.add("README.md");
