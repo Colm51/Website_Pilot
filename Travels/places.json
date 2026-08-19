@@ -1,0 +1,479 @@
+[
+  {
+    "place": "Albuquerque",
+    "country": "United States",
+    "latitude": 35.0841034,
+    "longitude": -106.650985
+  },
+  {
+    "place": "Alkmaar",
+    "country": "Netherlands",
+    "latitude": 52.6008538,
+    "longitude": 4.8170994
+  },
+  {
+    "place": "Amsterdam",
+    "country": "Netherlands",
+    "latitude": 52.3730796,
+    "longitude": 4.8924534
+  },
+  {
+    "place": "Antigua",
+    "country": "Guatemala",
+    "latitude": 14.5567814,
+    "longitude": -90.7337346
+  },
+  {
+    "place": "Antwerp",
+    "country": "Belgium",
+    "latitude": 51.2211097,
+    "longitude": 4.3997081
+  },
+  {
+    "place": "Arequipa",
+    "country": "Peru",
+    "latitude": -16.3988667,
+    "longitude": -71.5369607
+  },
+  {
+    "place": "Austin",
+    "country": "United States",
+    "latitude": 30.2711286,
+    "longitude": -97.7436995
+  },
+  {
+    "place": "Berkeley",
+    "country": "United States",
+    "latitude": 37.8708393,
+    "longitude": -122.272863
+  },
+  {
+    "place": "Bruges",
+    "country": "Belgium",
+    "latitude": 51.2085526,
+    "longitude": 3.226772
+  },
+  {
+    "place": "Buffalo",
+    "country": "United States",
+    "latitude": 42.8864163,
+    "longitude": -78.8781493
+  },
+  {
+    "place": "Campeche",
+    "country": "Mexico",
+    "latitude": 19.8436755,
+    "longitude": -90.5367454
+  },
+  {
+    "place": "Cannon Beach",
+    "country": "United States",
+    "latitude": 45.8900275,
+    "longitude": -123.9618623,
+    "aliases": [
+      "Cannnon Beach"
+    ]
+  },
+  {
+    "place": "Canterbury",
+    "country": "England, UK",
+    "latitude": 51.2800275,
+    "longitude": 1.0802533
+  },
+  {
+    "place": "Charleston",
+    "country": "United States",
+    "latitude": 32.7884363,
+    "longitude": -79.9399309
+  },
+  {
+    "place": "Chicago",
+    "country": "United States",
+    "latitude": 41.8755616,
+    "longitude": -87.6244212
+  },
+  {
+    "place": "Chichicastenango",
+    "country": "Guatemala",
+    "latitude": 14.898012,
+    "longitude": -91.1019477
+  },
+  {
+    "place": "Cholula",
+    "country": "Mexico",
+    "latitude": 19.0678244,
+    "longitude": -98.3106315
+  },
+  {
+    "place": "Comitan",
+    "country": "Mexico",
+    "latitude": 16.2523617,
+    "longitude": -92.1354233
+  },
+  {
+    "place": "Copan",
+    "country": "Honduras",
+    "latitude": 14.838634,
+    "longitude": -89.1560061
+  },
+  {
+    "place": "Cork",
+    "country": "Ireland",
+    "latitude": 51.8985136,
+    "longitude": -8.4726423
+  },
+  {
+    "place": "Cozumel",
+    "country": "Mexico",
+    "latitude": 20.4320599,
+    "longitude": -86.9206906
+  },
+  {
+    "place": "Cusco",
+    "country": "Peru",
+    "latitude": -13.5170887,
+    "longitude": -71.9785356
+  },
+  {
+    "place": "Delft",
+    "country": "Netherlands",
+    "latitude": 52.0114017,
+    "longitude": 4.35839
+  },
+  {
+    "place": "Dordrecht",
+    "country": "Netherlands",
+    "latitude": 51.814429,
+    "longitude": 4.6692438
+  },
+  {
+    "place": "Dublin",
+    "country": "Ireland",
+    "latitude": 53.3493795,
+    "longitude": -6.2605593
+  },
+  {
+    "place": "Edinburgh",
+    "country": "Scotland, UK",
+    "latitude": 55.9533456,
+    "longitude": -3.1883749
+  },
+  {
+    "place": "El Zonte",
+    "country": "El Salvador",
+    "latitude": 13.4977884,
+    "longitude": -89.4407366
+  },
+  {
+    "place": "Eureka",
+    "country": "United States",
+    "latitude": 40.8018746,
+    "longitude": -124.1707558
+  },
+  {
+    "place": "Florence",
+    "country": "Italy",
+    "latitude": 43.7697955,
+    "longitude": 11.2556404
+  },
+  {
+    "place": "Flores",
+    "country": "Guatemala",
+    "latitude": 16.9298524,
+    "longitude": -89.8914817
+  },
+  {
+    "place": "Ghent",
+    "country": "Belgium",
+    "latitude": 51.0538286,
+    "longitude": 3.7250121
+  },
+  {
+    "place": "Glasgow",
+    "country": "Scotland, UK",
+    "latitude": 55.861155,
+    "longitude": -4.2501687
+  },
+  {
+    "place": "Granada",
+    "country": "Nicaragua",
+    "latitude": 11.930367,
+    "longitude": -85.9535387
+  },
+  {
+    "place": "Guadalajara",
+    "country": "Mexico",
+    "latitude": 20.6720375,
+    "longitude": -103.338396
+  },
+  {
+    "place": "Guanajuato",
+    "country": "Mexico",
+    "latitude": 21.0158848,
+    "longitude": -101.25284
+  },
+  {
+    "place": "Guatemala City",
+    "country": "Guatemala",
+    "latitude": 14.6416142,
+    "longitude": -90.5132836
+  },
+  {
+    "place": "Haarlem",
+    "country": "Netherlands",
+    "latitude": 52.3837281,
+    "longitude": 4.6435679
+  },
+  {
+    "place": "Hoorn",
+    "country": "Netherlands",
+    "latitude": 52.653272,
+    "longitude": 5.0735802
+  },
+  {
+    "place": "Kenmare",
+    "country": "Ireland",
+    "latitude": 51.8791008,
+    "longitude": -9.583952
+  },
+  {
+    "place": "Leicester",
+    "country": "England, UK",
+    "latitude": 52.6362,
+    "longitude": -1.1331969
+  },
+  {
+    "place": "Leiden",
+    "country": "Netherlands",
+    "latitude": 52.1594747,
+    "longitude": 4.4908843
+  },
+  {
+    "place": "Leon",
+    "country": "Nicaragua",
+    "latitude": 12.3021275,
+    "longitude": -86.9679698
+  },
+  {
+    "place": "Lille",
+    "country": "France",
+    "latitude": 50.6365654,
+    "longitude": 3.0635282
+  },
+  {
+    "place": "Lima",
+    "country": "Peru",
+    "latitude": -12.0459808,
+    "longitude": -77.0305912
+  },
+  {
+    "place": "London",
+    "country": "England, UK",
+    "latitude": 51.5074456,
+    "longitude": -0.1277653
+  },
+  {
+    "place": "Maarssen",
+    "country": "Netherlands",
+    "latitude": 52.1384846,
+    "longitude": 5.040082,
+    "aliases": [
+      "Maarrssen"
+    ]
+  },
+  {
+    "place": "Memphis",
+    "country": "United States",
+    "latitude": 35.146026,
+    "longitude": -90.0517786
+  },
+  {
+    "place": "Merida",
+    "country": "Mexico",
+    "latitude": 20.9670759,
+    "longitude": -89.6237402
+  },
+  {
+    "place": "Mexico City",
+    "country": "Mexico",
+    "latitude": 19.3207722,
+    "longitude": -99.1514678,
+    "aliases": [
+      "CDMX"
+    ]
+  },
+  {
+    "place": "Naples",
+    "country": "Italy",
+    "latitude": 40.8358846,
+    "longitude": 14.2487679
+  },
+  {
+    "place": "Nashville",
+    "country": "United States",
+    "latitude": 36.1622767,
+    "longitude": -86.7742984
+  },
+  {
+    "place": "New Orleans",
+    "country": "United States",
+    "latitude": 29.9561422,
+    "longitude": -90.0733934
+  },
+  {
+    "place": "Oaxaca",
+    "country": "Mexico",
+    "latitude": 17.0965868,
+    "longitude": -96.7207816
+  },
+  {
+    "place": "Olympia",
+    "country": "United States",
+    "latitude": 47.0451022,
+    "longitude": -122.8950075
+  },
+  {
+    "place": "Panajachel",
+    "country": "Guatemala",
+    "latitude": 14.7421699,
+    "longitude": -91.1559757
+  },
+  {
+    "place": "Pisa",
+    "country": "Italy",
+    "latitude": 43.7159395,
+    "longitude": 10.4018624
+  },
+  {
+    "place": "Puebla",
+    "country": "Mexico",
+    "latitude": 19.0437196,
+    "longitude": -98.1981486
+  },
+  {
+    "place": "Puno",
+    "country": "Peru",
+    "latitude": -15.8407499,
+    "longitude": -70.0284053
+  },
+  {
+    "place": "Quetzaltenango",
+    "country": "Guatemala",
+    "latitude": 14.8464612,
+    "longitude": -91.5194208,
+    "aliases": [
+      "Quetzaltanango"
+    ]
+  },
+  {
+    "place": "Rotterdam",
+    "country": "Netherlands",
+    "latitude": 51.9244424,
+    "longitude": 4.47775
+  },
+  {
+    "place": "San Antonio",
+    "country": "United States",
+    "latitude": 29.4246002,
+    "longitude": -98.4951405
+  },
+  {
+    "place": "San Cristobal de las casas",
+    "country": "Mexico",
+    "latitude": 16.735377,
+    "longitude": -92.63873
+  },
+  {
+    "place": "San Francisco",
+    "country": "United States",
+    "latitude": 37.7879363,
+    "longitude": -122.4075201
+  },
+  {
+    "place": "San Salvador",
+    "country": "El Salvador",
+    "latitude": 13.697629,
+    "longitude": -89.191156
+  },
+  {
+    "place": "Santa Fe",
+    "country": "United States",
+    "latitude": 35.6876096,
+    "longitude": -105.938456
+  },
+  {
+    "place": "Savannah",
+    "country": "United States",
+    "latitude": 32.0790074,
+    "longitude": -81.0921335
+  },
+  {
+    "place": "Suchitoto",
+    "country": "El Salvador",
+    "latitude": 13.9367228,
+    "longitude": -89.0259345
+  },
+  {
+    "place": "Taos",
+    "country": "United States",
+    "latitude": 36.4072377,
+    "longitude": -105.573284
+  },
+  {
+    "place": "Taxco",
+    "country": "Mexico",
+    "latitude": 18.5565446,
+    "longitude": -99.6052838
+  },
+  {
+    "place": "The Hague",
+    "country": "Netherlands",
+    "latitude": 52.0799838,
+    "longitude": 4.3113461,
+    "aliases": [
+      "Hague"
+    ]
+  },
+  {
+    "place": "Toronto",
+    "country": "Canada",
+    "latitude": 43.6534817,
+    "longitude": -79.3839347
+  },
+  {
+    "place": "Utila",
+    "country": "Honduras",
+    "latitude": 16.1005116,
+    "longitude": -86.8949856
+  },
+  {
+    "place": "Utrecht",
+    "country": "Netherlands",
+    "latitude": 52.0907006,
+    "longitude": 5.1215634
+  },
+  {
+    "place": "Vancouver",
+    "country": "Canada",
+    "latitude": 49.2608724,
+    "longitude": -123.113952
+  },
+  {
+    "place": "Victoria",
+    "country": "Canada",
+    "latitude": 48.4283182,
+    "longitude": -123.364953
+  },
+  {
+    "place": "Ypres",
+    "country": "Belgium",
+    "latitude": 50.8521947,
+    "longitude": 2.8846047
+  },
+  {
+    "place": "Zutphen",
+    "country": "Netherlands",
+    "latitude": 52.1396933,
+    "longitude": 6.194772
+  }
+]

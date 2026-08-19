@@ -1,0 +1,1170 @@
+{
+  "years": [
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019,
+    2020,
+    2022,
+    2023,
+    2024,
+    2025,
+    2026
+  ],
+  "places": {
+    "albuquerque": {
+      "displayName": "Albuquerque",
+      "country": "United States",
+      "latitude": 35.0841034,
+      "longitude": -106.650985
+    },
+    "alkmaar": {
+      "displayName": "Alkmaar",
+      "country": "Netherlands",
+      "latitude": 52.6008538,
+      "longitude": 4.8170994
+    },
+    "amsterdam": {
+      "displayName": "Amsterdam",
+      "country": "Netherlands",
+      "latitude": 52.3730796,
+      "longitude": 4.8924534
+    },
+    "antigua": {
+      "displayName": "Antigua",
+      "country": "Guatemala",
+      "latitude": 14.5567814,
+      "longitude": -90.7337346
+    },
+    "antwerp": {
+      "displayName": "Antwerp",
+      "country": "Belgium",
+      "latitude": 51.2211097,
+      "longitude": 4.3997081
+    },
+    "arequipa": {
+      "displayName": "Arequipa",
+      "country": "Peru",
+      "latitude": -16.3988667,
+      "longitude": -71.5369607
+    },
+    "austin": {
+      "displayName": "Austin",
+      "country": "United States",
+      "latitude": 30.2711286,
+      "longitude": -97.7436995
+    },
+    "berkeley": {
+      "displayName": "Berkeley",
+      "country": "United States",
+      "latitude": 37.8708393,
+      "longitude": -122.272863
+    },
+    "bruges": {
+      "displayName": "Bruges",
+      "country": "Belgium",
+      "latitude": 51.2085526,
+      "longitude": 3.226772
+    },
+    "buffalo": {
+      "displayName": "Buffalo",
+      "country": "United States",
+      "latitude": 42.8864163,
+      "longitude": -78.8781493
+    },
+    "campeche": {
+      "displayName": "Campeche",
+      "country": "Mexico",
+      "latitude": 19.8436755,
+      "longitude": -90.5367454
+    },
+    "cannon-beach": {
+      "displayName": "Cannon Beach",
+      "country": "United States",
+      "latitude": 45.8900275,
+      "longitude": -123.9618623
+    },
+    "canterbury": {
+      "displayName": "Canterbury",
+      "country": "England, UK",
+      "latitude": 51.2800275,
+      "longitude": 1.0802533
+    },
+    "charleston": {
+      "displayName": "Charleston",
+      "country": "United States",
+      "latitude": 32.7884363,
+      "longitude": -79.9399309
+    },
+    "chicago": {
+      "displayName": "Chicago",
+      "country": "United States",
+      "latitude": 41.8755616,
+      "longitude": -87.6244212
+    },
+    "chichicastenango": {
+      "displayName": "Chichicastenango",
+      "country": "Guatemala",
+      "latitude": 14.898012,
+      "longitude": -91.1019477
+    },
+    "cholula": {
+      "displayName": "Cholula",
+      "country": "Mexico",
+      "latitude": 19.0678244,
+      "longitude": -98.3106315
+    },
+    "comitan": {
+      "displayName": "Comitan",
+      "country": "Mexico",
+      "latitude": 16.2523617,
+      "longitude": -92.1354233
+    },
+    "copan": {
+      "displayName": "Copan",
+      "country": "Honduras",
+      "latitude": 14.838634,
+      "longitude": -89.1560061
+    },
+    "cork": {
+      "displayName": "Cork",
+      "country": "Ireland",
+      "latitude": 51.8985136,
+      "longitude": -8.4726423
+    },
+    "cozumel": {
+      "displayName": "Cozumel",
+      "country": "Mexico",
+      "latitude": 20.4320599,
+      "longitude": -86.9206906
+    },
+    "cusco": {
+      "displayName": "Cusco",
+      "country": "Peru",
+      "latitude": -13.5170887,
+      "longitude": -71.9785356
+    },
+    "delft": {
+      "displayName": "Delft",
+      "country": "Netherlands",
+      "latitude": 52.0114017,
+      "longitude": 4.35839
+    },
+    "dordrecht": {
+      "displayName": "Dordrecht",
+      "country": "Netherlands",
+      "latitude": 51.814429,
+      "longitude": 4.6692438
+    },
+    "dublin": {
+      "displayName": "Dublin",
+      "country": "Ireland",
+      "latitude": 53.3493795,
+      "longitude": -6.2605593
+    },
+    "edinburgh": {
+      "displayName": "Edinburgh",
+      "country": "Scotland, UK",
+      "latitude": 55.9533456,
+      "longitude": -3.1883749
+    },
+    "el-zonte": {
+      "displayName": "El Zonte",
+      "country": "El Salvador",
+      "latitude": 13.4977884,
+      "longitude": -89.4407366
+    },
+    "eureka": {
+      "displayName": "Eureka",
+      "country": "United States",
+      "latitude": 40.8018746,
+      "longitude": -124.1707558
+    },
+    "florence": {
+      "displayName": "Florence",
+      "country": "Italy",
+      "latitude": 43.7697955,
+      "longitude": 11.2556404
+    },
+    "flores": {
+      "displayName": "Flores",
+      "country": "Guatemala",
+      "latitude": 16.9298524,
+      "longitude": -89.8914817
+    },
+    "ghent": {
+      "displayName": "Ghent",
+      "country": "Belgium",
+      "latitude": 51.0538286,
+      "longitude": 3.7250121
+    },
+    "glasgow": {
+      "displayName": "Glasgow",
+      "country": "Scotland, UK",
+      "latitude": 55.861155,
+      "longitude": -4.2501687
+    },
+    "granada": {
+      "displayName": "Granada",
+      "country": "Nicaragua",
+      "latitude": 11.930367,
+      "longitude": -85.9535387
+    },
+    "guadalajara": {
+      "displayName": "Guadalajara",
+      "country": "Mexico",
+      "latitude": 20.6720375,
+      "longitude": -103.338396
+    },
+    "guanajuato": {
+      "displayName": "Guanajuato",
+      "country": "Mexico",
+      "latitude": 21.0158848,
+      "longitude": -101.25284
+    },
+    "guatemala-city": {
+      "displayName": "Guatemala City",
+      "country": "Guatemala",
+      "latitude": 14.6416142,
+      "longitude": -90.5132836
+    },
+    "haarlem": {
+      "displayName": "Haarlem",
+      "country": "Netherlands",
+      "latitude": 52.3837281,
+      "longitude": 4.6435679
+    },
+    "hoorn": {
+      "displayName": "Hoorn",
+      "country": "Netherlands",
+      "latitude": 52.653272,
+      "longitude": 5.0735802
+    },
+    "kenmare": {
+      "displayName": "Kenmare",
+      "country": "Ireland",
+      "latitude": 51.8791008,
+      "longitude": -9.583952
+    },
+    "leicester": {
+      "displayName": "Leicester",
+      "country": "England, UK",
+      "latitude": 52.6362,
+      "longitude": -1.1331969
+    },
+    "leiden": {
+      "displayName": "Leiden",
+      "country": "Netherlands",
+      "latitude": 52.1594747,
+      "longitude": 4.4908843
+    },
+    "leon": {
+      "displayName": "Leon",
+      "country": "Nicaragua",
+      "latitude": 12.3021275,
+      "longitude": -86.9679698
+    },
+    "lille": {
+      "displayName": "Lille",
+      "country": "France",
+      "latitude": 50.6365654,
+      "longitude": 3.0635282
+    },
+    "lima": {
+      "displayName": "Lima",
+      "country": "Peru",
+      "latitude": -12.0459808,
+      "longitude": -77.0305912
+    },
+    "london": {
+      "displayName": "London",
+      "country": "England, UK",
+      "latitude": 51.5074456,
+      "longitude": -0.1277653
+    },
+    "maarssen": {
+      "displayName": "Maarssen",
+      "country": "Netherlands",
+      "latitude": 52.1384846,
+      "longitude": 5.040082
+    },
+    "memphis": {
+      "displayName": "Memphis",
+      "country": "United States",
+      "latitude": 35.146026,
+      "longitude": -90.0517786
+    },
+    "merida": {
+      "displayName": "Merida",
+      "country": "Mexico",
+      "latitude": 20.9670759,
+      "longitude": -89.6237402
+    },
+    "mexico-city": {
+      "displayName": "Mexico City",
+      "country": "Mexico",
+      "latitude": 19.3207722,
+      "longitude": -99.1514678
+    },
+    "naples": {
+      "displayName": "Naples",
+      "country": "Italy",
+      "latitude": 40.8358846,
+      "longitude": 14.2487679
+    },
+    "nashville": {
+      "displayName": "Nashville",
+      "country": "United States",
+      "latitude": 36.1622767,
+      "longitude": -86.7742984
+    },
+    "new-orleans": {
+      "displayName": "New Orleans",
+      "country": "United States",
+      "latitude": 29.9561422,
+      "longitude": -90.0733934
+    },
+    "oaxaca": {
+      "displayName": "Oaxaca",
+      "country": "Mexico",
+      "latitude": 17.0965868,
+      "longitude": -96.7207816
+    },
+    "olympia": {
+      "displayName": "Olympia",
+      "country": "United States",
+      "latitude": 47.0451022,
+      "longitude": -122.8950075
+    },
+    "panajachel": {
+      "displayName": "Panajachel",
+      "country": "Guatemala",
+      "latitude": 14.7421699,
+      "longitude": -91.1559757
+    },
+    "pisa": {
+      "displayName": "Pisa",
+      "country": "Italy",
+      "latitude": 43.7159395,
+      "longitude": 10.4018624
+    },
+    "puebla": {
+      "displayName": "Puebla",
+      "country": "Mexico",
+      "latitude": 19.0437196,
+      "longitude": -98.1981486
+    },
+    "puno": {
+      "displayName": "Puno",
+      "country": "Peru",
+      "latitude": -15.8407499,
+      "longitude": -70.0284053
+    },
+    "quetzaltenango": {
+      "displayName": "Quetzaltenango",
+      "country": "Guatemala",
+      "latitude": 14.8464612,
+      "longitude": -91.5194208
+    },
+    "rotterdam": {
+      "displayName": "Rotterdam",
+      "country": "Netherlands",
+      "latitude": 51.9244424,
+      "longitude": 4.47775
+    },
+    "san-antonio": {
+      "displayName": "San Antonio",
+      "country": "United States",
+      "latitude": 29.4246002,
+      "longitude": -98.4951405
+    },
+    "san-cristobal-de-las-casas": {
+      "displayName": "San Cristobal de las casas",
+      "country": "Mexico",
+      "latitude": 16.735377,
+      "longitude": -92.63873
+    },
+    "san-francisco": {
+      "displayName": "San Francisco",
+      "country": "United States",
+      "latitude": 37.7879363,
+      "longitude": -122.4075201
+    },
+    "san-salvador": {
+      "displayName": "San Salvador",
+      "country": "El Salvador",
+      "latitude": 13.697629,
+      "longitude": -89.191156
+    },
+    "santa-fe": {
+      "displayName": "Santa Fe",
+      "country": "United States",
+      "latitude": 35.6876096,
+      "longitude": -105.938456
+    },
+    "savannah": {
+      "displayName": "Savannah",
+      "country": "United States",
+      "latitude": 32.0790074,
+      "longitude": -81.0921335
+    },
+    "suchitoto": {
+      "displayName": "Suchitoto",
+      "country": "El Salvador",
+      "latitude": 13.9367228,
+      "longitude": -89.0259345
+    },
+    "taos": {
+      "displayName": "Taos",
+      "country": "United States",
+      "latitude": 36.4072377,
+      "longitude": -105.573284
+    },
+    "taxco": {
+      "displayName": "Taxco",
+      "country": "Mexico",
+      "latitude": 18.5565446,
+      "longitude": -99.6052838
+    },
+    "the-hague": {
+      "displayName": "The Hague",
+      "country": "Netherlands",
+      "latitude": 52.0799838,
+      "longitude": 4.3113461
+    },
+    "toronto": {
+      "displayName": "Toronto",
+      "country": "Canada",
+      "latitude": 43.6534817,
+      "longitude": -79.3839347
+    },
+    "utila": {
+      "displayName": "Utila",
+      "country": "Honduras",
+      "latitude": 16.1005116,
+      "longitude": -86.8949856
+    },
+    "utrecht": {
+      "displayName": "Utrecht",
+      "country": "Netherlands",
+      "latitude": 52.0907006,
+      "longitude": 5.1215634
+    },
+    "vancouver": {
+      "displayName": "Vancouver",
+      "country": "Canada",
+      "latitude": 49.2608724,
+      "longitude": -123.113952
+    },
+    "victoria": {
+      "displayName": "Victoria",
+      "country": "Canada",
+      "latitude": 48.4283182,
+      "longitude": -123.364953
+    },
+    "ypres": {
+      "displayName": "Ypres",
+      "country": "Belgium",
+      "latitude": 50.8521947,
+      "longitude": 2.8846047
+    },
+    "zutphen": {
+      "displayName": "Zutphen",
+      "country": "Netherlands",
+      "latitude": 52.1396933,
+      "longitude": 6.194772
+    }
+  },
+  "trips": [
+    {
+      "year": 2014,
+      "month": "June",
+      "destination": "Chicago",
+      "country": "United States",
+      "destinationId": "chicago",
+      "originId": "toronto"
+    },
+    {
+      "year": 2014,
+      "month": "September",
+      "destination": "CDMX",
+      "country": "Mexico",
+      "destinationId": "mexico-city",
+      "originId": "toronto"
+    },
+    {
+      "year": 2015,
+      "month": "May",
+      "destination": "Dublin",
+      "country": "Ireland",
+      "destinationId": "dublin",
+      "originId": "toronto"
+    },
+    {
+      "year": 2015,
+      "month": "May",
+      "destination": "Glasgow",
+      "country": "Scotland, UK",
+      "destinationId": "glasgow",
+      "originId": "dublin"
+    },
+    {
+      "year": 2015,
+      "month": "May",
+      "destination": "Edinburgh",
+      "country": "Scotland, UK",
+      "destinationId": "edinburgh",
+      "originId": "edinburgh"
+    },
+    {
+      "year": 2015,
+      "month": "October",
+      "destination": "London",
+      "country": "England, UK",
+      "destinationId": "london",
+      "originId": "toronto"
+    },
+    {
+      "year": 2015,
+      "month": "October",
+      "destination": "Leicester",
+      "country": "England, UK",
+      "destinationId": "leicester",
+      "originId": "london"
+    },
+    {
+      "year": 2015,
+      "month": "October",
+      "destination": "Bruges",
+      "country": "Belgium",
+      "destinationId": "bruges",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2015,
+      "month": "October",
+      "destination": "Ypres",
+      "country": "Belgium",
+      "destinationId": "ypres",
+      "originId": "bruges"
+    },
+    {
+      "year": 2015,
+      "month": "October",
+      "destination": "Amsterdam",
+      "country": "Netherlands",
+      "destinationId": "amsterdam",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2016,
+      "month": "January",
+      "destination": "Savannah",
+      "country": "United States",
+      "destinationId": "savannah",
+      "originId": "toronto"
+    },
+    {
+      "year": 2016,
+      "month": "January",
+      "destination": "Charleston",
+      "country": "United States",
+      "destinationId": "charleston",
+      "originId": "savannah"
+    },
+    {
+      "year": 2016,
+      "month": "May",
+      "destination": "Olympia",
+      "country": "United States",
+      "destinationId": "olympia",
+      "originId": "vancouver"
+    },
+    {
+      "year": 2016,
+      "month": "May",
+      "destination": "Cannon Beach",
+      "country": "United States",
+      "destinationId": "cannon-beach",
+      "originId": "olympia"
+    },
+    {
+      "year": 2016,
+      "month": "May",
+      "destination": "Eureka",
+      "country": "United States",
+      "destinationId": "eureka",
+      "originId": "cannon-beach"
+    },
+    {
+      "year": 2016,
+      "month": "May",
+      "destination": "San Francisco",
+      "country": "United States",
+      "destinationId": "san-francisco",
+      "originId": "eureka"
+    },
+    {
+      "year": 2016,
+      "month": "May",
+      "destination": "Berkeley",
+      "country": "United States",
+      "destinationId": "berkeley",
+      "originId": "san-francisco"
+    },
+    {
+      "year": 2017,
+      "month": "January",
+      "destination": "New Orleans",
+      "country": "United States",
+      "destinationId": "new-orleans",
+      "originId": "toronto"
+    },
+    {
+      "year": 2017,
+      "month": "August",
+      "destination": "Buffalo",
+      "country": "United States",
+      "destinationId": "buffalo",
+      "originId": "toronto"
+    },
+    {
+      "year": 2017,
+      "month": "October",
+      "destination": "CDMX",
+      "country": "Mexico",
+      "destinationId": "mexico-city",
+      "originId": "toronto"
+    },
+    {
+      "year": 2017,
+      "month": "October",
+      "destination": "Oaxaca",
+      "country": "Mexico",
+      "destinationId": "oaxaca",
+      "originId": "mexico-city"
+    },
+    {
+      "year": 2017,
+      "month": "November",
+      "destination": "Guanajuato",
+      "country": "Mexico",
+      "destinationId": "guanajuato",
+      "originId": "mexico-city"
+    },
+    {
+      "year": 2017,
+      "month": "November",
+      "destination": "Guadalajara",
+      "country": "Mexico",
+      "destinationId": "guadalajara",
+      "originId": "guanajuato"
+    },
+    {
+      "year": 2018,
+      "month": "February",
+      "destination": "Austin",
+      "country": "United States",
+      "destinationId": "austin",
+      "originId": "toronto"
+    },
+    {
+      "year": 2018,
+      "month": "February",
+      "destination": "San Antonio",
+      "country": "United States",
+      "destinationId": "san-antonio",
+      "originId": "austin"
+    },
+    {
+      "year": 2018,
+      "month": "May",
+      "destination": "Santa Fe",
+      "country": "United States",
+      "destinationId": "santa-fe",
+      "originId": "toronto"
+    },
+    {
+      "year": 2018,
+      "month": "May",
+      "destination": "Taos",
+      "country": "United States",
+      "destinationId": "taos",
+      "originId": "santa-fe"
+    },
+    {
+      "year": 2018,
+      "month": "May",
+      "destination": "Albuquerque",
+      "country": "United States",
+      "destinationId": "albuquerque",
+      "originId": "santa-fe"
+    },
+    {
+      "year": 2018,
+      "month": "September",
+      "destination": "Guatemala City",
+      "country": "Guatemala",
+      "destinationId": "guatemala-city",
+      "originId": "toronto"
+    },
+    {
+      "year": 2018,
+      "month": "September",
+      "destination": "Quetzaltanango",
+      "country": "Guatemala",
+      "destinationId": "quetzaltenango",
+      "originId": "guatemala-city"
+    },
+    {
+      "year": 2018,
+      "month": "September",
+      "destination": "Panajachel",
+      "country": "Guatemala",
+      "destinationId": "panajachel",
+      "originId": "quetzaltenango"
+    },
+    {
+      "year": 2018,
+      "month": "September",
+      "destination": "Chichicastenango",
+      "country": "Guatemala",
+      "destinationId": "chichicastenango",
+      "originId": "panajachel"
+    },
+    {
+      "year": 2018,
+      "month": "September",
+      "destination": "Antigua",
+      "country": "Guatemala",
+      "destinationId": "antigua",
+      "originId": "panajachel"
+    },
+    {
+      "year": 2018,
+      "month": "September",
+      "destination": "Flores",
+      "country": "Guatemala",
+      "destinationId": "flores",
+      "originId": "antigua"
+    },
+    {
+      "year": 2019,
+      "month": "January",
+      "destination": "Nashville",
+      "country": "United States",
+      "destinationId": "nashville",
+      "originId": "toronto"
+    },
+    {
+      "year": 2019,
+      "month": "January",
+      "destination": "Memphis",
+      "country": "United States",
+      "destinationId": "memphis",
+      "originId": "nashville"
+    },
+    {
+      "year": 2019,
+      "month": "May",
+      "destination": "Lima",
+      "country": "Peru",
+      "destinationId": "lima",
+      "originId": "toronto"
+    },
+    {
+      "year": 2019,
+      "month": "May",
+      "destination": "Arequipa",
+      "country": "Peru",
+      "destinationId": "arequipa",
+      "originId": "lima"
+    },
+    {
+      "year": 2019,
+      "month": "May",
+      "destination": "Puno",
+      "country": "Peru",
+      "destinationId": "puno",
+      "originId": "arequipa"
+    },
+    {
+      "year": 2019,
+      "month": "June",
+      "destination": "Cusco",
+      "country": "Peru",
+      "destinationId": "cusco",
+      "originId": "puno"
+    },
+    {
+      "year": 2020,
+      "month": "January",
+      "destination": "CDMX",
+      "country": "Mexico",
+      "destinationId": "mexico-city",
+      "originId": "toronto"
+    },
+    {
+      "year": 2020,
+      "month": "January",
+      "destination": "Puebla",
+      "country": "Mexico",
+      "destinationId": "puebla",
+      "originId": "mexico-city"
+    },
+    {
+      "year": 2020,
+      "month": "January",
+      "destination": "Cholula",
+      "country": "Mexico",
+      "destinationId": "cholula",
+      "originId": "puebla"
+    },
+    {
+      "year": 2020,
+      "month": "January",
+      "destination": "Granada",
+      "country": "Nicaragua",
+      "destinationId": "granada",
+      "originId": "toronto"
+    },
+    {
+      "year": 2020,
+      "month": "January",
+      "destination": "Leon",
+      "country": "Nicaragua",
+      "destinationId": "leon",
+      "originId": "granada"
+    },
+    {
+      "year": 2020,
+      "month": "February",
+      "destination": "CDMX",
+      "country": "Mexico",
+      "destinationId": "mexico-city",
+      "originId": "leon"
+    },
+    {
+      "year": 2022,
+      "month": "",
+      "destination": "Victoria",
+      "country": "Canada",
+      "destinationId": "victoria",
+      "originId": "vancouver"
+    },
+    {
+      "year": 2022,
+      "month": "September",
+      "destination": "CDMX",
+      "country": "Mexico",
+      "destinationId": "mexico-city",
+      "originId": "toronto"
+    },
+    {
+      "year": 2022,
+      "month": "September",
+      "destination": "Taxco",
+      "country": "Mexico",
+      "destinationId": "taxco",
+      "originId": "mexico-city"
+    },
+    {
+      "year": 2022,
+      "month": "September",
+      "destination": "Utila",
+      "country": "Honduras",
+      "destinationId": "utila",
+      "originId": "toronto"
+    },
+    {
+      "year": 2022,
+      "month": "September",
+      "destination": "Copan",
+      "country": "Honduras",
+      "destinationId": "copan",
+      "originId": "utila"
+    },
+    {
+      "year": 2023,
+      "month": "February",
+      "destination": "Campeche",
+      "country": "Mexico",
+      "destinationId": "campeche",
+      "originId": "merida"
+    },
+    {
+      "year": 2023,
+      "month": "February",
+      "destination": "Cozumel",
+      "country": "Mexico",
+      "destinationId": "cozumel",
+      "originId": "campeche"
+    },
+    {
+      "year": 2023,
+      "month": "February",
+      "destination": "Merida",
+      "country": "Mexico",
+      "destinationId": "merida",
+      "originId": "toronto"
+    },
+    {
+      "year": 2023,
+      "month": "September",
+      "destination": "Hague",
+      "country": "Netherlands",
+      "destinationId": "the-hague",
+      "originId": "toronto"
+    },
+    {
+      "year": 2023,
+      "month": "September",
+      "destination": "Ghent",
+      "country": "Belgium",
+      "destinationId": "ghent",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2023,
+      "month": "September",
+      "destination": "Dordrecht",
+      "country": "Netherlands",
+      "destinationId": "dordrecht",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2023,
+      "month": "October",
+      "destination": "Lille",
+      "country": "France",
+      "destinationId": "lille",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2024,
+      "month": "February",
+      "destination": "CDMX",
+      "country": "Mexico",
+      "destinationId": "mexico-city",
+      "originId": "toronto"
+    },
+    {
+      "year": 2024,
+      "month": "February",
+      "destination": "San Cristobal de las casas",
+      "country": "Mexico",
+      "destinationId": "san-cristobal-de-las-casas",
+      "originId": "mexico-city"
+    },
+    {
+      "year": 2024,
+      "month": "February",
+      "destination": "Comitan",
+      "country": "Mexico",
+      "destinationId": "comitan",
+      "originId": "san-cristobal-de-las-casas"
+    },
+    {
+      "year": 2024,
+      "month": "November",
+      "destination": "San Salvador",
+      "country": "El Salvador",
+      "destinationId": "san-salvador",
+      "originId": "toronto"
+    },
+    {
+      "year": 2024,
+      "month": "November",
+      "destination": "Suchitoto",
+      "country": "El Salvador",
+      "destinationId": "suchitoto",
+      "originId": "san-salvador"
+    },
+    {
+      "year": 2024,
+      "month": "November",
+      "destination": "El Zonte",
+      "country": "El Salvador",
+      "destinationId": "el-zonte",
+      "originId": "suchitoto"
+    },
+    {
+      "year": 2025,
+      "month": "May",
+      "destination": "Victoria",
+      "country": "Canada",
+      "destinationId": "victoria",
+      "originId": null
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Hague",
+      "country": "Netherlands",
+      "destinationId": "the-hague",
+      "originId": "toronto"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Alkmaar",
+      "country": "Netherlands",
+      "destinationId": "alkmaar",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Haarlem",
+      "country": "Netherlands",
+      "destinationId": "haarlem",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Hoorn",
+      "country": "Netherlands",
+      "destinationId": "hoorn",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Zutphen",
+      "country": "Netherlands",
+      "destinationId": "zutphen",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Antwerp",
+      "country": "Belgium",
+      "destinationId": "antwerp",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Canterbury",
+      "country": "England, UK",
+      "destinationId": "canterbury",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Florence",
+      "country": "Italy",
+      "destinationId": "florence",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2025,
+      "month": "September",
+      "destination": "Pisa",
+      "country": "Italy",
+      "destinationId": "pisa",
+      "originId": "florence"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Hague",
+      "country": "Netherlands",
+      "destinationId": "the-hague",
+      "originId": "toronto"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Amsterdam",
+      "country": "Netherlands",
+      "destinationId": "amsterdam",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Leiden",
+      "country": "Netherlands",
+      "destinationId": "leiden",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Haarlem",
+      "country": "Netherlands",
+      "destinationId": "haarlem",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Delft",
+      "country": "Netherlands",
+      "destinationId": "delft",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Maarrssen",
+      "country": "Netherlands",
+      "destinationId": "maarssen",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Rotterdam",
+      "country": "Netherlands",
+      "destinationId": "rotterdam",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Utrecht",
+      "country": "Netherlands",
+      "destinationId": "utrecht",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Dublin",
+      "country": "Ireland",
+      "destinationId": "dublin",
+      "originId": "the-hague"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Cork",
+      "country": "Ireland",
+      "destinationId": "cork",
+      "originId": "dublin"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Kenmare",
+      "country": "Ireland",
+      "destinationId": "kenmare",
+      "originId": "cork"
+    },
+    {
+      "year": 2026,
+      "month": "June",
+      "destination": "Naples",
+      "country": "Italy",
+      "destinationId": "naples",
+      "originId": "amsterdam"
+    }
+  ]
+}

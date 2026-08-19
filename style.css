@@ -13,6 +13,18 @@
   box-sizing: border-box;
 }
 
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -199,6 +211,79 @@ h2 {
   border: 1px solid var(--rule);
 }
 
+.travel-map-section {
+  width: min(100% - 2rem, 1180px);
+  margin-inline: auto;
+  padding: clamp(2rem, 6vw, 4rem) 0;
+}
+
+.map-toolbar {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.map-filter {
+  display: grid;
+  gap: 0.25rem;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.map-filter select {
+  min-width: 9rem;
+  padding: 0.5rem 2rem 0.5rem 0.6rem;
+  border: 1px solid var(--rule);
+  border-radius: 0;
+  background: #fffdf8;
+  color: var(--ink);
+  font: inherit;
+}
+
+.map-summary {
+  margin: 0;
+  color: var(--muted);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 0.82rem;
+}
+
+.travel-map {
+  width: 100%;
+  height: clamp(30rem, 72vh, 48rem);
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+}
+
+.travel-map-message {
+  margin: 0;
+  padding: 1rem;
+  color: var(--muted);
+}
+
+.travel-marker-popup {
+  min-width: 12rem;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.travel-marker-popup strong {
+  display: block;
+  color: var(--ink);
+  font-size: 1rem;
+}
+
+.travel-marker-popup p,
+.travel-marker-popup ul {
+  margin: 0.3rem 0 0;
+}
+
+.travel-marker-popup ul {
+  padding-left: 1.2rem;
+}
+
 .photographs {
   padding: clamp(2.8rem, 8vw, 5rem) clamp(1rem, 4vw, 3rem);
   border-top: 1px solid var(--rule);
@@ -316,6 +401,20 @@ figcaption {
 
   .photo-grid {
     grid-template-columns: 1fr;
+  }
+
+  .map-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .map-filter select {
+    width: 100%;
+  }
+
+  .travel-map {
+    height: 65vh;
+    min-height: 26rem;
   }
 }
 

@@ -1,0 +1,34 @@
+---
+title: Travel Map
+description: An interactive map of destinations and travel routes by year.
+layout: layouts/base.njk
+permalink: /travel-map/index.html
+isTravelMap: true
+---
+<section class="opening" aria-labelledby="page-title">
+  <div class="measure">
+    <p class="kicker">Journeys</p>
+    <h1 id="page-title">Travel Map</h1>
+    <p class="lede">Destinations and routes from my travel notes, with visits grouped by place.</p>
+  </div>
+</section>
+
+<section class="travel-map-section" aria-labelledby="map-title">
+  <div class="map-toolbar">
+    <label class="map-filter" for="travel-year">
+      Year
+      <select id="travel-year">
+        <option value="all">All years</option>
+      </select>
+    </label>
+    <p class="map-summary" id="map-summary" aria-live="polite">Loading travel data…</p>
+  </div>
+  <h2 id="map-title" class="visually-hidden">Interactive travel map</h2>
+  <div
+    id="travel-map"
+    class="travel-map"
+    data-source="{{ '/Travels/travel-data.json' | htmlBaseUrl }}"
+    aria-label="Map of travel destinations and routes"
+  ></div>
+  <noscript><p class="travel-map-message">JavaScript is required to view the interactive map.</p></noscript>
+</section>

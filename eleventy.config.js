@@ -21,6 +21,13 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("script.js");
+  eleventyConfig.addPassthroughCopy("travel-map.js");
+  eleventyConfig.addPassthroughCopy("Travels/travel-data.json");
+  eleventyConfig.addPassthroughCopy({
+    "node_modules/leaflet/dist/leaflet.css": "vendor/leaflet/leaflet.css",
+    "node_modules/leaflet/dist/leaflet.js": "vendor/leaflet/leaflet.js",
+    "node_modules/leaflet/dist/images": "vendor/leaflet/images",
+  });
   eleventyConfig.addPassthroughCopy("Maps/local-issue-reporter-map.html");
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
@@ -28,6 +35,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("Photos/Guanajuato/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Utila/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/SantaFe/SmallPhotos");
+  eleventyConfig.addWatchTarget("Travels/Travels.xlsx");
+  eleventyConfig.addWatchTarget("Travels/places.json");
 
 
   eleventyConfig.ignores.add("README.md");

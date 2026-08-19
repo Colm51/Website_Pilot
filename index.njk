@@ -16,6 +16,10 @@ permalink: /index.html
 <section id="trips" class="essay measure" aria-labelledby="trips-title">
   <h2 id="trips-title">Trips</h2>
   <div class="trip-list">
+    <article class="trip-card">
+      <h3><a href="{{ '/travel-map/' | htmlBaseUrl }}">Travel map</a></h3>
+      <p>Explore destinations and routes by year.</p>
+    </article>
     {% for trip in collections.trips | reverse %}
       <article class="trip-card">
         <h3><a href="{{ trip.url | htmlBaseUrl }}">{{ trip.data.title }}</a></h3>
