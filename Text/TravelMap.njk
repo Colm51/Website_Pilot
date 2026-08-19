@@ -24,11 +24,17 @@ isTravelMap: true
     <p class="map-summary" id="map-summary" aria-live="polite">Loading travel data…</p>
   </div>
   <h2 id="map-title" class="visually-hidden">Interactive travel map</h2>
-  <div
-    id="travel-map"
-    class="travel-map"
-    data-source="{{ '/Travels/travel-data.json' | htmlBaseUrl }}"
-    aria-label="Map of travel destinations and routes"
-  ></div>
+  <div class="travel-map-layout">
+    <aside class="destination-panel" aria-labelledby="destination-list-title">
+      <h2 id="destination-list-title">Destinations</h2>
+      <ul class="destination-list" id="destination-list"></ul>
+    </aside>
+    <div
+      id="travel-map"
+      class="travel-map"
+      data-source="{{ '/Travels/travel-data.json' | htmlBaseUrl }}"
+      aria-label="Map of travel destinations and routes"
+    ></div>
+  </div>
   <noscript><p class="travel-map-message">JavaScript is required to view the interactive map.</p></noscript>
 </section>

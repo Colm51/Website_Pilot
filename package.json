@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "leaflet": "^1.9.4",
+    "leaflet-polylinedecorator": "^1.6.0",
     "read-excel-file": "^9.3.10"
   }
 }

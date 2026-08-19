@@ -27,6 +27,8 @@ export default function (eleventyConfig) {
     "node_modules/leaflet/dist/leaflet.css": "vendor/leaflet/leaflet.css",
     "node_modules/leaflet/dist/leaflet.js": "vendor/leaflet/leaflet.js",
     "node_modules/leaflet/dist/images": "vendor/leaflet/images",
+    "node_modules/leaflet-polylinedecorator/dist/leaflet.polylineDecorator.js":
+      "vendor/leaflet/leaflet.polylineDecorator.js",
   });
   eleventyConfig.addPassthroughCopy("Maps/local-issue-reporter-map.html");
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
