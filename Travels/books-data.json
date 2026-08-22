@@ -1,6 +1,6 @@
 {
-  "bookCount": 35,
-  "tripCount": 14,
+  "bookCount": 38,
+  "tripCount": 15,
   "groups": [
     {
       "trip": "Buffalo",
@@ -183,6 +183,41 @@
           "isbns": [
             "0300224656",
             "9780300224658"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Mayan World",
+      "books": [
+        {
+          "title": "Breaking the Maya Code",
+          "author": "Coe, Michael D.",
+          "year": 2012,
+          "isbn": "0500289557",
+          "isbns": [
+            "0500289557",
+            "9780500289556"
+          ]
+        },
+        {
+          "title": "The Code of Kings: The Language of Seven Sacred Maya Temples and Tombs",
+          "author": "Schele, Linda",
+          "year": 1999,
+          "isbn": "0684852098",
+          "isbns": [
+            "0684852098",
+            "9780684852096"
+          ]
+        },
+        {
+          "title": "The Maya",
+          "author": "Coe, Michael D.",
+          "year": 1999,
+          "isbn": "0500277168",
+          "isbns": [
+            "0500277168",
+            "9780500277164"
           ]
         }
       ]
