@@ -20,6 +20,10 @@ permalink: /index.html
       <h3><a href="{{ '/travel-map/' | htmlBaseUrl }}">Travel map</a></h3>
       <p>Explore destinations and routes by year.</p>
     </article>
+    <article class="trip-card">
+      <h3><a href="{{ '/travel-books/' | htmlBaseUrl }}">Travel Books</a></h3>
+      <p>Books I read in connection with my travels.</p>
+    </article>
     {% for trip in collections.trips | reverse %}
       <article class="trip-card">
         <h3><a href="{{ trip.url | htmlBaseUrl }}">{{ trip.data.title }}</a></h3>
