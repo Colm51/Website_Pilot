@@ -1,4 +1,5 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
+import { readFile } from "node:fs/promises";
 
 function getPathPrefix() {
   if (process.env.ELEVENTY_PATH_PREFIX) {
@@ -18,6 +19,10 @@ function getPathPrefix() {
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin, { extensions: "" });
+
+  eleventyConfig.addGlobalData("travelBooks", async () =>
+    JSON.parse(await readFile("Travels/books-data.json", "utf8")),
+  );
 
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("script.js");
@@ -39,6 +44,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("Photos/SantaFe/SmallPhotos");
   eleventyConfig.addWatchTarget("Travels/Travels.xlsx");
   eleventyConfig.addWatchTarget("Travels/places.json");
+  eleventyConfig.addWatchTarget("Books/TravelBooksExport.xlsx");
+  eleventyConfig.addWatchTarget("Travels/books-data.json");
 
 
   eleventyConfig.ignores.add("README.md");

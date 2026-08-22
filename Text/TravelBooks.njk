@@ -1,0 +1,31 @@
+---
+title: Travel Reading Recommendations
+description: Travel reading recommendations grouped by trip and location.
+layout: layouts/base.njk
+permalink: /travel-books/index.html
+isTravelBooks: true
+---
+<section class="opening" aria-labelledby="page-title">
+  <div class="measure">
+    <p class="kicker">Reading Recommendations</p>
+    <h1 id="page-title">Travel Reading Recommendations</h1>
+    <p class="lede">I like to read about the history of places I travel to.</p>
+    <p class="lede">The following is a beginnging of a list of books I read during various trips. This is just a simple list for now, but I plan to add some observations in the future.</p>
+  
+  </div>
+</section>
+
+<div class="book-groups measure">
+  {% for group in travelBooks.groups %}
+    <section class="book-group" aria-labelledby="book-group-{{ loop.index }}">
+      <h2 id="book-group-{{ loop.index }}">{{ group.trip }}</h2>
+      <ul class="book-list">
+        {% for book in group.books %}
+          <li><em>{{ book.title }}</em>{% if book.author %} — {{ book.author }}{% endif %}{% if book.year %} ({{ book.year }}){% endif %}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% else %}
+    <p>No travel books have been added yet.</p>
+  {% endfor %}
+</div>

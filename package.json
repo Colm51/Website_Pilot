@@ -5,11 +5,12 @@
   "description": "Travel essays and photographs built with Eleventy.",
   "type": "module",
   "scripts": {
-    "prestart": "node scripts/sync-travels.js",
+    "prestart": "node scripts/sync-travels.js && node scripts/sync-books.js",
     "start": "eleventy --serve",
-    "prebuild": "node scripts/sync-travels.js",
+    "prebuild": "node scripts/sync-travels.js && node scripts/sync-books.js",
     "build": "eleventy",
     "sync-travels": "node scripts/sync-travels.js --geocode",
+    "sync-books": "node scripts/sync-books.js",
     "sync-photos": "node scripts/sync-photos.js"
   },
   "devDependencies": {

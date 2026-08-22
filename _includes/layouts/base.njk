@@ -25,12 +25,13 @@
         {% if isTrip %}
           <a href="#essay">Essay</a>
           {% if photos %}<a href="#photographs">Photographs</a>{% endif %}
-        {% elif isTravelMap %}
+        {% elif isTravelMap or isTravelBooks %}
           <a href="{{ '/' | htmlBaseUrl }}#trips">Trips</a>
         {% elif not isAbout and not isProjects %}
           <a href="#trips">Trips</a>
         {% endif %}
         <a href="{{ '/travel-map/' | htmlBaseUrl }}"{% if isTravelMap %} aria-current="page"{% endif %}>Map</a>
+        <a href="{{ '/travel-books/' | htmlBaseUrl }}"{% if isTravelBooks %} aria-current="page"{% endif %}>Travel Books</a>
         <a href="{{ '/projects/' | htmlBaseUrl }}"{% if isProjects %} aria-current="page"{% endif %}>Projects</a>
         <a href="{{ '/about/' | htmlBaseUrl }}"{% if isAbout %} aria-current="page"{% endif %}>About</a>
       </nav>

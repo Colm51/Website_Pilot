@@ -1,0 +1,426 @@
+{
+  "bookCount": 35,
+  "tripCount": 14,
+  "groups": [
+    {
+      "trip": "Buffalo",
+      "books": [
+        {
+          "title": "City on the Lake: The Challenge of Change in Buffalo, New York",
+          "author": "Goldman, Mark",
+          "year": 1990,
+          "isbn": "0879755792",
+          "isbns": [
+            "0879755792",
+            "9780879755799"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Chicago",
+      "books": [
+        {
+          "title": "Great American City: Chicago and the Enduring Neighborhood Effect",
+          "author": "Sampson, Robert J.",
+          "year": 2013,
+          "isbn": "022605568X",
+          "isbns": [
+            "022605568X",
+            "9780226055688"
+          ]
+        },
+        {
+          "title": "The Adventures of Augie March (Penguin Great Books of the 20th Century)",
+          "author": "Bellow, Saul",
+          "year": 1999,
+          "isbn": "0140281606",
+          "isbns": [
+            "0140281606",
+            "9780140281606"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "El Salvador",
+      "books": [
+        {
+          "title": "Coffeeland: One Man's Dark Empire and the Making of Our Favorite Drug",
+          "author": "Sedgewick, Augustine",
+          "year": 2020,
+          "isbn": "1594206155",
+          "isbns": [
+            "1594206155",
+            "9781594206153"
+          ]
+        },
+        {
+          "title": "State of War: MS-13 and El Salvador's World of Violence",
+          "author": "Wheeler, William",
+          "year": 2020,
+          "isbn": "1733623728",
+          "isbns": [
+            "1733623728",
+            "9781733623728"
+          ]
+        },
+        {
+          "title": "Unforgetting: A Memoir of Family, Migration, Gangs, and Revolution in the Americas",
+          "author": "Lovato, Roberto",
+          "year": 2020,
+          "isbn": "0062938479",
+          "isbns": [
+            "0062938479",
+            "9780062938473"
+          ]
+        },
+        {
+          "title": "What You Have Heard Is True: A Memoir of Witness and Resistance",
+          "author": "Forché, Carolyn",
+          "year": 2019,
+          "isbn": "0525560378",
+          "isbns": [
+            "0525560378",
+            "9780525560371"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Florence",
+      "books": [
+        {
+          "title": "A History of Florence, 1200 - 1575",
+          "author": "Najemy, John M.",
+          "year": 2008,
+          "isbn": "1405182423",
+          "isbns": [
+            "1405182423",
+            "9781405182423"
+          ]
+        },
+        {
+          "title": "Discourses",
+          "author": "Machiavelli, Niccolò",
+          "year": 1984,
+          "isbn": "9780140444285",
+          "isbns": [
+            "9780140444285",
+            "0140444289"
+          ]
+        },
+        {
+          "title": "Renaissance Florence, Updated edition",
+          "author": "Brucker, Gene",
+          "year": 1983,
+          "isbn": "0520046951",
+          "isbns": [
+            "0520046951",
+            "9780520046955"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Guatemala",
+      "books": [
+        {
+          "title": "Memories of Conquest: Becoming Mexicano in Colonial Guatemala",
+          "author": "Matthew, Laura E.",
+          "year": 2014,
+          "isbn": "1469621975",
+          "isbns": [
+            "1469621975",
+            "9781469621975"
+          ]
+        },
+        {
+          "title": "What The Rich Don't Tell The Poor: Conversations with Guatemalan Oligarchs",
+          "author": "Krznaric, Roman",
+          "year": 2022,
+          "isbn": "1838488103",
+          "isbns": [
+            "1838488103",
+            "9781838488109"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Ireland",
+      "books": [
+        {
+          "title": "Eighteenth Century Ireland: The Isle of Slaves (New Gill History of Ireland)",
+          "author": "McBride, Ian",
+          "year": 2009,
+          "isbn": "0717116271",
+          "isbns": [
+            "0717116271",
+            "9780717116270"
+          ]
+        },
+        {
+          "title": "Nineteenth Century Ireland: The Search for Stability (New Gill History of Ireland)",
+          "author": "Boyce, D. George",
+          "year": 2005,
+          "isbn": "0717132994",
+          "isbns": [
+            "0717132994",
+            "9780717132997"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Latin America",
+      "books": [
+        {
+          "title": "Forgotten Continent: A History of the New Latin America",
+          "author": "Reid, Michael",
+          "year": 2017,
+          "isbn": "0300224656",
+          "isbns": [
+            "0300224656",
+            "9780300224658"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Mexico",
+      "books": [
+        {
+          "title": "Mexico: A 500-Year History",
+          "author": "Gillingham, Paul",
+          "year": 2025,
+          "isbn": "0802164846",
+          "isbns": [
+            "0802164846",
+            "9780802164841"
+          ]
+        },
+        {
+          "title": "Mexico: Democracy Interrupted",
+          "author": "Tuckman, Jo",
+          "year": 2012,
+          "isbn": "9780300160314",
+          "isbns": [
+            "9780300160314",
+            "0300160313"
+          ]
+        },
+        {
+          "title": "Pedro Páramo",
+          "author": "Rulfo, Juan",
+          "year": 2023,
+          "isbn": "080216093X",
+          "isbns": [
+            "080216093X",
+            "9780802160935"
+          ]
+        },
+        {
+          "title": "Searching For Modern Mexico: Dispatches from the Front Lines of the New Global Economy",
+          "author": "Flannery, Nathaniel Parish",
+          "year": 2019,
+          "isbn": "0915745828",
+          "isbns": [
+            "0915745828",
+            "9780915745821"
+          ]
+        },
+        {
+          "title": "Waking from the Dream: Mexico's Middle Classes after 1968",
+          "author": "Walker, Louise",
+          "year": 2013,
+          "isbn": "0804795304",
+          "isbns": [
+            "0804795304",
+            "9780804795302"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Netherlands",
+      "books": [
+        {
+          "title": "Amsterdam: A Brief Life of the City",
+          "author": "Mak, Geert",
+          "year": 2001,
+          "isbn": "186046789X",
+          "isbns": [
+            "186046789X",
+            "9781860467899"
+          ]
+        },
+        {
+          "title": "Reformation in the Low Countries, 1500-1620",
+          "author": "Kooi, Christine",
+          "year": 2022,
+          "isbn": "1009073958",
+          "isbns": [
+            "1009073958",
+            "9781009073950"
+          ]
+        },
+        {
+          "title": "The Embarrassment of Riches: An Interpretation of Dutch Culture in the Golden Age",
+          "author": "Schama, Simon",
+          "year": 1997,
+          "isbn": "0679781242",
+          "isbns": [
+            "0679781242",
+            "9780679781240"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "New Orleans",
+      "books": [
+        {
+          "title": "Creole New Orleans: Race and Americanization",
+          "author": "Hirsch, Arnold R.",
+          "year": 1992,
+          "isbn": "0807117749",
+          "isbns": [
+            "0807117749",
+            "9780807117743"
+          ]
+        },
+        {
+          "title": "Lords of Misrule: Mardi Gras and the Politics of Race in New Orleans",
+          "author": "Gill, James",
+          "year": 1997,
+          "isbn": "0878059164",
+          "isbns": [
+            "0878059164",
+            "9780878059164"
+          ]
+        },
+        {
+          "title": "The Accidental City: Improvising New Orleans",
+          "author": "Powell, Lawrence N.",
+          "year": 2013,
+          "isbn": "9780674725904",
+          "isbns": [
+            "9780674725904",
+            "0674725905"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Nicaragua",
+      "books": [
+        {
+          "title": "Blood of Brothers: Life and War in Nicaragua, With New Afterword (Series on Latin American Studies)",
+          "author": "Kinzer, Stephen",
+          "year": 2007,
+          "isbn": "9780674025936",
+          "isbns": [
+            "9780674025936",
+            "0674025938"
+          ]
+        },
+        {
+          "title": "State of War: MS-13 and El Salvador's World of Violence",
+          "author": "Wheeler, William",
+          "year": 2020,
+          "isbn": "1733623728",
+          "isbns": [
+            "1733623728",
+            "9781733623728"
+          ]
+        },
+        {
+          "title": "The Country Under My Skin: A Memoir of Love and War",
+          "author": "Belli, Gioconda",
+          "year": 2003,
+          "isbn": "1400032164",
+          "isbns": [
+            "1400032164",
+            "9781400032167"
+          ]
+        },
+        {
+          "title": "The Sandinista Revolution: A Global Latin American History (New Cold War History)",
+          "author": "Jarquín, Mateo",
+          "year": 2024,
+          "isbn": "1469678497",
+          "isbns": [
+            "1469678497",
+            "9781469678498"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "San Cristobal de las casas",
+      "books": [
+        {
+          "title": "Restless Blood: Frans Blom, Explorer and Maya Archaeologist",
+          "author": "Leifer, Tore",
+          "year": 2017,
+          "isbn": "0985931744",
+          "isbns": [
+            "0985931744",
+            "9780985931742"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Santa Fe",
+      "books": [
+        {
+          "title": "High Road to Taos (Images of America)",
+          "author": "Butler, Mike",
+          "year": 2016,
+          "isbn": "146711605X",
+          "isbns": [
+            "146711605X",
+            "9781467116053"
+          ]
+        },
+        {
+          "title": "New Mexico: A History",
+          "author": "Sánchez, Joseph P.",
+          "year": 2014,
+          "isbn": "080614663X",
+          "isbns": [
+            "080614663X",
+            "9780806146638"
+          ]
+        }
+      ]
+    },
+    {
+      "trip": "Savannah",
+      "books": [
+        {
+          "title": "Saving Savannah: The City and the Civil War (Vintage Civil War Library)",
+          "author": "Jones, Jacqueline",
+          "year": 2009,
+          "isbn": "1400078164",
+          "isbns": [
+            "1400078164",
+            "9781400078165"
+          ]
+        },
+        {
+          "title": "The Mind of the South",
+          "author": "Cash, W. J.",
+          "year": 1991,
+          "isbn": "9780679736479",
+          "isbns": [
+            "9780679736479",
+            "0679736476"
+          ]
+        }
+      ]
+    }
+  ]
+}

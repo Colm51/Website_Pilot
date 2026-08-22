@@ -152,6 +152,25 @@ h2 {
   margin: 0 0 1.25rem;
 }
 
+.book-groups {
+  padding: clamp(2.8rem, 8vw, 5rem) 0;
+}
+
+.book-group + .book-group {
+  margin-top: clamp(2.4rem, 6vw, 4rem);
+  padding-top: clamp(2.4rem, 6vw, 4rem);
+  border-top: 1px solid var(--rule);
+}
+
+.book-list {
+  margin: 1.25rem 0 0;
+  padding-left: 1.3rem;
+}
+
+.book-list li + li {
+  margin-top: 0.65rem;
+}
+
 .trip-list {
   display: grid;
   gap: 1.25rem;
