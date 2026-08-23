@@ -276,7 +276,7 @@ The French Quarter was fascinating. This area was actually developed by the Span
 
 The food in New Orleans was also predictably excellent, and I had lots of fun trying out oyster Po' Boys, Muffaletta sandwiches, rice and beans, and other classic dishes.
 
-I didn't explore the famous cemetaries in the French Quarter, which at that time were accesible only with tours. I did, however, explore other cemetaries, including one in the Garden District. These also featured the famous New Orleans tombs. There have been various theories as to why New Orleans has such distintive tombs. Subsequently, during my travels in latin america, I noticed that such tomb are actually common throughout former spanish colonies.
+I didn't explore the famous cemetaries in the French Quarter, which at that time were accesible only with tours. I did, however, explore other cemetaries, including one in the Garden District. These also featured the famous New Orleans tombs. There have been various theories as to why New Orleans has such distintive tombs. Subsequently, during my travels in latin america, I noticed that such tombs are actually common throughout former spanish colonies.
 
 Just outside the French Quarter is the storied Treme neighbourhood, a historic black neighbourhood with a rich tradition of music. I enjoyed a night of jazz at a club there, which featured one of the locally-famous Andrew brothers, and where I met some colourful characters.
 
