@@ -38,6 +38,12 @@ const trips = [
     photoFolder: "Photos/Copan/SmallPhotos",
   },
 
+  {
+    markdownPath: "Text/Calakmul.md",
+    photoFolder: "Photos/Calakmul/SmallPhotos",
+  },
+
+
 
 ];
 
@@ -93,26 +99,45 @@ function getPhotosBlock(yaml, markdownPath) {
   };
 }
 
-function existingPhotoPaths(photosBlock, markdownPath) {
-  const paths = new Set();
+function photoEntries(photosBlock, markdownPath) {
+  const entryStarts = [...photosBlock.matchAll(/^  -\s+/gm)].map((match) => match.index);
+
+  if (entryStarts.length === 0) {
+    if (photosBlock.trim()) {
+      throw new Error(`${markdownPath} has a photos: section with no readable entries.`);
+    }
+
+    return { prefix: photosBlock, entries: [] };
+  }
+
+  return {
+    prefix: photosBlock.slice(0, entryStarts[0]),
+    entries: entryStarts.map((start, index) => ({
+      content: photosBlock.slice(start, entryStarts[index + 1] ?? photosBlock.length),
+    })),
+  };
+}
+
+function imagePaths(photoEntry, markdownPath) {
+  const paths = [];
   const pathFields = /^\s+(?:thumbnail|full):\s+(.+?)\s*$/gm;
 
-  for (const match of photosBlock.matchAll(pathFields)) {
+  for (const match of photoEntry.matchAll(pathFields)) {
     const value = match[1].replace(/^['"]|['"]$/g, "");
     if (!value) {
       throw new Error(`${markdownPath} contains an empty photograph path.`);
     }
-    paths.add(normalizeImagePath(value));
+    paths.push(normalizeImagePath(value));
   }
 
-  if (paths.size === 0 && photosBlock.trim()) {
-    throw new Error(`${markdownPath} has a photos: section with no readable image paths.`);
+  if (paths.length === 0) {
+    throw new Error(`${markdownPath} contains a photograph entry with no readable image paths.`);
   }
 
   return paths;
 }
 
-function missingPhotos(photoFolder, knownPaths) {
+function folderPhotos(photoFolder) {
   const normalizedFolder = photoFolder.replaceAll("\\", "/").replace(/\/$/, "");
 
   return readdirSync(normalizedFolder, { withFileTypes: true })
@@ -121,11 +146,50 @@ function missingPhotos(photoFolder, knownPaths) {
         entry.isFile() && supportedImageExtensions.has(path.extname(entry.name).toLowerCase()),
     )
     .map((entry) => entry.name)
-    .sort((first, second) => first.localeCompare(second))
-    .filter(
-      (filename) =>
-        !knownPaths.has(normalizeImagePath(`/${normalizedFolder}/${filename}`)),
-    );
+    .sort((first, second) => first.localeCompare(second));
+}
+
+function synchronizePhotos(photosBlock, markdownPath, photoFolder) {
+  const parsed = photoEntries(photosBlock, markdownPath);
+  const filenames = folderPhotos(photoFolder);
+  const normalizedFiles = new Set(filenames.map((filename) => filename.toLowerCase()));
+  const normalizedFolder = normalizeImagePath(photoFolder).replace(/\/$/, "");
+  const folderPrefix = `${normalizedFolder}/`;
+  const knownPaths = new Set();
+  const removals = [];
+
+  const retained = parsed.entries.filter((entry) => {
+    const paths = imagePaths(entry.content, markdownPath);
+    paths.forEach((imagePath) => knownPaths.add(imagePath));
+
+    // Only entries whose image fields all point into this trip's configured folder
+    // are candidates for removal. Ambiguous or unrelated entries are preserved.
+    if (!paths.every((imagePath) => imagePath.startsWith(folderPrefix))) {
+      return true;
+    }
+
+    const referencedFiles = [
+      ...new Set(paths.map((imagePath) => imagePath.slice(folderPrefix.length))),
+    ];
+    if (
+      referencedFiles.length !== 1 ||
+      referencedFiles[0].includes("/") ||
+      normalizedFiles.has(referencedFiles[0])
+    ) {
+      return true;
+    }
+
+    removals.push(referencedFiles[0]);
+    return false;
+  });
+
+  const additions = filenames.filter(
+    (filename) => !knownPaths.has(normalizeImagePath(`/${normalizedFolder}/${filename}`)),
+  );
+
+  const retainedContent = parsed.prefix + retained.map((entry) => entry.content).join("");
+
+  return { additions, removals, retainedContent };
 }
 
 function photoEntry(photoFolder, filename) {
@@ -146,26 +210,30 @@ function syncTrip({ markdownPath, photoFolder }) {
   try {
     const frontMatter = getFrontMatter(original, markdownPath);
     const photosBlock = getPhotosBlock(frontMatter.yaml, markdownPath);
-    const additions = missingPhotos(
+    const { additions, removals, retainedContent } = synchronizePhotos(
+      photosBlock.content,
+      markdownPath,
       photoFolder,
-      existingPhotoPaths(photosBlock.content, markdownPath),
     );
 
-    if (additions.length === 0) {
-      return [];
+    if (additions.length === 0 && removals.length === 0) {
+      return { additions, removals };
     }
 
-    const appendedEntries = additions.map((filename) => photoEntry(photoFolder, filename)).join("\n");
-    const separator = photosBlock.content.endsWith("\n") ? "" : "\n";
+    const appendedEntries = additions
+      .map((filename) => photoEntry(photoFolder, filename))
+      .join("\n");
+    const separator = appendedEntries && !retainedContent.endsWith("\n") ? "\n" : "";
     const updatedYaml =
-      frontMatter.yaml.slice(0, photosBlock.end) +
+      frontMatter.yaml.slice(0, photosBlock.start) +
+      retainedContent +
       separator +
       appendedEntries +
       frontMatter.yaml.slice(photosBlock.end);
     const updated = `${frontMatter.opening}${updatedYaml}${frontMatter.closing}${frontMatter.body}`;
 
     writeFileSync(markdownPath, updated);
-    return additions;
+    return { additions, removals };
   } catch (error) {
     try {
       writeFileSync(markdownPath, original);
@@ -177,13 +245,20 @@ function syncTrip({ markdownPath, photoFolder }) {
 }
 
 try {
-  const added = trips.flatMap(syncTrip);
+  const results = trips.map(syncTrip);
+  const added = results.flatMap((result) => result.additions);
+  const removed = results.flatMap((result) => result.removals);
 
-  if (added.length === 0) {
-    console.log("No new photographs found");
+  if (added.length === 0 && removed.length === 0) {
+    console.log("No photograph changes found");
   } else {
-    console.log(`Added ${added.length} new photograph${added.length === 1 ? "" : "s"}`);
+    console.log(`Added ${added.length} photograph${added.length === 1 ? "" : "s"}`);
     for (const filename of added) {
+      console.log(`- ${filename}`);
+    }
+
+    console.log(`Removed ${removed.length} photograph${removed.length === 1 ? "" : "s"}`);
+    for (const filename of removed) {
       console.log(`- ${filename}`);
     }
   }
