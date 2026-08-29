@@ -1,0 +1,29 @@
+---
+permalink: /feed.xml
+layout: false
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.language }}">
+  <title>{{ site.title }}</title>
+  <subtitle>{{ site.description }}</subtitle>
+  <link href="{{ '/feed.xml' | htmlBaseUrl(site.origin) }}" rel="self" />
+  <link href="{{ '/' | htmlBaseUrl(site.origin) }}" />
+  <updated>{{ collections.trips | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
+  <id>{{ '/' | htmlBaseUrl(site.origin) }}</id>
+  <author>
+    <name>{{ site.author.name }}</name>
+  </author>
+  {% for post in collections.trips | reverse %}
+    {% set canonicalUrl = post.url | htmlBaseUrl(site.origin) %}
+    {% set itemSummary = post.data.summary or post.data.description %}
+  <entry>
+    <title>{{ post.data.title }}</title>
+    <link href="{{ canonicalUrl }}" />
+    <published>{{ post.date | dateToRfc3339 }}</published>
+    <updated>{{ post.date | dateToRfc3339 }}</updated>
+    <id>{{ canonicalUrl }}</id>
+    {% if itemSummary %}<summary>{{ itemSummary }}</summary>{% endif %}
+  </entry>
+  {% endfor %}
+</feed>

@@ -1,4 +1,5 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
+import rssPlugin from "@11ty/eleventy-plugin-rss";
 import { readFile } from "node:fs/promises";
 
 function getPathPrefix() {
@@ -19,6 +20,7 @@ function getPathPrefix() {
 
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin, { extensions: "" });
+  eleventyConfig.addPlugin(rssPlugin);
 
   eleventyConfig.addGlobalData("travelBooks", async () =>
     JSON.parse(await readFile("Travels/books-data.json", "utf8")),

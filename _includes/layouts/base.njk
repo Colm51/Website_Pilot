@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% set siteName = "Travel Notes" %}
+    {% set siteName = site.title %}
     {% set pageTitle = title or siteName %}
     {% if siteName in pageTitle %}
       {% set metadataTitle = pageTitle %}
@@ -15,6 +15,7 @@
     <meta property="og:title" content="{{ metadataTitle }}">
     {% if description %}<meta property="og:description" content="{{ description }}">{% endif %}
     <meta property="og:type" content="website">
+    <link rel="alternate" href="{{ '/feed.xml' | htmlBaseUrl }}" type="application/atom+xml" title="{{ site.title }}">
     <link rel="stylesheet" href="{{ '/style.css' | htmlBaseUrl }}">
     {% if isTravelMap %}<link rel="stylesheet" href="{{ '/vendor/leaflet/leaflet.css' | htmlBaseUrl }}">{% endif %}
   </head>
@@ -42,7 +43,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>Travel notes and photographs.</p>
+      <p>Travel notes and photographs. <a href="{{ '/feed.xml' | htmlBaseUrl }}">RSS</a></p>
     </footer>
 
     <script src="{{ '/script.js' | htmlBaseUrl }}"></script>
