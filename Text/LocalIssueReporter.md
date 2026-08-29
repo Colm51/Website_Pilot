@@ -1,9 +1,14 @@
 ---
 title: Local Issue Reporter
+date: 2026-08-01T19:14:37-04:00
+updated: 2026-08-01T19:14:37-04:00
+summary: A prototype iPhone app for reporting local issues such as bike lane issues and potholes.
 description: An iPhone app for reporting local issues such as bike lane issues.
 layout: layouts/base.njk
 permalink: /projects/local-issue-reporter/index.html
 isProjects: true
+tags:
+  - projects
 ---
 <section class="opening" aria-labelledby="page-title">
   <div class="measure">

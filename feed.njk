@@ -7,23 +7,24 @@ eleventyExcludeFromCollections: true
 <feed xmlns="http://www.w3.org/2005/Atom" xml:lang="{{ site.language }}">
   <title>{{ site.title }}</title>
   <subtitle>{{ site.description }}</subtitle>
-  <link href="{{ '/feed.xml' | htmlBaseUrl(site.origin) }}" rel="self" />
-  <link href="{{ '/' | htmlBaseUrl(site.origin) }}" />
-  <updated>{{ collections.trips | getNewestCollectionItemDate | dateToRfc3339 }}</updated>
-  <id>{{ '/' | htmlBaseUrl(site.origin) }}</id>
+  <link href="{{ '/feed.xml' | absoluteSiteUrl(site.url) }}" rel="self" />
+  <link href="{{ '/' | absoluteSiteUrl(site.url) }}" />
+  <updated>{{ collections.feedEntries[0].updated | dateToRfc3339 }}</updated>
+  <id>{{ '/' | absoluteSiteUrl(site.url) }}</id>
   <author>
     <name>{{ site.author.name }}</name>
   </author>
-  {% for post in collections.trips | reverse %}
-    {% set canonicalUrl = post.url | htmlBaseUrl(site.origin) %}
-    {% set itemSummary = post.data.summary or post.data.description %}
+  {% for entry in collections.feedEntries %}
+    {% set canonicalUrl = entry.url | absoluteSiteUrl(site.url) %}
+    {% set entryId = entry.id | absoluteSiteUrl(site.url) %}
   <entry>
-    <title>{{ post.data.title }}</title>
+    <title>{{ entry.title | escape }}</title>
     <link href="{{ canonicalUrl }}" />
-    <published>{{ post.date | dateToRfc3339 }}</published>
-    <updated>{{ post.date | dateToRfc3339 }}</updated>
-    <id>{{ canonicalUrl }}</id>
-    {% if itemSummary %}<summary>{{ itemSummary }}</summary>{% endif %}
+    <published>{{ entry.published | dateToRfc3339 }}</published>
+    <updated>{{ entry.updated | dateToRfc3339 }}</updated>
+    <id>{{ entryId }}</id>
+    <category term="{{ entry.contentType }}" />
+    {% if entry.summary %}<summary>{{ entry.summary | escape }}</summary>{% endif %}
   </entry>
   {% endfor %}
 </feed>

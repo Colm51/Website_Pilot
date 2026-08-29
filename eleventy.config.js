@@ -1,6 +1,11 @@
 import { HtmlBasePlugin } from "@11ty/eleventy";
 import rssPlugin from "@11ty/eleventy-plugin-rss";
+import { readFileSync } from "node:fs";
 import { readFile } from "node:fs/promises";
+
+const feedUpdates = JSON.parse(
+  readFileSync(new URL("./_data/feed-updates.json", import.meta.url), "utf8"),
+);
 
 function getPathPrefix() {
   if (process.env.ELEVENTY_PATH_PREFIX) {
@@ -21,6 +26,53 @@ function getPathPrefix() {
 export default function (eleventyConfig) {
   eleventyConfig.addPlugin(HtmlBasePlugin, { extensions: "" });
   eleventyConfig.addPlugin(rssPlugin);
+
+  eleventyConfig.addFilter("absoluteSiteUrl", (url, siteUrl) =>
+    new URL(String(url).replace(/^\/+/, ""), siteUrl).toString(),
+  );
+
+  eleventyConfig.addCollection("feedEntries", (collectionApi) => {
+    const pageEntries = [
+      ...collectionApi.getFilteredByTag("trips").map((page) => ({
+        id: page.url,
+        title: `Trip published: ${page.data.title}`,
+        url: page.url,
+        published: page.date,
+        updated: page.data.updated || page.date,
+        summary: page.data.summary || page.data.description,
+        contentType: "trips",
+      })),
+      ...collectionApi.getFilteredByTag("projects").map((page) => ({
+        id: page.url,
+        title: page.data.feedTitle || `Project published: ${page.data.title}`,
+        url: page.url,
+        published: page.date,
+        updated: page.data.updated || page.date,
+        summary: page.data.summary || page.data.description,
+        contentType: "projects",
+      })),
+    ];
+    const entries = [...pageEntries, ...feedUpdates].map((entry) => ({
+      ...entry,
+      published: new Date(entry.published),
+      updated: new Date(entry.updated),
+    }));
+    const ids = new Set();
+
+    for (const entry of entries) {
+      if (Number.isNaN(entry.published.valueOf()) || Number.isNaN(entry.updated.valueOf())) {
+        throw new Error(`Invalid feed entry date: ${entry.id}`);
+      }
+      if (ids.has(entry.id)) {
+        throw new Error(`Duplicate feed entry id: ${entry.id}`);
+      }
+      ids.add(entry.id);
+    }
+
+    return entries.sort(
+      (first, second) => new Date(second.updated) - new Date(first.updated),
+    );
+  });
 
   eleventyConfig.addGlobalData("travelBooks", async () =>
     JSON.parse(await readFile("Travels/books-data.json", "utf8")),

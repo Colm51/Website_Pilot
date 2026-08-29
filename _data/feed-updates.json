@@ -1,0 +1,20 @@
+[
+  {
+    "id": "/travel-books/#update-2026-08-22-mayan-world",
+    "title": "Travel Books updated: Mayan World reading recommendations",
+    "url": "/travel-books/",
+    "published": "2026-08-22T18:01:28-04:00",
+    "updated": "2026-08-22T18:01:28-04:00",
+    "summary": "Three reading recommendations for the Mayan World were added to the travel-books collection.",
+    "contentType": "travel-books"
+  },
+  {
+    "id": "/travel-map/#update-2026-08-18-initial-map",
+    "title": "Travel Map published: 86 trips and 77 mapped places",
+    "url": "/travel-map/",
+    "published": "2026-08-18T23:05:47-04:00",
+    "updated": "2026-08-18T23:05:47-04:00",
+    "summary": "An interactive map of 86 trip records and 77 places was added, with destinations and routes grouped by year.",
+    "contentType": "travel-map"
+  }
+]
