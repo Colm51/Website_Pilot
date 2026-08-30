@@ -17,6 +17,11 @@ isProjects: true
   <h2 id="projects-title">Projects</h2>
   <div class="trip-list">
     <article class="trip-card">
+      <h3><a href="{{ '/projects/music-library-dashboard/' | htmlBaseUrl }}">Music Library Dashboard</a></h3>
+      <p>An interactive exploration of my personal music collection, listening history, and manually curated playlists.</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h3>
       <p>Demo of an iPhone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
     </article>
