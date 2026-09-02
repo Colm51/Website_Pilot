@@ -22,6 +22,11 @@ isProjects: true
     </article>
 
     <article class="trip-card">
+      <h3><a href="{{ '/projects/books-dashboard/' | htmlBaseUrl }}">Books Dashboard</a></h3>
+      <p>An interactive exploration of my personal book library, including publication dates, manually curated Collections, Dewey subject classifications, languages, authors, and page counts.</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h3>
       <p>Demo of an iPhone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
     </article>
