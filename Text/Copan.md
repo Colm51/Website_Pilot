@@ -165,7 +165,7 @@ The building of the enormous Mayan temples and other structures took an enormous
 
 That said, theories of the mayan world have often proven to be incomplete or simply inaacurate. And knowledge of the period has continued to make impressive progress.
 
-As Michael Coe writes in Breaking the Maya Code, for many years, the orthodox archaological opinion was that the Mayan were peaceable, focused on things like astronomy. And the glyphs found at the sites were seen as inscrutable, with images somehow representing complete thoughts. As progress was made deciphering the glyphs, this was found to be totally incorrect. Many of the glyphs represented sounds, and familiarity with related languages and spanish-era texts eventually led to an impressive reconstruction of the written language. It was found to refer often to kings and warfare.
+As Michael Coe writes in Breaking the Maya Code, for many years, the orthodox archaological opinion was that the Mayan were peaceable, focused on things like astronomy. And the glyphs found at the sites were seen as inscrutable, with images somehow representing complete thoughts. As progress was made deciphering the glyphs, this was found to be totally incorrect. Many of the glyphs represented sounds, other were sort of like our present-days emoticons, and familiarity with related languages and spanish-era texts eventually led to an impressive reconstruction of the written language. Not surprisinly, this formal mayan script was found to refer often to kings and warfare.
 
 More recently, LIDAR has uncovered many previously-unexplored ruins, and it seems likely that the theories that have evolved about the relations among the mayan city-states will continue to need to be significantly revised.
 

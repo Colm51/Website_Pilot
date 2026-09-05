@@ -28,3 +28,9 @@ Many of the canals are the product of an energetic period of building and planni
 
 The wealthiest families could certainly have afforded taxes on frontage. Their taste for large palazzos is revealed in places such as Maarssen, where they built lavish summer retreats.
 
+This great period of prospertity in Amsterdam followed years of conflict with the Spanish, who attempted to subjugate their possessions in what is now Belgium and the Netherlands. Across the Netherlands, there are mamy reminders of this time, the brutal spanish sieges of cities like Haarlem, and battle sites such as one near Zutphen where the famous english poet Sir Phillip Sidney was killed.
+
+In the end, the Spanish were able to assert control over Belgium, but not the Netherlands. Indeed, Spanish actions such as their conquest of Antwerp, led to a flight of capital and elite families to Amsterdam, significantly boosting Amsterdam's economy.
+
+I will add more observations about this fascinating city in the future.
+

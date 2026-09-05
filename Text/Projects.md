@@ -10,6 +10,17 @@ isProjects: true
     <p class="kicker">Projects</p>
     <h1 id="page-title">Projects</h1>
     <p class="lede">Civic tech</p>
+    <p class="lede">Dashboards</p>
+    <p class="lede">Note that dashboards were made with Streamlit. 
+    Streamlit is a good open-source choice for making basic dashboards that can be shared. Unlike other programmes such as Tableau or PowerBi, there is no need to work around complex licensing requirements. 
+    </p>
+  <p class="lede">
+   However, it does not create dashboards that are optimized for phones. I am exploring ways to make the dashboards work better on mobile, starting with the Books Dashboard, but the combination of streamlit's lack of strong design features and the behaviour of browsers such as Safari means the user experience of my dashboards on mobile is not as good as on a laptop. 
+    </p>
+  <p class="lede">
+  If using safari on an iPhone, one setting that will dramatically improve the experience is turning off "Landscape bar tab" in settings>Apps>Safari>Tabs. 
+    </p>
+
   </div>
 </section>
 

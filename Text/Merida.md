@@ -215,7 +215,7 @@ Henequen was a crop whose fibres were a major source of raw material for making 
 
 Mérida was built on the site of a Mayan community, and there are still remnnants of that earlier settlement apparent in the stones used in the construction of colonial churches.
 
-Today, the city is an extremely colourful and evocastive place to explore. Its many pastel-coloured houses and other structures make for intriguing walks.
+Today, the city is an extremely colourful and evocative place to explore. Its many pastel-coloured houses and other structures make for intriguing walks.
 
 It was also known for having a colourful Mardis Gras. Sadly, this event was relocated by authorities to a location in the suburbs, supposedly at the behest of merchants along the traditional parade route along the Paseo de Montejo. When I was there, there was little evidence of any mardis gras activity despite it being the time of year when these festivities occured.
 
