@@ -51,6 +51,8 @@ tags:
 
     <p>Once both Ontario CSD and municipal boudaries have been obtained, it is possible to do a spatial join. There are various ways of doing this, including in QGis. In this example, reproducible python code is used. A representstive point was derived for each municipal polygon, and this point was then used to join to the CSD polygons they fell within.</p>
 
+    <p>One caveat: The ID referred to as "Munid" by the Ministry of Finance appears as "Assessment code", and furthermore these codes lack leading 0s in those cases where they should appear. For example, Ottawa appears as 614 but should be 0614. </p>
+
     <p>A number of example python scripts are included- including scripts to:</p>
     <ul>
       <li>Clean municipal boundaries by dissolving</li>

@@ -24,6 +24,7 @@ function popupContent(properties) {
     <div class="municipal-popup">
       <strong>${escapeHtml(properties.MUNICIPAL_NAME_SHORTFORM || properties.MUNICIPAL_NAME)}</strong>
       <dl>
+        <dt>Full municipal name</dt><dd>${escapeHtml(properties.MUNICIPAL_NAME)}</dd>
         <dt>Municipal type</dt><dd>${escapeHtml(properties.MUNICIPAL_TYPE)}</dd>
         <dt>Municipal ID</dt><dd>${escapeHtml(properties.MUNID)}</dd>
         <dt>Assessment code</dt><dd>${escapeHtml(properties.ASSESSMENT_CODE)}</dd>
