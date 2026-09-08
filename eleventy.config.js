@@ -90,6 +90,10 @@ export default function (eleventyConfig) {
       "vendor/leaflet/leaflet.polylineDecorator.js",
   });
   eleventyConfig.addPassthroughCopy("Maps/local-issue-reporter-map.html");
+  eleventyConfig.addPassthroughCopy({
+    "Projects/OntarioMunicipalCSDCrosswalk":
+      "projects/ontario-municipal-csd-crosswalk",
+  });
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Amsterdam/SmallPhotos");

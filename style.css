@@ -230,6 +230,26 @@ h2 {
   border: 1px solid var(--rule);
 }
 
+.project-section {
+  margin-top: clamp(2.8rem, 7vw, 4.5rem);
+  padding-top: clamp(2.8rem, 7vw, 4.5rem);
+  border-top: 1px solid var(--rule);
+}
+
+.workflow-list,
+.download-list {
+  padding-left: 1.35rem;
+}
+
+.workflow-list li + li,
+.download-list li + li {
+  margin-top: 0.8rem;
+}
+
+.download-list .project-link {
+  margin-bottom: 0.25rem;
+}
+
 .travel-map-section {
   width: min(100% - 2rem, 1180px);
   margin-inline: auto;
