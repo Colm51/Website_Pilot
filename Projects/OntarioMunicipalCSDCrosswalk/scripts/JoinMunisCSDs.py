@@ -1,93 +1,169 @@
-"""Match Ontario municipalities to CSDs and create spatial and Excel outputs."""
-
-import argparse
-from pathlib import Path
-
 import geopandas as gpd
 import pandas as pd
+from pathlib import Path
 
+# ------------------------------------------------------------
+# Files
+# ------------------------------------------------------------
 
-def parse_args():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("municipal_file", type=Path, help="Clipped municipal boundaries")
-    parser.add_argument("csd_file", type=Path, help="Ontario CSD boundaries")
-    parser.add_argument("output_layer", type=Path, help="Joined geospatial output")
-    parser.add_argument("output_excel", type=Path, help="Crosswalk workbook output")
-    return parser.parse_args()
+#add real filepaths
 
+municipal_file = (
+    "..."
+    "Municipal_Boundary_Clipped.geojson"
+)
 
-def main():
-    args = parse_args()
-    municipalities = gpd.read_file(args.municipal_file)
-    subdivisions = gpd.read_file(args.csd_file).to_crs(municipalities.crs)
+csd_file = (
+    "..."
+    "OntarioCSDs.geojson"
+)
 
-    municipal_points = municipalities.copy()
-    municipal_points["geometry"] = municipalities.geometry.representative_point()
-    matched = gpd.sjoin(
-        municipal_points,
-        subdivisions[["CSDUID", "CSDNAME", "geometry"]],
-        how="left",
-        predicate="within",
-    ).drop(columns=["index_right"], errors="ignore")
+output_layer = (
+    "..."
+    "Municipal_Boundary_With_CSD.geojson"
+)
 
-    if len(matched) != len(municipalities):
-        raise ValueError(
-            f"Spatial join produced {len(matched)} rows from "
-            f"{len(municipalities)} municipalities. Some points may match multiple CSDs."
-        )
+output_excel = (
+    "..."
+    "Municipal_CSD_Crosswalk.xlsx"
+)
 
-    municipal_with_csd = municipalities.copy()
-    municipal_with_csd["CSDUID"] = matched["CSDUID"].values
-    municipal_with_csd["CSDNAME"] = matched["CSDNAME"].values
+# ------------------------------------------------------------
+# Read data
+# ------------------------------------------------------------
 
-    args.output_layer.parent.mkdir(parents=True, exist_ok=True)
-    args.output_layer.unlink(missing_ok=True)
-    municipal_with_csd.to_file(args.output_layer)
+municipal = gpd.read_file(municipal_file)
+csd = gpd.read_file(csd_file)
 
-    columns = [
+# Make sure the two layers use the same CRS
+csd = csd.to_crs(municipal.crs)
+
+# ------------------------------------------------------------
+# Create one point inside each municipality
+# ------------------------------------------------------------
+
+municipal_points = municipal.copy()
+municipal_points["geometry"] = municipal.geometry.representative_point()
+
+# ------------------------------------------------------------
+# Match each municipal point to the CSD containing it
+# ------------------------------------------------------------
+
+matched = gpd.sjoin(
+    municipal_points,
+    csd[["CSDUID", "CSDNAME", "geometry"]],
+    how="left",
+    predicate="within"
+)
+
+# Remove the spatial-join helper field
+matched = matched.drop(columns=["index_right"], errors="ignore")
+
+# ------------------------------------------------------------
+# Check that the join did not create duplicate municipality rows
+# ------------------------------------------------------------
+
+if len(matched) != len(municipal):
+    raise ValueError(
+        f"Spatial join produced {len(matched)} rows from "
+        f"{len(municipal)} municipalities. "
+        "Some municipal points may be matching more than one CSD."
+    )
+
+# ------------------------------------------------------------
+# Add CSD fields back onto the municipal polygons
+# ------------------------------------------------------------
+
+municipal_with_csd = municipal.copy()
+
+municipal_with_csd["CSDUID"] = matched["CSDUID"].values
+municipal_with_csd["CSDNAME"] = matched["CSDNAME"].values
+
+# ------------------------------------------------------------
+# Save new municipal boundary layer
+# ------------------------------------------------------------
+
+Path(output_layer).unlink(missing_ok=True)
+
+municipal_with_csd.to_file(
+    output_layer,
+    driver="GeoJSON"
+)
+
+# ------------------------------------------------------------
+# Create crosswalk spreadsheet
+# ------------------------------------------------------------
+
+crosswalk = municipal_with_csd[
+    [
         "MUNICIPAL_TYPE",
         "MUNICIPAL_NAME",
         "ASSESSMENT_CODE",
         "MUNICIPAL_NAME_SHORTFORM",
         "CSDUID",
-        "CSDNAME",
+        "CSDNAME"
     ]
-    crosswalk = municipal_with_csd[columns].copy().sort_values(
-        "MUNICIPAL_NAME", na_position="last"
+].copy()
+
+crosswalk = crosswalk.sort_values(
+    ["MUNICIPAL_NAME"],
+    na_position="last"
+)
+
+# Find CSDs that were not matched to any municipality
+matched_csd_uids = set(
+    crosswalk["CSDUID"].dropna().astype(str)
+)
+
+unmatched_csds = (
+    csd.loc[
+        ~csd["CSDUID"].astype(str).isin(matched_csd_uids),
+        ["CSDUID", "CSDNAME"]
+    ]
+    .drop_duplicates()
+    .sort_values("CSDNAME")
+)
+
+# ------------------------------------------------------------
+# Write Excel workbook
+# ------------------------------------------------------------
+
+with pd.ExcelWriter(output_excel, engine="openpyxl") as writer:
+
+    crosswalk.to_excel(
+        writer,
+        sheet_name="Municipal CSD Crosswalk",
+        index=False
     )
-    matched_csd_uids = set(crosswalk["CSDUID"].dropna().astype(str))
-    unmatched_csds = (
-        subdivisions.loc[
-            ~subdivisions["CSDUID"].astype(str).isin(matched_csd_uids),
-            ["CSDUID", "CSDNAME"],
-        ]
-        .drop_duplicates()
-        .sort_values("CSDNAME")
+
+    unmatched_csds.to_excel(
+        writer,
+        sheet_name="Unmatched CSDs",
+        index=False
     )
 
-    args.output_excel.parent.mkdir(parents=True, exist_ok=True)
-    with pd.ExcelWriter(args.output_excel, engine="openpyxl") as writer:
-        crosswalk.to_excel(writer, sheet_name="Municipal CSD Crosswalk", index=False)
-        unmatched_csds.to_excel(writer, sheet_name="Unmatched CSDs", index=False)
+    # Autofit columns
+    for sheet in writer.book.worksheets:
+        for column_cells in sheet.columns:
+            max_length = max(
+                len(str(cell.value)) if cell.value is not None else 0
+                for cell in column_cells
+            )
 
-        for sheet in writer.book.worksheets:
-            for column_cells in sheet.columns:
-                max_length = max(
-                    len(str(cell.value)) if cell.value is not None else 0
-                    for cell in column_cells
-                )
-                sheet.column_dimensions[column_cells[0].column_letter].width = min(
-                    max_length + 2, 50
-                )
+            sheet.column_dimensions[
+                column_cells[0].column_letter
+            ].width = min(max_length + 2, 50)
 
-    print("Municipalities:", len(municipalities))
-    print("Municipalities with CSD match:", crosswalk["CSDUID"].notna().sum())
-    print("Municipalities without CSD match:", crosswalk["CSDUID"].isna().sum())
-    print("CSDs not matched to a municipality:", len(unmatched_csds))
-    print("Created:")
-    print(args.output_layer)
-    print(args.output_excel)
+# ------------------------------------------------------------
+# Final checks
+# ------------------------------------------------------------
 
+print("Municipalities:", len(municipal))
+print("Municipalities with CSD match:", crosswalk["CSDUID"].notna().sum())
+print("Municipalities without CSD match:", crosswalk["CSDUID"].isna().sum())
+print("CSDs not matched to a municipality:", len(unmatched_csds))
 
-if __name__ == "__main__":
-    main()
+print()
+print("Created:")
+print(output_layer)
+print(output_excel)

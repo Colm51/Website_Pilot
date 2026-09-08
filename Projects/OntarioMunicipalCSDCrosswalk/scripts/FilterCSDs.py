@@ -1,34 +1,24 @@
-"""Extract Ontario census subdivisions from a Statistics Canada boundary file."""
-
-import argparse
-from pathlib import Path
-
 import geopandas as gpd
 
+#add real filepaths
 
-def parse_args():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("input_file", type=Path, help="Canada CSD boundary file")
-    parser.add_argument("output_file", type=Path, help="Ontario CSD output file")
-    parser.add_argument("--province-code", default="35", help="Statistics Canada PRUID")
-    return parser.parse_args()
+input_file = ".../lcsd000a25p_e.gpkg"
+output_file = ".../OntarioCSDs.geojson"
 
+# Read the CSD GeoPackage
+gdf = gpd.read_file(input_file)
 
-def main():
-    args = parse_args()
-    subdivisions = gpd.read_file(args.input_file)
-    ontario = subdivisions[
-        subdivisions["PRUID"].astype(str) == args.province_code
-    ].copy()
-    ontario = ontario.to_crs("EPSG:4326")
+# Check the available columns
+print(gdf.columns.tolist())
 
-    args.output_file.parent.mkdir(parents=True, exist_ok=True)
-    args.output_file.unlink(missing_ok=True)
-    ontario.to_file(args.output_file)
+# Keep only Ontario CSDs
+ontario = gdf[gdf["PRUID"].astype(str) == "35"].copy()
 
-    print(f"Saved {len(ontario):,} Ontario CSDs")
-    print(args.output_file)
+# Convert to WGS84 for Leaflet
+ontario = ontario.to_crs("EPSG:4326")
 
+# Export to GeoJSON
+ontario.to_file(output_file, driver="GeoJSON")
 
-if __name__ == "__main__":
-    main()
+print(f"Saved {len(ontario):,} Ontario CSDs")
+print(output_file)

@@ -1,34 +1,30 @@
-"""Clip dissolved municipal boundaries to the Ontario land boundary."""
-
-import argparse
+import geopandas as gpd
 from pathlib import Path
 
-import geopandas as gpd
+#add real filepaths
 
+municipal_file = ".../Municipal_Boundary_Clean.geojson"
+ontario_file = ".../Ontario_Province.gpkg"
+output_file = ".../StatsCan/Municipal_Boundary_Clipped.geojson"
 
-def parse_args():
-    parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("municipal_file", type=Path, help="Dissolved municipal boundary file")
-    parser.add_argument("ontario_file", type=Path, help="Ontario cartographic boundary file")
-    parser.add_argument("output_file", type=Path, help="Clipped output file")
-    return parser.parse_args()
+municipal = gpd.read_file(municipal_file)
+ontario = gpd.read_file(ontario_file)
 
+# Make sure both layers use the same coordinate system
+ontario = ontario.to_crs(municipal.crs)
 
-def main():
-    args = parse_args()
-    municipalities = gpd.read_file(args.municipal_file)
-    ontario = gpd.read_file(args.ontario_file).to_crs(municipalities.crs)
-    clipped = gpd.clip(municipalities, ontario)
+# Clip municipalities to the Ontario cartographic boundary
+clipped = gpd.clip(municipal, ontario)
 
-    args.output_file.parent.mkdir(parents=True, exist_ok=True)
-    args.output_file.unlink(missing_ok=True)
-    clipped.to_file(args.output_file)
+# Save the result
+Path(output_file).unlink(missing_ok=True)
 
-    print("Original municipalities:", len(municipalities))
-    print("Clipped municipalities:", len(clipped))
-    print("CRS:", clipped.crs)
-    print("Saved:", args.output_file)
+clipped.to_file(
+    output_file,
+    driver="GeoJSON"
+)
 
-
-if __name__ == "__main__":
-    main()
+print("Original municipalities:", len(municipal))
+print("Clipped municipalities:", len(clipped))
+print("CRS:", clipped.crs)
+print("Saved:", output_file)
