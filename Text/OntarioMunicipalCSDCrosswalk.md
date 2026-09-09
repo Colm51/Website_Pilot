@@ -88,6 +88,7 @@ tags:
   <section class="project-section" aria-labelledby="map-title">
     <h2 id="map-title">Interactive municipal and CSD map</h2>
     <p>Select a municipality to see its municipal identifiers and matched census subdivision name and ID.</p>
+    <p>Note that only municipal boundaries are shown. The resulting map may look counter-intuitive, for a few reasons. First, much of the land mass of Ontario's North is "unorganized", and lacks municipal structures. In addition, some areas are First Nations reserves. There are other governance structures that extend into unorganized areas, but this map focuses only on municipal boundaries. Secondly, true municipal boundaries are shown, as opposed to points. Some Ontario municipalities cover extremely large geographies, something that is not apparent when viewing points. Thirdly, upper-tier municipalities are not shown, only their lower-tiers.  </p>
     <p>Note on basemaps: public basemaps are used. However, its important to be aware that the companies providing such free basemaps are prone to changing terms of use without notice, resulting in broken maps. This happened recently with Carto maps as an example.</p>
     <iframe
       class="map-embed"
