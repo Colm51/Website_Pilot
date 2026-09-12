@@ -19,7 +19,6 @@ Overview:
 - the relation between CDs and municipal boundaries is nunaced. In general, CDs related either to UT or ST municipalities. 
 - however, there are major exceptions to this. For example, it is not true in the North - there CDs may include many STs and also non municipal CSDs. 
 - in the south there are also examples of seperated STs that fall within the CD that a UT also falls in. This creates a major tripping hazard for municipal analysis, as simply using CDs as proxies for UTs will badly mis-state data in cases where there are seperated municipalities
-- in addition, in some cases, CDs contain both UT, LTs and seperated municipalities (see below for a discussion),
 - open data municipal boundary files for UTs, LTs and STs were merged to create on layer
 - open data FIR data was used to derive a cross-walk between UTs and LTs
 - a list of seperated municipalities was sourced from the Association of Municipalities of Ontario website
