@@ -3,16 +3,23 @@ const map = L.map("ontario-cd-map", {
   preferCanvas: true,
 });
 
-map.createPane("censusDivisions").style.zIndex = 410;
-map.createPane("municipalities").style.zIndex = 420;
-map.createPane("separatedMunicipalities").style.zIndex = 430;
-
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>',
   maxZoom: 19,
 }).addTo(map);
 
 const statusMessage = document.querySelector("#map-status");
+let activeHoverLayer = null;
+let activeHoverReset = null;
+
+function clearActiveHover() {
+  if (!activeHoverLayer) return;
+
+  activeHoverLayer.closeTooltip();
+  activeHoverReset();
+  activeHoverLayer = null;
+  activeHoverReset = null;
+}
 
 function escapeHtml(value) {
   return String(value ?? "Not available")
@@ -34,11 +41,13 @@ function municipalPopup(properties) {
     <div class="feature-popup">
       <strong>${escapeHtml(properties.MUNICIPALITY)}</strong>
       <dl>${definitionList([
-        ["Assessment", properties.ASSESSMENT],
+        ["Municipality", properties.MUNICIPALITY],
         ["Tier", properties.TIER],
-        ["Upper-tier ID", properties.UT_ID],
+        ["Assessment", properties.ASSESSMENT],
         ["Upper-tier name", properties.UT_Name],
         ["Separated", properties.Separated],
+        ["CD name", properties.CDNAME],
+        ["CD UID", properties.CDUID],
       ])}</dl>
     </div>
   `;
@@ -71,16 +80,30 @@ function censusDivisionPopup(properties) {
   `;
 }
 
-function addInteraction(layer, popup, tooltipField, hoverStyle, defaultStyle) {
+function addInteraction(layer, popup, hoverStyle, defaultStyle) {
   const properties = layer.feature.properties || {};
-  layer.bindPopup(popup(properties), { maxWidth: 380 });
-  layer.bindTooltip(escapeHtml(properties[tooltipField]), { sticky: true });
+  const content = popup(properties);
+  layer.bindPopup(content, { maxWidth: 380 });
+  layer.bindTooltip(content, {
+    className: "feature-hover-tooltip",
+    sticky: true,
+  });
   layer.on({
     mouseover(event) {
+      if (activeHoverLayer !== event.target) {
+        clearActiveHover();
+      }
       event.target.setStyle(hoverStyle);
+      activeHoverLayer = event.target;
+      activeHoverReset = () => event.target.setStyle(defaultStyle);
     },
     mouseout(event) {
-      event.target.setStyle(defaultStyle);
+      if (activeHoverLayer === event.target) {
+        clearActiveHover();
+      } else {
+        event.target.closeTooltip();
+        event.target.setStyle(defaultStyle);
+      }
     },
   });
 }
@@ -108,10 +131,9 @@ Promise.all([
       weight: 2.5,
     };
     const censusDivisionLayer = L.geoJSON(censusDivisionData, {
-      pane: "censusDivisions",
       style: censusDivisionStyle,
       onEachFeature(feature, layer) {
-        addInteraction(layer, censusDivisionPopup, "CDNAME", {
+        addInteraction(layer, censusDivisionPopup, {
           fillOpacity: 0.18,
           weight: 4,
         }, censusDivisionStyle);
@@ -126,10 +148,9 @@ Promise.all([
       weight: 1,
     };
     const municipalLayer = L.geoJSON(municipalData, {
-      pane: "municipalities",
       style: municipalStyle,
       onEachFeature(feature, layer) {
-        addInteraction(layer, municipalPopup, "MUNICIPALITY", {
+        addInteraction(layer, municipalPopup, {
           fillOpacity: 0.45,
           weight: 2.5,
         }, municipalStyle);
@@ -144,10 +165,9 @@ Promise.all([
       weight: 2,
     };
     const separatedLayer = L.geoJSON(separatedData, {
-      pane: "separatedMunicipalities",
       style: separatedStyle,
       onEachFeature(feature, layer) {
-        addInteraction(layer, separatedPopup, "MUNICIPALITY", {
+        addInteraction(layer, separatedPopup, {
           fillOpacity: 0.7,
           weight: 3.5,
         }, separatedStyle);
