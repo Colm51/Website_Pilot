@@ -1,0 +1,56 @@
+---
+layout: layouts/base.njk
+---
+<section class="opening" aria-labelledby="page-title">
+  <div class="measure">
+    <p class="kicker">Projects</p>
+    <h1 id="page-title">{{ title }}</h1>
+  </div>
+</section>
+
+<article class="essay measure ontario-cd-project">
+  <section class="project-walkthrough" aria-label="Project walkthrough">
+    {{ content | safe }}
+  </section>
+
+  <section class="project-section" aria-labelledby="ontario-cd-map-title">
+    <h2 id="ontario-cd-map-title">Interactive map</h2>
+    <iframe
+      class="map-embed"
+      src="{{ '/projects/ontario-municipalities-census-divisions/map.html' | htmlBaseUrl }}"
+      title="Ontario municipalities, separated municipalities, and Census Divisions map"
+      loading="lazy"
+    ></iframe>
+    <p><a href="{{ '/projects/ontario-municipalities-census-divisions/map.html' | htmlBaseUrl }}">Open the map in a new page</a></p>
+  </section>
+
+  <section class="project-section project-table-section" aria-labelledby="cd-summary-title">
+    <h2 id="cd-summary-title">Census Division summary</h2>
+    <div class="project-table-scroll" role="region" aria-labelledby="cd-summary-title" tabindex="0">
+      {% include "generated/ontario-cd-summary-table.njk" %}
+    </div>
+    <p><a href="{{ '/projects/ontario-municipalities-census-divisions/downloads/CD_summary.xlsx' | htmlBaseUrl }}" download>Download CD_summary.xlsx</a></p>
+  </section>
+
+  <section class="project-section project-table-section" aria-labelledby="cd-crosswalk-title">
+    <h2 id="cd-crosswalk-title">Municipality-to-CD crosswalk</h2>
+    <div class="project-table-scroll" role="region" aria-labelledby="cd-crosswalk-title" tabindex="0">
+      {% include "generated/ontario-cd-crosswalk-table.njk" %}
+    </div>
+    <p><a href="{{ '/projects/ontario-municipalities-census-divisions/downloads/CD_municipality_crosswalk.xlsx' | htmlBaseUrl }}" download>Download CD_municipality_crosswalk.xlsx</a></p>
+  </section>
+
+  <section class="project-section" aria-labelledby="python-resources-title">
+    <h2 id="python-resources-title">Python scripts and resources</h2>
+    <ul class="download-list">
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/AddSeperatedCityFlag.py' | htmlBaseUrl }}" download>AddSeperatedCityFlag.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/ClipMunicipalBoundaries.py' | htmlBaseUrl }}" download>ClipMunicipalBoundaries.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/CreateCDTables.py' | htmlBaseUrl }}" download>CreateCDTables.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/EnrichenMapping.py' | htmlBaseUrl }}" download>EnrichenMapping.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/ExtractFIRdata.py' | htmlBaseUrl }}" download>ExtractFIRdata.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/ExtractOntarioCDs.py' | htmlBaseUrl }}" download>ExtractOntarioCDs.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/MergeBoundaryFiles.py' | htmlBaseUrl }}" download>MergeBoundaryFiles.py</a></li>
+      <li><a href="{{ '/projects/ontario-municipalities-census-divisions/scripts/requirements.txt' | htmlBaseUrl }}" download>requirements.txt</a></li>
+    </ul>
+  </section>
+</article>

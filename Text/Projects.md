@@ -28,6 +28,11 @@ isProjects: true
   <h2 id="projects-title">Projects</h2>
   <div class="trip-list">
     <article class="trip-card">
+      <h3><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Ontario Municipalities and Census Divisions</a></h3>
+      <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario Municipalities using mapping</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/ontario-municipal-csd-crosswalk/' | htmlBaseUrl }}">Municipal & Census subdvision cross-walk</a></h3>
       <p>A reproducible workflow, interactive map, scripts, and spreadsheet for matching Ontario lower and single-tier municipalities to Statistics Canada census subdivisions.</p>
     </article>

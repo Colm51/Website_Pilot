@@ -93,6 +93,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     "Projects/OntarioMunicipalCSDCrosswalk":
       "projects/ontario-municipal-csd-crosswalk",
+    "Projects/OntarioMunicipalitiesCensusDivisions":
+      "projects/ontario-municipalities-census-divisions",
   });
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
