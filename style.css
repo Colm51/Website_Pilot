@@ -297,6 +297,32 @@ h2 {
   font-weight: 700;
 }
 
+.ontario-cd-project .sortable-header-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  min-width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  text-align: left;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ontario-cd-project .sortable-header-button:hover {
+  color: var(--accent);
+}
+
+.ontario-cd-project .sortable-header-indicator {
+  display: inline-block;
+  width: 0.8rem;
+  font-size: 0.65rem;
+}
+
 .project-data-table th:last-child,
 .project-data-table td:last-child {
   border-right: 0;
