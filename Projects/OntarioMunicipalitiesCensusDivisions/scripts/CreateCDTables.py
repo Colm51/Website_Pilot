@@ -15,7 +15,7 @@ cd_file = (
 )
 
 output_dir = Path(
-    "...Project"
+    "...project"
 )
 
 municipality_output = output_dir / "CD_municipality_crosswalk.xlsx"
@@ -44,7 +44,7 @@ cd = cd.to_crs(3347)
 # --------------------------------------------------
 # Keep required CD fields
 # --------------------------------------------------
-t/
+
 cd_small = cd[
     [
         "CDUID",
@@ -158,12 +158,46 @@ municipality_table = municipality_table.merge(
     how="left"
 )
 
+# --------------------------------------------------
+# Create shorter display name
+# --------------------------------------------------
+
+def short_municipality_name(name):
+    if pd.isna(name):
+        return name
+
+    name = str(name).strip()
+
+    prefixes = [
+        "CITY OF ",
+        "TOWN OF ",
+        "TOWNSHIP OF ",
+        "MUNICIPALITY OF ",
+        "VILLAGE OF "
+    ]
+
+    name_upper = name.upper()
+
+    for prefix in prefixes:
+        if name_upper.startswith(prefix):
+            name = name[len(prefix):]
+            break
+
+    return name.title()
+
+
+municipality_table["MUNICIPALITY_SHORT"] = (
+    municipality_table["MUNICIPALITY"]
+    .apply(short_municipality_name)
+)
+
 municipality_table = municipality_table[
     [
         "CDUID",
         "CDNAME",
         "CDTYPE",
         "ASSESSMENT",
+        "MUNICIPALITY_SHORT",
         "MUNICIPALITY",
         "TIER",
         "UT_ID",
@@ -190,7 +224,7 @@ municipality_table = (
         [
             "CDNAME",
             "_tier_order",
-            "MUNICIPALITY"
+            "MUNICIPALITY_SHORT"
         ]
     )
     .drop(columns="_tier_order")
@@ -234,7 +268,7 @@ cd_summary["Has_Separated"] = (
 def municipality_list(df, tier):
     return (
         df[df["TIER"] == tier]
-        .groupby("CDUID")["MUNICIPALITY"]
+        .groupby("CDUID")["MUNICIPALITY_SHORT"]
         .apply(lambda x: "; ".join(sorted(x)))
     )
 
@@ -258,7 +292,7 @@ separated_names = (
         municipality_table["Separated"]
         .fillna(0) == 1
     ]
-    .groupby("CDUID")["MUNICIPALITY"]
+    .groupby("CDUID")["MUNICIPALITY_SHORT"]
     .apply(lambda x: "; ".join(sorted(x)))
 )
 
@@ -298,10 +332,12 @@ print()
 print("VALIDATION")
 
 print("Municipality table rows:", len(municipality_table))
+
 print(
     "Unique municipalities:",
     municipality_table["ASSESSMENT"].nunique()
 )
+
 print(
     "Unique CDs represented:",
     municipality_table["CDUID"].nunique()
@@ -309,6 +345,7 @@ print(
 
 print()
 print("Tier counts:")
+
 print(
     municipality_table["TIER"]
     .value_counts()
@@ -316,6 +353,7 @@ print(
 )
 
 print()
+
 print(
     "Separated municipalities:",
     int(
@@ -327,6 +365,7 @@ print(
 
 print()
 print("CD summary rows:", len(cd_summary))
+
 print(
     "Unique CDs:",
     cd_summary["CDUID"].nunique()
@@ -334,13 +373,16 @@ print(
 
 print()
 print("Totals from CD summary:")
+
 print("UT:", cd_summary["UT_Count"].sum())
 print("ST:", cd_summary["ST_Count"].sum())
 print("LT:", cd_summary["LT_Count"].sum())
+
 print(
     "Municipalities:",
     cd_summary["Municipality_Count"].sum()
 )
+
 print(
     "Separated:",
     cd_summary["Separated_Count"].sum()
@@ -348,11 +390,12 @@ print(
 
 print()
 print("Lowest overlap percentages:")
+
 print(
     municipality_table[
         [
             "ASSESSMENT",
-            "MUNICIPALITY",
+            "MUNICIPALITY_SHORT",
             "CDNAME",
             "overlap_percent"
         ]
@@ -379,10 +422,14 @@ if len(cd_summary) != 49:
     raise ValueError("Expected 49 CD summary rows.")
 
 if cd_summary["Municipality_Count"].sum() != 444:
-    raise ValueError("CD summary municipality total does not equal 444.")
+    raise ValueError(
+        "CD summary municipality total does not equal 444."
+    )
 
 if cd_summary["Separated_Count"].sum() != 19:
-    raise ValueError("Expected 19 separated municipalities.")
+    raise ValueError(
+        "Expected 19 separated municipalities."
+    )
 
 # --------------------------------------------------
 # Save Excel files
