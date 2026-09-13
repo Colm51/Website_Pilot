@@ -26,12 +26,12 @@ tags:
 
     <p>In order to integrate municipal data and Stats Can data, it will often arise that one needs to cross-walk municipal boundaries with Stats Can CSDs (census subdivisions).</p>
 
-    <p>This walk-through discusses how to do this. It does not consider other stats can geographies such as CMAs, CDs, DA, CTs. I may discuss these other geographies in the future.</p>
+    <p>This walk-through discusses how to do this. It does not consider other stats can geographies such as CMAs, CDs, DA, CTs. I have a seperate projects looking at CDs and may look at other geographies in the future.</p>
 
     <p>There are a few important considerations in joining municipal and CSD geographies:</p>
     <ul>
       <li>Most CSDs correspond to Ontario's 414 lower and single-tier municipalities.</li>
-      <li>Upper-tier municipalies are not CSDs.</li>
+      <li>Upper-tier municipalies are not CSDs. Upper-tiers are dicussed in my Census Division project</li>
       <li>A number of CSDs do not relate to municipalities. Instead, they relate to First Nations reserves, unincoporated areas, etc.</li>
     </ul>
 
@@ -47,7 +47,7 @@ tags:
 
     <p>The municipal boundary files also extend into the water. In order to derive municipal boundaries, it is necessary to clip the file to conform to the land geography of Ontario.</p>
 
-    <p>The boundary of Ontario can be obtained at: <a href="https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21&amp;utm_source=chatgpt.com">https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21&amp;utm_source=chatgpt.com</a>.</p>
+    <p>The boundary of Ontario can be obtained at: <a href="https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21&amp;utm_source=chatgpt.com">https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21</a>.</p>
 
     <p>This file includes all provinces: in order to extract just Ontario, another PRUID selection is required.</p>
 

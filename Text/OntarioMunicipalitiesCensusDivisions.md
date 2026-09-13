@@ -12,19 +12,24 @@ tags:
 ---
 This page provides a walk-through of cross-walking Stats Can Census Divisions with Ontario municipalities using mapping.
 
-Python was used in order to generate reproducible code.
+Python was used in order to generate reproducible code. Mostly complete python files are provided. Users will need to add local filepaths to these scripts. The code in these files has not been optimised from a programming perspective.
+
+This walk-through is intended to support others who wish to work through the same work-flow. However, to cut to the chase and see the results, scroll to the bottom of the page for maps and tables!
+
+CAVEAT: use with caution - this is just a hobby project and all data should be validated independently
 
 
-Overview:
-- the relation between CDs and municipal boundaries is nunaced. In general, CDs related either to UT or ST municipalities. 
-- however, there are major exceptions to this. For example, it is not true in the North - there CDs may include many STs and also non municipal CSDs. 
+Overview of this approach to cross-walking municipalities to census divisons:
+- the relation between CDs and municipal boundaries is nunaced. In general, CDs relate either to UT or ST municipalities. 
+- however, there are major exceptions to this. For example, it is not true in the North - there CDs may include many STs and also non-municipal CSDs. 
 - in the south there are also examples of seperated STs that fall within the CD that a UT also falls in. This creates a major tripping hazard for municipal analysis, as simply using CDs as proxies for UTs will badly mis-state data in cases where there are seperated municipalities
-- open data municipal boundary files for UTs, LTs and STs were merged to create on layer
+- open data municipal boundary files for UTs, LTs and STs were merged to create one layer
 - open data FIR data was used to derive a cross-walk between UTs and LTs
 - a list of seperated municipalities was sourced from the Association of Municipalities of Ontario website
 - open data CD boundaries for Ontario were downloaded, and municipalities were assigned to the CD where most of of their geography is located
 - an interactive map and tables, along with downloads are provided
-- CAVEAT: use with caution - this is just a hobby project and all data should be validated independently
+- known issue: clicking on the map on mobile yields two pop-ups. I am not primarily optimising for mobile and may address this in the future
+
 
 *Note on using python:*
 
@@ -63,26 +68,35 @@ Python script:
 
 MergeBoundaryFiles.py
 
-creating ontario_municipal_boundaries_all.gpkg
+Output: ontario_municipal_boundaries_all.gpkg
+
+Note: output files are generally not included as downloads,
 
 This script:
 
-- dissolves municipalities eliminating duplicate entries
-- ignores non municipal boundaries such Regions
+- merges the two boundary files, creating one with UT, LT and ST municipal boundaries
+- dissolves municipalities eliminating duplicate entries (i.e. ensure each municipality has just one entry)
+- ignores non-municipal geographies such Regions
 - standardizes the Assessment Code field to 4-character text, and restores missing leading 0s
 - standardizes the name and tier fields
 
 **Third step: remove extraneous elements extending into the water by clipping to land boundaries**
 
+The municipal boundary files extend into the water. In order to create normal boundaries, it is possible to use a boundary file for the land border of Ontario and clip the municipal boundary file to this shape.
+
+The boundary of Ontario can be obtained at: <https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/index2021-eng.cfm?year=21&utm>
+
+This file includes all provinces: in order to extract just Ontario, a PRUID selection is required. This is discussed in more detail in the CSD project.
+
 Python script:
 
 ClipMunicipalBoundaries.py
 
-creating ontario_municipal_boundaries_land_clipped.gpkg
+Output: ontario_municipal_boundaries_land_clipped.gpkg
 
 **Fourth step, Relating UTs and LTs**
 
-This has some nuances. Merging the boundary files superimposes administrative boundaries - but municipalities falling with an UT geography aren't necessarily part of the UT
+This has some nuances. Merging the boundary files superimposes administrative boundaries - but municipalities falling with an UT geography aren't necessarily part of the UT.
 
 The reason for this relates to separated cities
 As laid out in the Ontario Municipal Act 309(1)
@@ -97,30 +111,56 @@ This information can be scraped from the AMO website and turned into a table.
 I have not provided scraping code in this walk-through.
 Alternatively, a table can be created manually
 
-separated_municipalities_AMO.csv
+Output: separated_municipalities_AMO.csv
 
-Discussion: two approaches to matching UTs and LTs
 
-1 - using the boundary files 
+<p>Discussion: two approaches to matching UTs and LTs</p>
 
-While simply observing which municipalities fall within UTs doesnt provide a reliable way of associating upper and lower tiers, it is possible to use the boundary files creatively to construct a UT and LT list. This is because the LT boundary files include an upper tier name as well where relevant. However, it does not provide the assessment code for the UT, which complicates matching.
+<ol>
+  <li>
+    <strong>Using the boundary files</strong>
+    <ul>
+      <li>
+        While simply observing which municipalities fall within UTs doesnt provide a reliable way of associating upper and lower tiers, it is possible to use the boundary files creatively to construct a UT and LT list. 
+      </li>
+      <li>
+        This is because the LT boundary files include an upper tier name as well where relevant. However, it does not provide the assessment code for the UT, which complicates matching.
+        </li>
+    </ul>
+  </li>
 
-2- using FIR data
+  <li>
+    <strong>Using FIR data</strong>
+    <ul>
+      <li>
+        There is also another data-set that can be used to do this:
+        FIR Data By Year – .CSV Format
+        &lt;https://efis.fma.csc.gov.on.ca/fir/MultiYearReport/MYCIIndex.html&gt;
+      </li>
 
-There is also another data-set that can be used to do this:  FIR Data By Year – .CSV Format
-<https://efis.fma.csc.gov.on.ca/fir/MultiYearReport/MYCIndex.html>
+      <li>
+        This is a large dataset with multiple entries for each municipality corresponding to FIR entries
+        It contains ASSESSMENT_CODE , TIER_CODE , which is UT, LT , ST
+        It is possible to use this to derive a data set with the ASSESSMENT_CODE for each municipality, its tier, as well as the ASSESSMENT_CODE for its UT, where relevant
+      </li>
 
-This is a large dataset with multiple entries for each municipality corresponding to FIR entries
-It contains ASSESSMENT_CODE , TIER_CODE , which is UT, LT , ST
-It is possible to use this to derive a data set with the ASSESSMENT_CODE for each municipality, its tier, as well as the ASSESSMENT_CODE for its UT, where relevant
+      <li>
+        However, not all municipalities complete FIRs each year, so its important to use a year showing 444 of 444 municipalities reporting such as 2021
+      </li>
 
-However, not all municipalities complete FIRs each year, so its important to use a year showing  444 of 444 municipalities reporting such as 2021
+      <li>
+        A simple table can be derived from this data with this python script:
+        ExtractFIRdata.py
+      </li>
 
-A simple table can be derived from this data with this python script:
+      <li>
+        Output: municipalities_data_2021.xlsx
+      </li>
+    </ul>
+  </li>
+</ol>
 
-ExtractFIRdata.py
 
-creating municipalities_data_2021.xlsx
 
 **Fifth step: Enrichening the boundary files with the additional UT and separated cities info**
 
@@ -130,13 +170,13 @@ The AMO website only yields names - and these naming conventions are different f
 
 AddSeperatedCityFlag.py
 
-creating unicipalities_data_2021_with_separated.xlsx
+output: municipalities_data_2021_with_separated.xlsx
 
 *Second - add data to the boundary file*
 
 EnrichenMapping.py
 
-creating ontario_municipal_boundaries_enriched.gpkg
+Output: ontario_municipal_boundaries_enriched.gpkg
 
 Known issue: 5124 – Municipality of Gordon / Barrie Island is present in the municipal boundary dataset but did not match the 2021 FIR-derived municipal crosswalk. The final spatial dataset therefore has one municipality without FIR-derived enrichment fields.
 
@@ -144,9 +184,9 @@ Known issue: 5124 – Municipality of Gordon / Barrie Island is present in the
 
 To do this I just did a quick filter in QGis
 
-SeperatedCities.geojson
+Output: SeperatedCities.geojson
 
-***Prepare CDs files* and match to municipal files**
+***Prepare Census Division files* and match to municipal files**
 
 **Seventh step: download CDs**
 
@@ -157,7 +197,7 @@ SeperatedCities.geojson
 
 ExtractOntarioCDs.py
 
-creating ontario_census_divisions.gpkg
+Output: ontario_census_divisions.gpkg
 
 
 
@@ -171,6 +211,6 @@ Python script:
 
 CreateCDTables.py
 
-creating CD_summary.xlsx and CD_municipality_crosswalk.xlsx
+Output: CD_summary.xlsx and CD_municipality_crosswalk.xlsx
 
 
