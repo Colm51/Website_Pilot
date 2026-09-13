@@ -15,7 +15,10 @@ isProjects: true
     </p>
     <p class="lede">For all the content, my intent has been mostly to explore tech and programming as opposed to exhausting any particular topic.
     </p>
-
+    <p class="lede">
+  All files related to this website are also available on
+  <a href="https://github.com/Colm51/Website_Pilot">Github</a>
+</p>
 
   <p>    Note on dashboards: </p>
     
@@ -30,6 +33,23 @@ isProjects: true
 
     <li>
     If using safari on an iPhone, one setting that will dramatically improve the experience is turning off "Landscape bar tab" in settings>Apps>Safari>Tabs. 
+    </li>
+
+    </ul>
+
+  <p>    Note on mapping: </p>
+    
+    <ul>
+    <li>
+    My projects generally walk-through performing geo-spatial analysis in python. Mapping files come in various formats, including .shp and .gpkg - these files don't require any particular software to use. The most common ways to use such files is either through desktop GIS software such as ArcGis or QGis, or through python, using various libraries.  
+    </li>
+
+    <li>
+    In general, my walk-throughts yield .gpkg or .geojson files that can be viewed in desktop GIS such as QGis or using python. I haven't included tutorials on how to do this exactly, but users will need to decide how to actually view the files!
+    </li>
+
+    <li>
+    In terms of the maps embedded on this website, python and leaflet are used.
     </li>
 
     </ul>
