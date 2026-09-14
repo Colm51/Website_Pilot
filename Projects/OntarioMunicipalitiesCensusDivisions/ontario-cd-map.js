@@ -112,19 +112,13 @@ function addInteraction(layer, popup, hoverStyle, defaultStyle) {
   const properties = layer.feature.properties || {};
   const content = popup(properties);
 
-  // Always allow click/tap popup
   layer.bindPopup(content, { maxWidth: 380 });
 
-  // Phones/tablets: popup only. No tooltip at all.
-  const isTouchDevice =
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0;
-
-  if (isTouchDevice) {
+  // On touch devices, use tap/click only and skip hover tooltips.
+  if (window.matchMedia("(pointer: coarse)").matches) {
     return;
   }
 
-  // Mouse devices: add hover tooltip
   layer.bindTooltip(content, {
     className: "feature-hover-tooltip",
     sticky: true,
@@ -151,19 +145,6 @@ function addInteraction(layer, popup, hoverStyle, defaultStyle) {
     },
   });
 }
-
-      mouseout(event) {
-        if (activeHoverLayer === event.target) {
-          clearActiveHover();
-        } else {
-          event.target.closeTooltip();
-          event.target.setStyle(defaultStyle);
-        }
-      },
-    });
-  }
-}
-
 
 async function loadGeoJson(path) {
   const response = await fetch(path);
