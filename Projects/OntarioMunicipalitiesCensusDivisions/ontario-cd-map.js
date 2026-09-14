@@ -84,10 +84,12 @@ function addInteraction(layer, popup, hoverStyle, defaultStyle) {
   const properties = layer.feature.properties || {};
   const content = popup(properties);
   layer.bindPopup(content, { maxWidth: 380 });
-  layer.bindTooltip(content, {
-    className: "feature-hover-tooltip",
-    sticky: true,
-  });
+  if (window.matchMedia("(hover: hover)").matches) {
+    layer.bindTooltip(content, {
+      className: "feature-hover-tooltip",
+      sticky: true,
+    });
+  }
   layer.on({
     mouseover(event) {
       if (activeHoverLayer !== event.target) {
