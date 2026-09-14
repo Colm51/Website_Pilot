@@ -117,9 +117,19 @@ Source code available at <a href="https://github.com/Colm51/TaxReceivablesDashbo
 
 <p>This is an experimental mapping of City of Toronto Open Data on building permits.
 
-The source data is: https://open.toronto.ca/dataset/building-permits-active-permits/ and https://open.toronto.ca/dataset/building-permits-cleared-permits/
+The source data is: 
 
-Locations were derived from: https://open.toronto.ca/dataset/address-points-municipal-toronto-one-address-repository/
+
+<a href="https://open.toronto.ca/dataset/building-permits-active-permits/ ">https://open.toronto.ca/dataset/building-permits-active-permits/</a>
+and
+<a href="https://open.toronto.ca/dataset/building-permits-cleared-permits/">https://open.toronto.ca/dataset/building-permits-cleared-permits/</a>
+
+
+Locations were derived from: 
+
+<a href="https://open.toronto.ca/dataset/address-points-municipal-toronto-one-address-repository/">https://open.toronto.ca/dataset/address-points-municipal-toronto-one-address-repository/</a>
+
+
 
 This data is complex, and significant validation is still required to address duplicate entries.
 

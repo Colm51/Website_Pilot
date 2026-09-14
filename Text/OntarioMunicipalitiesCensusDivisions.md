@@ -134,8 +134,10 @@ Output: separated_municipalities_AMO.csv
     <ul>
       <li>
         There is also another data-set that can be used to do this:
-        FIR Data By Year – .CSV Format
-        &lt;https://efis.fma.csc.gov.on.ca/fir/MultiYearReport/MYCIIndex.html&gt;
+        <a href="https://efis.fma.csc.gov.on.ca/fir/MultiYearReport/MYCIndex.html">
+  FIR Data By Year – .CSV Format
+</a>
+        
       </li>
 
       <li>
