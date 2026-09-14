@@ -80,33 +80,73 @@ function censusDivisionPopup(properties) {
   `;
 }
 
+// function addInteraction(layer, popup, hoverStyle, defaultStyle) {
+//   const properties = layer.feature.properties || {};
+//   const content = popup(properties);
+//   layer.bindPopup(content, { maxWidth: 380 });
+//   layer.bindTooltip(content, {
+//     className: "feature-hover-tooltip",
+//     sticky: true,
+//   });
+//   layer.on({
+//     mouseover(event) {
+//       if (activeHoverLayer !== event.target) {
+//         clearActiveHover();
+//       }
+//       event.target.setStyle(hoverStyle);
+//       activeHoverLayer = event.target;
+//       activeHoverReset = () => event.target.setStyle(defaultStyle);
+//     },
+//     mouseout(event) {
+//       if (activeHoverLayer === event.target) {
+//         clearActiveHover();
+//       } else {
+//         event.target.closeTooltip();
+//         event.target.setStyle(defaultStyle);
+//       }
+//     },
+//   });
+// }
+
 function addInteraction(layer, popup, hoverStyle, defaultStyle) {
   const properties = layer.feature.properties || {};
   const content = popup(properties);
+
+  // Tapping/clicking always opens the popup
   layer.bindPopup(content, { maxWidth: 380 });
-  layer.bindTooltip(content, {
-    className: "feature-hover-tooltip",
-    sticky: true,
-  });
-  layer.on({
-    mouseover(event) {
-      if (activeHoverLayer !== event.target) {
-        clearActiveHover();
-      }
-      event.target.setStyle(hoverStyle);
-      activeHoverLayer = event.target;
-      activeHoverReset = () => event.target.setStyle(defaultStyle);
-    },
-    mouseout(event) {
-      if (activeHoverLayer === event.target) {
-        clearActiveHover();
-      } else {
-        event.target.closeTooltip();
-        event.target.setStyle(defaultStyle);
-      }
-    },
-  });
+
+  // Only add hover behaviour on devices that actually support hover
+  const canHover = window.matchMedia("(hover: hover)").matches;
+
+  if (canHover) {
+    layer.bindTooltip(content, {
+      className: "feature-hover-tooltip",
+      sticky: true,
+    });
+
+    layer.on({
+      mouseover(event) {
+        if (activeHoverLayer !== event.target) {
+          clearActiveHover();
+        }
+
+        event.target.setStyle(hoverStyle);
+        activeHoverLayer = event.target;
+        activeHoverReset = () => event.target.setStyle(defaultStyle);
+      },
+
+      mouseout(event) {
+        if (activeHoverLayer === event.target) {
+          clearActiveHover();
+        } else {
+          event.target.closeTooltip();
+          event.target.setStyle(defaultStyle);
+        }
+      },
+    });
+  }
 }
+
 
 async function loadGeoJson(path) {
   const response = await fetch(path);
