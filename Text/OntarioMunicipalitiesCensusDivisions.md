@@ -28,7 +28,7 @@ Overview of this approach to cross-walking municipalities to census divisons:
 - a list of seperated municipalities was sourced from the Association of Municipalities of Ontario website
 - open data CD boundaries for Ontario were downloaded, and municipalities were assigned to the CD where most of of their geography is located
 - an interactive map and tables, along with downloads are provided
-- known issue: clicking on the map on mobile yields two pop-ups. I am not primarily optimising for mobile and may address this in the future
+
 
 
 *Note on using python:*
