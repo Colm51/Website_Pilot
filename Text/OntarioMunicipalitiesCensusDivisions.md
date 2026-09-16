@@ -18,7 +18,7 @@ Note on using QGis:
 
 QGis has a "Model Designer" tool that assists in making Gis transformations and processing more reproductible.
 
-I have been exploring this, and as an example, assuming one has the boundarty files, of lower and single and upper tiers, downloaded, as well as a boundary file for provincial boundaries, I devceloped a model file that will merge the municipal files, dissolve them on municipality, and clip to the boundaries of Ontario: 
+I have been exploring this, and as an example, assuming one has the boundary files for lower and single and upper tiers downloaded, as well as a boundary file for provincial boundaries, I devceloped a model file that will merge the municipal files, dissolve them on municipality, and clip to the boundaries of Ontario:
 
 
 <a href="{{ '/projects/ontario-municipalities-census-divisions/QGis/Merge%20and%20Clip%20Municipal%20Boundaries.zip' | htmlBaseUrl }}" download>Download the QGIS model file</a>
