@@ -31,7 +31,7 @@ tags:
     <p>There are a few important considerations in joining municipal and CSD geographies:</p>
     <ul>
       <li>Most CSDs correspond to Ontario's 414 lower and single-tier municipalities.</li>
-      <li>Upper-tier municipalies are not CSDs. Upper-tiers are dicussed in my Census Division project</li>
+      <li>Upper-tier municipalies are not CSDs. Upper-tiers are dicussed in my Census Division project.</li>
       <li>A number of CSDs do not relate to municipalities. Instead, they relate to First Nations reserves, unincoporated areas, etc.</li>
     </ul>
 
@@ -53,6 +53,15 @@ tags:
 
     <p>Once both Ontario CSD and municipal boundaries have been obtained, it is possible to do a spatial join.</p>
     <p> There are various ways of doing this, including in GIS software such as QGis. However, it can be difficult to describe a series of GIS software processing steps in a clear and reproducible way. In this example, reproducible python code is used. A representative point was derived for each municipal polygon, and this point was then used to join to the CSD polygons they fell within.</p>
+
+    <p>Note on QGis:</p>
+    
+    <p>QGis has a "Model Designer" tool that assists in making Gis transformations and processing more reproductible.</p>
+
+    <p>I have been exploring this, and as an example, assuming one has the boundarty files, of lower and single and upper tiers, downloaded, as well as a boundary file for provincial boundaries, I devceloped a model file that will merge the municipal files, dissolve them on municipality, and clip to the boundaries of Ontario: </p>
+
+    <p><a href="{{ '/projects/ontario-municipalities-census-divisions/QGis/Merge%20and%20Clip%20Municipal%20Boundaries.zip' | htmlBaseUrl }}" download>Download the QGIS model file</a></p>
+
 
     <p>Note: The terms "Munid" and "Municipal ID" are defined differently in different contexts. The ID referred to as "Munid" by the Ministry of Finance appears as "Assessment code", and furthermore these codes lack leading 0s in those cases where they should appear if a 4 digit ID is desired. For example, Ottawa appears as 614 but should be 0614. </p>
 
