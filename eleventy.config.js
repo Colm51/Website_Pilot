@@ -81,6 +81,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("style.css");
   eleventyConfig.addPassthroughCopy("script.js");
   eleventyConfig.addPassthroughCopy("travel-map.js");
+  eleventyConfig.addPassthroughCopy("googlee2c9c3a847db7aeb.html");
   eleventyConfig.addPassthroughCopy("Travels/travel-data.json");
   eleventyConfig.addPassthroughCopy({
     "node_modules/leaflet/dist/leaflet.css": "vendor/leaflet/leaflet.css",
