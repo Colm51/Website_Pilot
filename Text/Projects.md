@@ -9,50 +9,16 @@ isProjects: true
   <div class="measure">
     <p class="kicker">Projects</p>
     <h1 id="page-title">Projects</h1>
-    <p class="lede">Overall, all content posted here has been developed outside of work using my own devices and open data. 
+    <p class="lede">All content posted here has been developed outside of work using personal devices and publicly-available data. 
     </p>
      <p class="lede">Some of the projects touch on municipal finance - an area of personal and professional interest - while others are more idiosyncrattic.
     </p>
-    <p class="lede">For all the content, my intent has been mostly to explore tech and programming as opposed to exhausting any particular topic.
+    <p class="lede">For all the content, my intent has been mostly to explore tech and programming as opposed to exhausting any particular topic. or to provide the best possible on-line resource
     </p>
     <p class="lede">
   All files related to this website are also available on
   <a href="https://github.com/Colm51/Website_Pilot">Github</a>
 </p>
-
-  <p>    Note on dashboards: </p>
-    
-    <ul>
-    <li>
-    I have generally made these with Streamlit. This is a good open-source choice for making basic dashboards that can be shared. Unlike other programmes such as Tableau or PowerBi, there is no need to work around complex licensing requirements. 
-    </li>
-
-    <li>
-    However, Streamlit does not create dashboards that are optimized for phones. I am exploring ways to make the dashboards work better on mobile, starting with the Books Dashboard, but the combination of streamlit's lack of strong design features and the behaviour of browsers such as Safari means the user experience of my dashboards on mobile is not as good as on a laptop. 
-    </li>
-
-    <li>
-    If using safari on an iPhone, one setting that will dramatically improve the experience is turning off "Landscape bar tab" in settings>Apps>Safari>Tabs. 
-    </li>
-
-    </ul>
-
-  <p>    Note on mapping: </p>
-    
-    <ul>
-    <li>
-    My projects generally walk-through performing geo-spatial analysis in python. Mapping files come in various formats, including .shp and .gpkg - these files don't require any particular software to use. The most common ways to use such files is either through desktop GIS software such as ArcGis or QGis, or through python, using various libraries.  
-    </li>
-
-    <li>
-    In general, my walk-throughts yield .gpkg or .geojson files that can be viewed in desktop GIS such as QGis or using python. I haven't included tutorials on how to do this exactly, but users will need to decide how to actually view the files!
-    </li>
-
-    <li>
-    In terms of the maps embedded on this website, python and leaflet are used.
-    </li>
-
-    </ul>
 
   </div>
 </section>
@@ -62,12 +28,12 @@ isProjects: true
   <div class="trip-list">
     <article class="trip-card">
       <h3><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Municipal & Census Divisions cross-walk</a></h3>
-      <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario Municipalities using mapping</p>
+      <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario upper and single-tier municipalities using mapping</p>
     </article>
 
     <article class="trip-card">
       <h3><a href="{{ '/projects/ontario-municipal-csd-crosswalk/' | htmlBaseUrl }}">Municipal & Census subdvisions cross-walk</a></h3>
-      <p>A reproducible workflow, interactive map, scripts, and spreadsheet for matching Ontario lower and single-tier municipalities to Statistics Canada census subdivisions.</p>
+      <p>Walk-through of cross-walking Stats Can Census Subdisions with Ontario lower and single-tier municipalities.</p>
     </article>
 
     <article class="trip-card">
@@ -146,6 +112,41 @@ Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  t
 <p><a class="project-link" href="https://colm51.github.io/HousingPermitMap/" target="_blank" rel="noopener noreferrer">Open Toronto Permits Mapping</a></p>
 
 </article>
+
+
+
+
+  <p class="dashboard-note">  Note on dashboards: </p>
+  <ul class="dashboard-list">
+    <li>
+    I have generally made these with Streamlit. This is a good open-source choice for making basic dashboards that can be shared. Unlike other programmes such as Tableau or PowerBi, there is no need to work around complex licensing requirements. 
+    </li>
+
+    <li>
+    However, Streamlit does not create dashboards that are optimized for phones. I am exploring ways to make the dashboards work better on mobile, starting with the Books Dashboard, but the combination of streamlit's lack of strong design features and the behaviour of browsers such as Safari means the user experience of my dashboards on mobile is not as good as on a laptop. 
+    </li>
+
+    <li>
+    If using safari on an iPhone, one setting that will dramatically improve the experience is turning off "Landscape bar tab" in settings>Apps>Safari>Tabs. 
+    </li>
+
+  </ul>
+
+  <p class="dashboard-note">     Note on mapping: </p>
+  <ul class="dashboard-list">
+    <li>
+    My projects generally walk-through performing geo-spatial analysis in python. Mapping files come in various formats, including .shp and .gpkg - these files don't require any particular software to use. The most common ways to use such files is either through desktop GIS software such as ArcGis or QGis, or through python, using various libraries.  
+    </li>
+
+    <li>
+    In general, my walk-throughts yield .gpkg or .geojson files that can be viewed in desktop GIS such as QGis or using python. I haven't included tutorials on how to do this exactly, but users will need to decide how to actually view the files!
+    </li>
+
+    <li>
+    In terms of the maps embedded on this website, python and leaflet are used.
+    </li>
+
+  </ul>
 
 
   </div>

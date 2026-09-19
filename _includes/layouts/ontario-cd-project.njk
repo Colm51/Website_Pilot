@@ -9,19 +9,22 @@ layout: layouts/base.njk
 </section>
 
 <article class="essay measure ontario-cd-project">
+  {% set contentParts = content.split("<!-- MAP_HERE -->") %}
   <section class="project-walkthrough" aria-label="Project walkthrough">
-    {{ content | safe }}
-  </section>
+    {{ contentParts[0] | safe }}
 
-  <section class="project-section" aria-labelledby="ontario-cd-map-title">
-    <h2 id="ontario-cd-map-title">Interactive map</h2>
-    <iframe
-      class="map-embed"
-      src="{{ '/projects/ontario-municipalities-census-divisions/map.html' | htmlBaseUrl }}"
-      title="Ontario municipalities, separated municipalities, and Census Divisions map"
-      loading="lazy"
-    ></iframe>
-    <p><a href="{{ '/projects/ontario-municipalities-census-divisions/map.html' | htmlBaseUrl }}">Open the map in a new page</a></p>
+    <section class="project-section" aria-labelledby="ontario-cd-map-title">
+      <h2 id="ontario-cd-map-title">Interactive map</h2>
+      <iframe
+        class="map-embed"
+        src="{{ '/projects/ontario-municipalities-census-divisions/map.html' | htmlBaseUrl }}"
+        title="Ontario municipalities, separated municipalities, and Census Divisions map"
+        loading="lazy"
+      ></iframe>
+      <p><a href="{{ '/projects/ontario-municipalities-census-divisions/map.html' | htmlBaseUrl }}">Open the map in a new page</a></p>
+    </section>
+
+    {{ contentParts[1] | safe }}
   </section>
 
   <section class="project-section project-table-section" aria-labelledby="cd-summary-title">

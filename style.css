@@ -152,6 +152,14 @@ h2 {
   margin: 0 0 1.25rem;
 }
 
+.essay p:has(+ ul) {
+  margin-bottom: 0.25rem;
+}
+
+.essay p + ul {
+  margin-top: 0;
+}
+
 .book-groups {
   padding: clamp(2.8rem, 8vw, 5rem) 0;
 }

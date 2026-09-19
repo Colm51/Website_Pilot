@@ -10,23 +10,26 @@ isProjects: true
 tags:
   - projects
 ---
-This page provides a walk-through of cross-walking Stats Can Census Divisions with Ontario municipalities using mapping.
+This page provides a walk-through of cross-walking Stats Can Census Divisions with Ontario municipalities using geospatial techniques.
 
-Python was used in order to generate reproducible code. Mostly complete python files are provided. Users will need to add local filepaths to these scripts. The code in these files has not been optimised from a programming perspective.
+Python was used, as opposed to GIS software such as Qgis. This was in order to generate reproducible code. Mostly complete python files are provided. Users will need to add local filepaths to these scripts. The code in these files has not been optimised from a programming perspective. 
 
-Note on using QGis:
+This walk-through is intended to support others who wish to work through the same work-flow. However, to cut to the chase and see the results, scroll to the bottom of the page for maps and tables!
+
+Note on using GIS software / QGis:
 
 QGis has a "Model Designer" tool that assists in making Gis transformations and processing more reproductible.
 
-I have been exploring this, and as an example, assuming one has the boundary files for lower and single and upper tiers downloaded, as well as a boundary file for provincial boundaries, I devceloped a model file that will merge the municipal files, dissolve them on municipality, and clip to the boundaries of Ontario:
+I have been exploring this, and as an example, assuming one has the boundary files for lower and single and upper tiers downloaded, as well as a boundary file for provincial boundaries, I developed a model file that will merge the municipal files, dissolve them on municipality, and clip to the boundaries of Ontario:
 
 
 <a href="{{ '/projects/ontario-municipalities-census-divisions/QGis/Merge%20and%20Clip%20Municipal%20Boundaries.zip' | htmlBaseUrl }}" download>Download the QGIS model file</a>
 
 
-This walk-through is intended to support others who wish to work through the same work-flow. However, to cut to the chase and see the results, scroll to the bottom of the page for maps and tables!
+
 
 CAVEAT: use with caution - this is just a hobby project and all data should be validated independently
+<!-- MAP_HERE -->
 
 
 Overview of this approach to cross-walking municipalities to census divisons:
@@ -39,22 +42,6 @@ Overview of this approach to cross-walking municipalities to census divisons:
 - open data CD boundaries for Ontario were downloaded, and municipalities were assigned to the CD where most of of their geography is located
 - an interactive map and tables, along with downloads are provided
 
-
-
-*Note on using python:*
-
-<em>
-I use VS code and both run python scripts from the terminal as well as using Jupyter notebooks for exploratory analysis, validation etc prior to running python scripts
-
-A requirements.txt is provided that can be used to load the required libraries in a virtual
-environment
-
-Note that a few extra steps are required to get a notebook to also work in a venv created in terminal
-One approach is to "register" the venv, creating a jupyter kernal</em>
-
-*pip install ipykernel*
-*python -m ipykernel install --user --name uppertier-venv --display-name "Python (Uppertiers)"*
-*municipal boundary files*
 
 
 
@@ -224,3 +211,20 @@ Python script:
 CreateCDTables.py
 
 Output: CD_summary.xlsx and CD_municipality_crosswalk.xlsx
+
+
+
+*Note on using python:*
+
+<em>
+I use VS code and both run python scripts from the terminal as well as using Jupyter notebooks for exploratory analysis, validation etc prior to running python scripts
+
+A requirements.txt is provided that can be used to load the required libraries in a virtual
+environment
+
+Note that a few extra steps are required to get a notebook to also work in a venv created in terminal
+One approach is to "register" the venv, creating a jupyter kernal</em>
+
+*pip install ipykernel*
+*python -m ipykernel install --user --name uppertier-venv --display-name "Python (Uppertiers)"*
+*municipal boundary files*
