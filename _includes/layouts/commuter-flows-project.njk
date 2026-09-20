@@ -1,0 +1,45 @@
+---
+layout: layouts/base.njk
+---
+<section class="opening" aria-labelledby="page-title">
+  <div class="measure">
+    <p class="kicker">Ontario commuter data</p>
+    <h1 id="page-title">{{ title }}</h1>
+    <p class="lede">An interactive exploration of commuter flows between Statistics Canada census subdivisions.</p>
+  </div>
+</section>
+
+<article class="essay measure">
+  <section aria-label="Project description">
+    {{ content | safe }}
+  </section>
+
+  <section class="project-section" aria-labelledby="commuter-map-title">
+    <h2 id="commuter-map-title">Interactive commuter-flow map</h2>
+    <p>Hover over a census subdivision for details, or select one to highlight its outgoing commuter flows. Use the layer control to switch basemaps and boundary layers.</p>
+    <iframe
+      class="map-embed"
+      src="{{ '/projects/ontario-commuter-flows/map.html' | htmlBaseUrl }}"
+      title="Ontario census subdivision commuter-flow map"
+      loading="lazy"
+    ></iframe>
+    <p><a href="{{ '/projects/ontario-commuter-flows/map.html' | htmlBaseUrl }}">Open the map in a new page</a></p>
+  </section>
+
+  <section class="project-section" aria-labelledby="python-scripts-title">
+    <h2 id="python-scripts-title">Python scripts</h2>
+    <ul class="download-list">
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/CreateWebMappingFiles.py' | htmlBaseUrl }}" download>CreateWebMappingFiles.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/DeriveCSDUIDs.py' | htmlBaseUrl }}" download>DeriveCSDUIDs.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/DeriveDGUIDS.py' | htmlBaseUrl }}" download>DeriveDGUIDS.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/ExtractCSDs.py' | htmlBaseUrl }}" download>ExtractCSDs.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/GetData.py' | htmlBaseUrl }}" download>GetData.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/explore_commuting_nonzero.py' | htmlBaseUrl }}" download>explore_commuting_nonzero.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/explore_commuting_parquet.py' | htmlBaseUrl }}" download>explore_commuting_parquet.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/extract_provinces.py' | htmlBaseUrl }}" download>extract_provinces.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/filter_nonzero_commuters.py' | htmlBaseUrl }}" download>filter_nonzero_commuters.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/simplify_web_boundaries.py' | htmlBaseUrl }}" download>simplify_web_boundaries.py</a></li>
+      <li><a href="{{ '/projects/ontario-commuter-flows/scripts/split_coordinates.py' | htmlBaseUrl }}" download>split_coordinates.py</a></li>
+    </ul>
+  </section>
+</article>

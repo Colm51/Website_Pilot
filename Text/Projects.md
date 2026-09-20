@@ -27,6 +27,11 @@ isProjects: true
   <h2 id="projects-title">Projects</h2>
   <div class="trip-list">
     <article class="trip-card">
+      <h3><a href="{{ '/projects/ontario-commuter-flows/' | htmlBaseUrl }}">Mapping Stats Can Commuter Flow Data</a></h3>
+      <p>A walk-through and interactive map of Statistics Canada commuter flows between census subdivisions.</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Municipal & Census Divisions cross-walk</a></h3>
       <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario upper and single-tier municipalities using mapping</p>
     </article>

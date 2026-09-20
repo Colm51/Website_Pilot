@@ -92,6 +92,8 @@ export default function (eleventyConfig) {
   });
   eleventyConfig.addPassthroughCopy("Maps/local-issue-reporter-map.html");
   eleventyConfig.addPassthroughCopy({
+    "Projects/OntarioCommuterFlows":
+      "projects/ontario-commuter-flows",
     "Projects/OntarioMunicipalCSDCrosswalk":
       "projects/ontario-municipal-csd-crosswalk",
     "Projects/OntarioMunicipalitiesCensusDivisions":
