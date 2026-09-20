@@ -57,14 +57,14 @@ explore_commuting_parquet.py
 
 ## Clean data by removing entries with no commutes
 
-A very large numner of entries in this data-set actually have zero counts of commuters. Removing these significantly simplifies the data.
+A very large number of entries in this data-set actually have zero counts of commuters. Removing these significantly simplifies the data.
 
 filter_nonzero_commuters.py
 explore_commuting_nonzero.py
 
-## Leverage a field "Coordinates" to derive CSDs for both home and work
+## Leverage the "Coordinates" field to derive CSDs for both home and work
 
-The Stats Can data only includes DGUID for home. However, it was observed that there is a "Coordinates" fields that takes the form of two numbers seperated by a period. Data exploration revealed that the numbers to the left of the period formed an ID for home, and the numbers to the right for work. Its not clear why this is the case - it appears to be a vestige of earlier Stats Can platforms. However, this turned out to be a key to unlocking the data-set, as by matching DGUIDS and Coordinates for home, it is also possible to derive DGUIDs for work as well, yielding a complete data-set.
+The Stats Can data download includes DGUID for home, but not for work. This complicates mapping. However, it was observed that there is a "Coordinates" fields that takes the form of two numbers seperated by a period. Data exploration revealed that the numbers to the left of the period formed an ID for home, and the numbers to the right for work. Its not clear why this is the case - it appears to be a vestige of earlier Stats Can platforms. However, this turned out to be a key to unlocking the data-set, as by matching DGUIDS and Coordinates for home, it is also possible to derive DGUIDs for work as well, yielding a complete data-set.
 
 Care needs to be taken with the format of this field when saving the .csv Stats Can data. As it is two number seperated by a period, it will get treated as a decimal, leading to loss of important trailing zeros unless it is explicitly cast as text. Because .csv does not include any defined data types, these are inferred by whatever program is used to open the .csv unless explciit data types are specified.
 
