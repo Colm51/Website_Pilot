@@ -14,9 +14,7 @@ Stats Can makes commuter flow data (home / work) between CSDs available.
 
 <https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810045901>
 
-This means that the data can be joined to CSD boundary files and mapped.
-
-However, the commuter flow data is messy and requires cleaning.
+This means that the data can be joined to CSD boundary files and mapped. However, working with the tabular data on the website is inefficient, and while the data can be downloaded, it is very large, messy and requires cleaning. Also, it is not set up to easily support mapping. As an example, it uses a different convention for CSD IDs than is found with Stat Can's own CSD boundary files.
 
 This walk-through discusses all stages of data retrieval, cleaning and joining to boundary files, and mapping.
 
@@ -52,6 +50,8 @@ explore_commuting_nonzero.py
 ## Leverage a field "Coordinates" to derive CSDs for both home and work
 
 The Stats Can data only includes DGUID for home. However, it was observed that there is a "Coordinates" fields that takes the form of two numbers seperated by a period. Data exploration revealed that the numbers to the left of the period formed an ID for home, and the numbers to the right for work. Its not clear why this is the case - it appears to be a vestige of earlier Stats Can platforms. However, this turned out to be a key to unlocking the data-set, as by matching DGUIDS and Coordinates for home, it is also possible to derive DGUIDs for work as well, yielding a complete data-set.
+
+Care needs to be taken with the format of this field when saving the .csv Stats Can data. As it is two number seperated by a period, it will get treated as a decimal, leading to loss of important trailing zeros unless it is explicitly cast as text. Because .csv does not include any defined data types, these are inferred by whatever program is used to open the .csv unless explciit data types are specified.
 
 split_coordinates.py
 DeriveDGUIDS.py
