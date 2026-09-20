@@ -9,11 +9,7 @@ layout: layouts/base.njk
   </div>
 </section>
 
-<article class="essay measure">
-  <section aria-label="Project description">
-    {{ content | safe }}
-  </section>
-
+{% set commuterMap %}
   <section class="project-section" aria-labelledby="commuter-map-title">
     <h2 id="commuter-map-title">Interactive commuter-flow map</h2>
     <p>This map is busy! The best approach to exploring it is to open in a new page, select the Esri Lght Gray base layer, turn off the Commuter flows layers, then select a CSD and turn Commuter flows back on</p>
@@ -24,6 +20,12 @@ layout: layouts/base.njk
       loading="lazy"
     ></iframe>
     <p><a href="{{ '/projects/ontario-commuter-flows/map.html' | htmlBaseUrl }}">Open the map in a new page</a></p>
+  </section>
+{% endset %}
+
+<article class="essay measure">
+  <section aria-label="Project description">
+    {{ content | replace("<p>MOVE MAP HERE</p>", commuterMap) | safe }}
   </section>
 
   <section class="project-section" aria-labelledby="python-scripts-title">

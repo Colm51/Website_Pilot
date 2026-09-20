@@ -10,9 +10,7 @@ isProjects: true
 tags:
   - projects
 ---
-Stats Can makes commuter flow data (home / work) between CSDs available.
-
-This project involves creating a map representing home / work commutes as lines, weighted by the relative count of commutes in the context of each individual CSD.
+Stats Can makes commuter flow data (home / work) between CSDs available. This project uses this data to create a map representing home / work commutes as lines, weighted by the relative count of commutes in the context of each individual CSD.
 
 **Important note: this project only looks at commutes crossing CSDs boundaries. Commutes within a CSD are not considered, and the mapping does not show the relative share of within CSD commutes as compared to intra-CSD commutes. Such intra-CSD commutes are included in the Stats Can data, and are a significant factor that would need to be incorporated into any network analysis.**
 
@@ -20,7 +18,13 @@ This project involves creating a map representing home / work commutes as lines,
 
 <https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810045901>
 
-This means that the data can be joined to CSD boundary files and mapped. However, working with the tabular data on the website is inefficient, and while the data can be downloaded, it is very large, messy and requires cleaning. Also, it is not set up to easily support mapping. As an example, it uses a different convention for CSD IDs than is found with Stat Can's own CSD boundary files.
+This means that the data can be joined to CSD boundary files and mapped. 
+
+MOVE MAP HERE
+
+**Discussion**
+
+Working with the tabular data on the website is inefficient, and while the data can be downloaded, it is very large, messy and requires cleaning. Also, it is not set up to easily support mapping. As an example, it uses a different convention for CSD IDs than is found with Stat Can's own CSD boundary files.
 
 This walk-through discusses all stages of data retrieval, cleaning and joining to boundary files, and mapping.
 
@@ -38,6 +42,8 @@ An interactive map is provided. Note that this map is very busy! The best way to
  Interestingly, First Nations reserves are also CSDs, so this data captures detailed commuting patterns in these cases. While data for small CSDs needs to be treated with caution owing to the 25% feature, the data does reveal the limitation of some studies of northern populations that assume residents commute mainly to the closest relatively large municipality.
 
 Finally, commutes across the international border are not captured.
+
+## Walk-through:
 
 ## Download Stats Can commuting data
 
