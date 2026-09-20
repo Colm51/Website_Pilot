@@ -1,5 +1,5 @@
 ---
-title: Mapping Stats Can 2021 Commuter Flow Data
+title: Mapping Stats Can 2021 Commuter Flows Between CSDs
 date: 2026-09-20
 updated: 2026-09-20
 summary: A walk-through and interactive map of 2021 Statistics Canada commuter flows between census subdivisions.
@@ -14,7 +14,9 @@ Stats Can makes commuter flow data (home / work) between CSDs available.
 
 This project involves creating a map representing home / work commutes as lines, weighted by the relative count of commutes in the context of each individual CSD.
 
-Using machine learning network analysis, it is possible to derive a typology of commuting "nodes" and identify regionally-significant commuting "hubs". I may explore how to do this in a future project.
+**Important note: this project only looks at commutes crossing CSDs boundaries. Commutes within a CSD are not considered, and the mapping does not show the relative share of within CSD commutes as compared to intra-CSD commutes. Such intra-CSD commutes are included in the Stats Can data, and are a significant factor that would need to be incorporated into any network analysis.**
+
+
 
 <https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810045901>
 
@@ -91,5 +93,7 @@ This step is discussed in the Cross-walk CSDs and Municipalities project
 CreateWebMappingFiles.py
 
 This script creates a commuter flows file. It also addresses one interesting issue: Stats Can defines very large CSDs for different unincorporated areas. In deriving a representative point for these CSDs, the script takes into consideration where municipalities are situated and avoids arbitrarily creating points in the middle of these extensive CSDs.
+
+**Important note: commutes within a CSD (i.e. where home and work CSDs) are discarded. However, while this makes sense for this project, such intra-CSD commutes are significant for many purposes.**
 
 simplify_web_boundaries.py
