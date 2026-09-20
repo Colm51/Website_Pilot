@@ -12,6 +12,10 @@ tags:
 ---
 Stats Can makes commuter flow data (home / work) between CSDs available.
 
+This project involves creating a map representing home / work commutes as lines, weighted by the relative count of commutes in the context of each individual CSD.
+
+Using machine learning network analysis, it is possible to derive a typology of commuting "nodes" and identify regionally-significant commuting "hubs". I may explore how to do this in a future project.
+
 <https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810045901>
 
 This means that the data can be joined to CSD boundary files and mapped. However, working with the tabular data on the website is inefficient, and while the data can be downloaded, it is very large, messy and requires cleaning. Also, it is not set up to easily support mapping. As an example, it uses a different convention for CSD IDs than is found with Stat Can's own CSD boundary files.
@@ -27,9 +31,11 @@ During this project, data exploration was conducted in DuckDB, which is a SQL en
 An interactive map is provided. Note that this map is very busy! The best way to use it is to turn off the commuter flow layer initially, select the desired CSD, and then turn the commuter flow layer back on.
  Different home / work commute are represented by lines that are weighted by the count of commuters. 
  
- This data is based on 25% census data, so will be less reliable with small populations. In addiiton, flows are associated with representative points within each CSD, as opposed to actual home / work coordinates. This creates unavoidable issues with CSDs that are in the unincorporated areas. In these cases, actual commutes often involve trips to a fringe area just outside municipal boundaries - soemthing it is not possible to capture with this data.
+ This data is based on 25% census data, so will be less reliable with small populations. In addiiton, flows are associated with representative points within each CSD, as opposed to actual home / work coordinates. This creates unavoidable issues with CSDs that are in the unincorporated areas. In these cases, actual commutes often involve trips to a fringe area just outside municipal boundaries - something it is not possible to capture with this data.
 
  Interestingly, First Nations reserves are also CSDs, so this data captures detailed commuting patterns in these cases. While data for small CSDs needs to be treated with caution owing to the 25% feature, the data does reveal the limitation of some studies of northern populations that assume residents commute mainly to the closest relatively large municipality.
+
+Finally, commutes across the international border are not captured.
 
 ## Download Stats Can commuting data
 
