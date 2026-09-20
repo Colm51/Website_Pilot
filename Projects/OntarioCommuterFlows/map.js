@@ -12,9 +12,13 @@ const csdNames = new Map();
 let csdLayer;
 let flowLayer;
 let selectedCsdUid = null;
-let selectedFlowRanks = new Map();
+let selectedFlowRanks = {
+  outgoing: new Map(),
+  incoming: new Map(),
+};
 let baseStatusMessage = "";
 let clearSelectionButton;
+let flowLegendElement;
 
 const basemap = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -57,6 +61,23 @@ const ClearSelectionControl = L.Control.extend({
 
 new ClearSelectionControl().addTo(map);
 
+const FlowLegendControl = L.Control.extend({
+  options: { position: "bottomright" },
+
+  onAdd() {
+    flowLegendElement = L.DomUtil.create("div", "flow-legend");
+    flowLegendElement.hidden = true;
+    flowLegendElement.setAttribute("aria-label", "Selected commuter-flow directions");
+    flowLegendElement.innerHTML = `
+      <div class="flow-legend-title">Selected CSD flows</div>
+      <div><span class="flow-legend-swatch flow-legend-outgoing"></span>Home / outgoing commuters</div>
+      <div><span class="flow-legend-swatch flow-legend-incoming"></span>Work / incoming commuters</div>`;
+    return flowLegendElement;
+  },
+});
+
+new FlowLegendControl().addTo(map);
+
 function escapeHtml(value) {
   return String(value ?? "Unknown")
     .replaceAll("&", "&amp;")
@@ -86,9 +107,25 @@ function flowDetails(properties) {
     : escapeHtml(properties.Commuters);
   const homeUid = normalizeUid(properties.Home_CSDUID);
   const workUid = normalizeUid(properties.Work_CSDUID);
+  const isOutgoing = selectedCsdUid !== null && homeUid === selectedCsdUid;
+  const isIncoming = selectedCsdUid !== null && workUid === selectedCsdUid;
+  let selectedRole = "";
+
+  if (isOutgoing && isIncoming) {
+    selectedRole = "Home and Work CSD";
+  } else if (isOutgoing) {
+    selectedRole = "Home CSD (outgoing)";
+  } else if (isIncoming) {
+    selectedRole = "Work CSD (incoming)";
+  }
+
+  const roleDetails = selectedRole
+    ? `<dt>Selected CSD role</dt><dd>${selectedRole}</dd>`
+    : "";
 
   return `
     <dl class="feature-details flow-details">
+      ${roleDetails}
       <dt>Home CSD</dt><dd>${escapeHtml(csdNames.get(homeUid))}</dd>
       <dt>Home CSDUID</dt><dd>${escapeHtml(homeUid)}</dd>
       <dt>Work CSD</dt><dd>${escapeHtml(csdNames.get(workUid))}</dd>
@@ -97,8 +134,8 @@ function flowDetails(properties) {
     </dl>`;
 }
 
-function selectedFlowWeight(commuters) {
-  const percentile = selectedFlowRanks.get(Number(commuters)) ?? 0;
+function selectedFlowWeight(commuters, direction) {
+  const percentile = selectedFlowRanks[direction].get(Number(commuters)) ?? 0;
   if (percentile <= 0.5) return 1;
   if (percentile <= 0.75) return 1.75;
   if (percentile <= 0.9) return 3;
@@ -116,19 +153,30 @@ function flowStyle(feature) {
   }
 
   const properties = feature.properties ?? {};
-  const isSelected = normalizeUid(properties.Home_CSDUID) === selectedCsdUid;
+  const isOutgoing = normalizeUid(properties.Home_CSDUID) === selectedCsdUid;
+  const isIncoming = normalizeUid(properties.Work_CSDUID) === selectedCsdUid;
 
-  return isSelected
-    ? {
-        color: "#d7301f",
-        weight: selectedFlowWeight(properties.Commuters),
-        opacity: 0.82,
-      }
-    : {
-        color: "#68737d",
-        weight: 0.5,
-        opacity: 0.035,
-      };
+  if (isOutgoing) {
+    return {
+      color: "#d7301f",
+      weight: selectedFlowWeight(properties.Commuters, "outgoing"),
+      opacity: 0.82,
+    };
+  }
+
+  if (isIncoming) {
+    return {
+      color: "#2166ac",
+      weight: selectedFlowWeight(properties.Commuters, "incoming"),
+      opacity: 0.82,
+    };
+  }
+
+  return {
+    color: "#68737d",
+    weight: 0.5,
+    opacity: 0.035,
+  };
 }
 
 function csdStyle(feature) {
@@ -151,16 +199,31 @@ function csdStyle(feature) {
 }
 
 function rankSelectedFlows(csdUid) {
-  const counts = [];
+  const outgoingCounts = [];
+  const incomingCounts = [];
 
   flowLayer.eachLayer((layer) => {
     const properties = layer.feature?.properties ?? {};
+    const commuters = Number(properties.Commuters);
+    if (!Number.isFinite(commuters)) return;
+
     if (normalizeUid(properties.Home_CSDUID) === csdUid) {
-      const commuters = Number(properties.Commuters);
-      if (Number.isFinite(commuters)) counts.push(commuters);
+      outgoingCounts.push(commuters);
+    }
+    if (normalizeUid(properties.Work_CSDUID) === csdUid) {
+      incomingCounts.push(commuters);
     }
   });
 
+  return {
+    outgoing: rankFlowCounts(outgoingCounts),
+    incoming: rankFlowCounts(incomingCounts),
+    outgoingCount: outgoingCounts.length,
+    incomingCount: incomingCounts.length,
+  };
+}
+
+function rankFlowCounts(counts) {
   counts.sort((a, b) => a - b);
   const ranks = new Map();
 
@@ -172,34 +235,44 @@ function rankSelectedFlows(csdUid) {
     index = end;
   }
 
-  return { ranks, count: counts.length };
+  return ranks;
 }
 
 function updateFlowInteractivity() {
   flowLayer.eachLayer((layer) => {
     const homeUid = normalizeUid(layer.feature?.properties?.Home_CSDUID);
-    layer.options.interactive = selectedCsdUid === null || homeUid === selectedCsdUid;
+    const workUid = normalizeUid(layer.feature?.properties?.Work_CSDUID);
+    layer.options.interactive =
+      selectedCsdUid === null || homeUid === selectedCsdUid || workUid === selectedCsdUid;
   });
 }
 
 function selectCsd(feature) {
   selectedCsdUid = normalizeUid(feature.properties?.CSDUID);
   const rankedFlows = rankSelectedFlows(selectedCsdUid);
-  selectedFlowRanks = rankedFlows.ranks;
+  selectedFlowRanks = {
+    outgoing: rankedFlows.outgoing,
+    incoming: rankedFlows.incoming,
+  };
 
   csdLayer.resetStyle();
   flowLayer.setStyle(flowStyle);
   updateFlowInteractivity();
 
   clearSelectionButton.hidden = false;
+  flowLegendElement.hidden = false;
   const csdName = feature.properties?.CSDNAME ?? selectedCsdUid;
   statusElement.textContent =
-    `${csdName}: ${rankedFlows.count.toLocaleString()} outgoing commuter-flow records highlighted.`;
+    `${csdName}: ${rankedFlows.outgoingCount.toLocaleString()} outgoing and ` +
+    `${rankedFlows.incomingCount.toLocaleString()} incoming commuter-flow records highlighted.`;
 }
 
 function clearCsdSelection() {
   selectedCsdUid = null;
-  selectedFlowRanks = new Map();
+  selectedFlowRanks = {
+    outgoing: new Map(),
+    incoming: new Map(),
+  };
 
   if (csdLayer) csdLayer.resetStyle();
   if (flowLayer) {
@@ -208,6 +281,7 @@ function clearCsdSelection() {
   }
 
   if (clearSelectionButton) clearSelectionButton.hidden = true;
+  if (flowLegendElement) flowLegendElement.hidden = true;
   if (baseStatusMessage) statusElement.textContent = baseStatusMessage;
 }
 
@@ -277,7 +351,7 @@ async function loadMapData() {
       renderer: canvasRenderer,
       style: flowStyle,
       onEachFeature: (feature, layer) => {
-        const details = flowDetails(feature.properties ?? {});
+        const details = () => flowDetails(feature.properties ?? {});
         layer.bindTooltip(details, { sticky: true, direction: "top" });
         layer.bindPopup(details, { maxWidth: 280 });
       },

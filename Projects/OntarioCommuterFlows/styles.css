@@ -79,11 +79,51 @@ body {
   display: none;
 }
 
+.flow-legend {
+  padding: 7px 9px;
+  border: 1px solid rgb(0 0 0 / 15%);
+  border-radius: 4px;
+  background: rgb(255 255 255 / 92%);
+  box-shadow: 0 1px 5px rgb(0 0 0 / 22%);
+  color: #24323d;
+  font-size: 0.75rem;
+  line-height: 1.55;
+}
+
+.flow-legend[hidden] {
+  display: none;
+}
+
+.flow-legend-title {
+  margin-bottom: 2px;
+  font-weight: 700;
+}
+
+.flow-legend-swatch {
+  display: inline-block;
+  width: 22px;
+  height: 3px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.flow-legend-outgoing {
+  background: #d7301f;
+}
+
+.flow-legend-incoming {
+  background: #2166ac;
+}
+
 .leaflet-control-layers {
   max-width: calc(100vw - 72px);
 }
 
 @media (max-width: 600px) {
+  .flow-legend {
+    margin-bottom: 64px;
+  }
+
   .leaflet-control-layers-expanded {
     font-size: 0.88rem;
   }
