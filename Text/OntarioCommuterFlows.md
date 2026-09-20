@@ -11,11 +11,18 @@ tags:
   - projects
 ---
 Stats Can makes commuter flow data (home / work) between CSDs.
+
 This means that the data can be joined to CSD boundary files and mapped.
+
 However, the commuter flow data is messy and requires cleaning.
+
 This walk-through discusses all stages of data retrieval, cleaning and joining to boundary files, and mapping.
+
 This is also a useful project for exploring efficient ways of working with large datasets. The data format .parquet is used. This format is efficient and also preserves data types, unlike .csv.
 Data exploration was conducted in DuckDB, which is a SQL engine, and DBeaver, which is a database client.
+
+An interactive map is provided. Note that this map is very busy! The best way to use it is to turn off the commuter flow layer initially, select the desired CSD, and then turn the commuter flow layer back on.
+ Different home / work commute are represented by lines that are weighted by the count of commuters. This data is based on 25% census data, so will be less reliable with small populations.
 
 ## Download Stats Can commuting data
 
