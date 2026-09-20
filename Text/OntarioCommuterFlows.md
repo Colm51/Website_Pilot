@@ -1,8 +1,8 @@
 ---
-title: Mapping Stats Can Commuter Flow Data
+title: Mapping Stats Can 2021 Commuter Flow Data
 date: 2026-09-20
 updated: 2026-09-20
-summary: A walk-through and interactive map of Statistics Canada commuter flows between census subdivisions.
+summary: A walk-through and interactive map of 2021 Statistics Canada commuter flows between census subdivisions.
 description: A walk-through, interactive map, and Python scripts for cleaning and mapping Statistics Canada commuter-flow data between census subdivisions.
 layout: layouts/commuter-flows-project.njk
 permalink: /projects/ontario-commuter-flows/index.html
@@ -10,7 +10,9 @@ isProjects: true
 tags:
   - projects
 ---
-Stats Can makes commuter flow data (home / work) between CSDs.
+Stats Can makes commuter flow data (home / work) between CSDs available.
+
+<https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810045901>
 
 This means that the data can be joined to CSD boundary files and mapped.
 
