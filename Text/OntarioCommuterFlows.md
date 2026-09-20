@@ -21,10 +21,13 @@ This walk-through discusses all stages of data retrieval, cleaning and joining t
 Python code snippets are included for download. A requirements.txt is also provided to facilitate setting up a python environment.
 
 This is also a useful project for exploring efficient ways of working with large datasets. The data format .parquet is used. This format is efficient and also preserves data types, unlike .csv.
-Data exploration was conducted in DuckDB, which is a SQL engine, and DBeaver, which is a database client.
+
+During this project, data exploration was conducted in DuckDB, which is a SQL engine, and DBeaver, which is a database client. However, use of these programs is not essential - there are many ways of exploring large data-sets leveraging python, SQL, or other languages. 
 
 An interactive map is provided. Note that this map is very busy! The best way to use it is to turn off the commuter flow layer initially, select the desired CSD, and then turn the commuter flow layer back on.
- Different home / work commute are represented by lines that are weighted by the count of commuters. This data is based on 25% census data, so will be less reliable with small populations.
+ Different home / work commute are represented by lines that are weighted by the count of commuters. 
+ 
+ This data is based on 25% census data, so will be less reliable with small populations. In addiiton, flows are associated with representative points within each CSD, as opposed to actual home / work coordinates. This creates unavoidable issues with CSDs that are in the unincorporated areas. In these cases, actual commutes often involve trips to a fringe area just outside municipal boundaries - soemthing it is not possible to capture with this data.
 
 ## Download Stats Can commuting data
 
