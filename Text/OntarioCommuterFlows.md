@@ -18,6 +18,8 @@ This means that the data can be joined to CSD boundary files and mapped. However
 
 This walk-through discusses all stages of data retrieval, cleaning and joining to boundary files, and mapping.
 
+Python code snippets are included for download. A requirements.txt is also provided to facilitate setting up a python environment.
+
 This is also a useful project for exploring efficient ways of working with large datasets. The data format .parquet is used. This format is efficient and also preserves data types, unlike .csv.
 Data exploration was conducted in DuckDB, which is a SQL engine, and DBeaver, which is a database client.
 
@@ -42,7 +44,9 @@ Although the focus is on Ontario, Quebec and Manitoba are included because of cr
 
 explore_commuting_parquet.py
 
-## Clean data by removing entrie with no commutes
+## Clean data by removing entries with no commutes
+
+A very large numner of entries in this data-set actually have zero counts of commuters. Removing these significantly simplifies the data.
 
 filter_nonzero_commuters.py
 explore_commuting_nonzero.py
