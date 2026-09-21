@@ -13,12 +13,42 @@ const FLOW_ARROW_MIN_VISIBLE_SIZE = 5.5;
 const FLOW_ARROW_MAX_VISIBLE_SIZE = 12;
 const FLOW_ARROW_ENDPOINT_GAP = 2;
 const FLOW_ARROW_MAX_HIT_RADIUS = 12;
+const FLOW_RECIPROCAL_OFFSET = 5;
 
 function flowArrowVisibleSize(lineWeight) {
   return Math.min(
     FLOW_ARROW_MAX_VISIBLE_SIZE,
     Math.max(FLOW_ARROW_MIN_VISIBLE_SIZE, 5 + lineWeight),
   );
+}
+
+function flowDirectionKey(homeUid, workUid) {
+  return `${homeUid}\u0000${workUid}`;
+}
+
+function offsetProjectedFlow(layer, offset) {
+  const shiftedBounds = new L.Bounds();
+
+  for (const ring of layer._rings) {
+    const start = ring[0];
+    const end = ring[ring.length - 1];
+    const deltaX = end.x - start.x;
+    const deltaY = end.y - start.y;
+    const length = Math.hypot(deltaX, deltaY);
+    const offsetX = length === 0 ? 0 : (-deltaY / length) * offset;
+    const offsetY = length === 0 ? 0 : (deltaX / length) * offset;
+
+    for (const point of ring) {
+      point.x += offsetX;
+      point.y += offsetY;
+      shiftedBounds.extend(point);
+    }
+  }
+
+  if (shiftedBounds.isValid()) {
+    layer._rawPxBounds = shiftedBounds;
+    layer._updateBounds();
+  }
 }
 
 function flowArrowGeometry(layer) {
@@ -715,23 +745,43 @@ async function loadMapData() {
       },
     });
 
+    const flowDirections = new Set(
+      flowResult.data.features.map((feature) => {
+        const properties = feature.properties ?? {};
+        return flowDirectionKey(
+          normalizeUid(properties.Home_CSDUID),
+          normalizeUid(properties.Work_CSDUID),
+        );
+      }),
+    );
+
     flowLayer = L.geoJSON(flowResult.data, {
       renderer: canvasRenderer,
       style: flowStyle,
       onEachFeature: (feature, layer) => {
+        const properties = feature.properties ?? {};
+        const homeUid = normalizeUid(properties.Home_CSDUID);
+        const workUid = normalizeUid(properties.Work_CSDUID);
         const projectLine = layer._project;
         layer.options.flowArrow = true;
+        layer.options.reciprocalFlow =
+          homeUid !== workUid &&
+          flowDirections.has(flowDirectionKey(workUid, homeUid));
         layer._project = function projectFlowLine() {
           projectLine.call(this);
+          if (this.options.reciprocalFlow) {
+            offsetProjectedFlow(this, FLOW_RECIPROCAL_OFFSET);
+          }
           this._flowArrowGeometry = flowArrowGeometry(this);
         };
         layer._containsPoint = flowContainsPoint;
 
-        const details = () => flowDetails(feature.properties ?? {});
+        const details = () => flowDetails(properties);
         layer.bindTooltip(details, { sticky: true, direction: "top" });
         layer.bindPopup(details, { maxWidth: 280 });
       },
     });
+    flowDirections.clear();
 
     registerOverlay("CSD boundaries", csdLayer);
     registerOverlay("Ontario municipal boundaries", municipalLayer);
