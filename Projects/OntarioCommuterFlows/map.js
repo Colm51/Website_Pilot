@@ -225,10 +225,7 @@ const MAX_SEARCH_RESULTS = 10;
 let csdLayer;
 let flowLayer;
 let selectedCsdUid = null;
-let selectedFlowRanks = {
-  outgoing: new Map(),
-  incoming: new Map(),
-};
+let selectedFlowRanks = new Map();
 let baseStatusMessage = "";
 let clearSelectionButton;
 let flowLegendElement;
@@ -518,8 +515,8 @@ function flowDetails(properties) {
     </dl>`;
 }
 
-function selectedFlowWeight(commuters, direction) {
-  const percentile = selectedFlowRanks[direction].get(Number(commuters)) ?? 0;
+function selectedFlowWeight(commuters) {
+  const percentile = selectedFlowRanks.get(Number(commuters)) ?? 0;
   if (percentile <= 0.5) return 1;
   if (percentile <= 0.75) return 1.75;
   if (percentile <= 0.9) return 3;
@@ -543,7 +540,7 @@ function flowStyle(feature) {
   if (isOutgoing) {
     return {
       color: "#d7301f",
-      weight: selectedFlowWeight(properties.Commuters, "outgoing"),
+      weight: selectedFlowWeight(properties.Commuters),
       opacity: 0.82,
     };
   }
@@ -551,7 +548,7 @@ function flowStyle(feature) {
   if (isIncoming) {
     return {
       color: "#2166ac",
-      weight: selectedFlowWeight(properties.Commuters, "incoming"),
+      weight: selectedFlowWeight(properties.Commuters),
       opacity: 0.82,
     };
   }
@@ -583,27 +580,26 @@ function csdStyle(feature) {
 }
 
 function rankSelectedFlows(csdUid) {
-  const outgoingCounts = [];
-  const incomingCounts = [];
+  const combinedCounts = [];
+  let outgoingCount = 0;
+  let incomingCount = 0;
 
   flowLayer.eachLayer((layer) => {
     const properties = layer.feature?.properties ?? {};
     const commuters = Number(properties.Commuters);
     if (!Number.isFinite(commuters)) return;
+    const isOutgoing = normalizeUid(properties.Home_CSDUID) === csdUid;
+    const isIncoming = normalizeUid(properties.Work_CSDUID) === csdUid;
 
-    if (normalizeUid(properties.Home_CSDUID) === csdUid) {
-      outgoingCounts.push(commuters);
-    }
-    if (normalizeUid(properties.Work_CSDUID) === csdUid) {
-      incomingCounts.push(commuters);
-    }
+    if (isOutgoing) outgoingCount += 1;
+    if (isIncoming) incomingCount += 1;
+    if (isOutgoing || isIncoming) combinedCounts.push(commuters);
   });
 
   return {
-    outgoing: rankFlowCounts(outgoingCounts),
-    incoming: rankFlowCounts(incomingCounts),
-    outgoingCount: outgoingCounts.length,
-    incomingCount: incomingCounts.length,
+    combined: rankFlowCounts(combinedCounts),
+    outgoingCount,
+    incomingCount,
   };
 }
 
@@ -634,10 +630,7 @@ function updateFlowInteractivity() {
 function selectCsd(feature) {
   selectedCsdUid = normalizeUid(feature.properties?.CSDUID);
   const rankedFlows = rankSelectedFlows(selectedCsdUid);
-  selectedFlowRanks = {
-    outgoing: rankedFlows.outgoing,
-    incoming: rankedFlows.incoming,
-  };
+  selectedFlowRanks = rankedFlows.combined;
 
   csdLayer.resetStyle();
   flowLayer.setStyle(flowStyle);
@@ -653,10 +646,7 @@ function selectCsd(feature) {
 
 function clearCsdSelection() {
   selectedCsdUid = null;
-  selectedFlowRanks = {
-    outgoing: new Map(),
-    incoming: new Map(),
-  };
+  selectedFlowRanks = new Map();
 
   if (csdLayer) csdLayer.resetStyle();
   if (flowLayer) {
