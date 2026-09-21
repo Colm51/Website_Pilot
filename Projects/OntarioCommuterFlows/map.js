@@ -8,6 +8,8 @@ const map = L.map("map", {
 const statusElement = document.getElementById("status");
 const canvasRenderer = L.canvas({ padding: 0.4, tolerance: 5 });
 const csdNames = new Map();
+const csdSearchEntries = [];
+const MAX_SEARCH_RESULTS = 10;
 
 let csdLayer;
 let flowLayer;
@@ -19,6 +21,10 @@ let selectedFlowRanks = {
 let baseStatusMessage = "";
 let clearSelectionButton;
 let flowLegendElement;
+let csdSearchInput;
+let csdSearchList;
+let searchResults = [];
+let activeSearchResultIndex = -1;
 
 const basemap = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -42,6 +48,40 @@ const layerControl = L.control.layers(
     collapsed: window.innerWidth < 700,
   },
 ).addTo(map);
+
+const CsdSearchControl = L.Control.extend({
+  options: { position: "topleft" },
+
+  onAdd() {
+    const container = L.DomUtil.create("div", "leaflet-bar csd-search-control");
+    csdSearchInput = L.DomUtil.create("input", "csd-search-input", container);
+    csdSearchInput.type = "search";
+    csdSearchInput.placeholder = "Loading CSD names…";
+    csdSearchInput.setAttribute("aria-label", "Search census subdivisions by name");
+    csdSearchInput.setAttribute("role", "combobox");
+    csdSearchInput.setAttribute("aria-autocomplete", "list");
+    csdSearchInput.setAttribute("aria-controls", "csd-search-results");
+    csdSearchInput.setAttribute("aria-expanded", "false");
+    csdSearchInput.autocomplete = "off";
+    csdSearchInput.spellcheck = false;
+    csdSearchInput.disabled = true;
+
+    csdSearchList = L.DomUtil.create("ul", "csd-search-results", container);
+    csdSearchList.id = "csd-search-results";
+    csdSearchList.setAttribute("role", "listbox");
+    csdSearchList.hidden = true;
+
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.disableScrollPropagation(container);
+    L.DomEvent.on(csdSearchInput, "input", updateSearchResults);
+    L.DomEvent.on(csdSearchInput, "focus", updateSearchResults);
+    L.DomEvent.on(csdSearchInput, "keydown", handleSearchKeydown);
+
+    return container;
+  },
+});
+
+new CsdSearchControl().addTo(map);
 
 const ClearSelectionControl = L.Control.extend({
   options: { position: "topleft" },
@@ -77,6 +117,139 @@ const FlowLegendControl = L.Control.extend({
 });
 
 new FlowLegendControl().addTo(map);
+
+function normalizedSearchText(value) {
+  return String(value ?? "").trim().toLocaleLowerCase("en-CA");
+}
+
+function closeSearchResults() {
+  searchResults = [];
+  activeSearchResultIndex = -1;
+  csdSearchList.replaceChildren();
+  csdSearchList.hidden = true;
+  csdSearchInput.setAttribute("aria-expanded", "false");
+  csdSearchInput.removeAttribute("aria-activedescendant");
+}
+
+function setActiveSearchResult(index) {
+  if (!searchResults.length) return;
+
+  activeSearchResultIndex = (index + searchResults.length) % searchResults.length;
+  const options = csdSearchList.querySelectorAll('[role="option"]');
+  options.forEach((option, optionIndex) => {
+    const isActive = optionIndex === activeSearchResultIndex;
+    option.classList.toggle("is-active", isActive);
+    option.setAttribute("aria-selected", String(isActive));
+  });
+
+  const activeOption = options[activeSearchResultIndex];
+  csdSearchInput.setAttribute("aria-activedescendant", activeOption.id);
+  activeOption.scrollIntoView({ block: "nearest" });
+}
+
+function selectSearchResult(entry) {
+  csdSearchInput.value = entry.name;
+  closeSearchResults();
+  selectCsd(entry.feature);
+  map.flyToBounds(entry.layer.getBounds(), {
+    padding: [30, 30],
+    maxZoom: 11,
+    duration: 0.7,
+  });
+  csdSearchInput.blur();
+}
+
+function renderSearchResults(results) {
+  searchResults = results;
+  activeSearchResultIndex = -1;
+  csdSearchList.replaceChildren();
+
+  results.forEach((entry, index) => {
+    const option = document.createElement("li");
+    option.id = `csd-search-option-${index}`;
+    option.className = "csd-search-result";
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", "false");
+
+    const name = document.createElement("span");
+    name.className = "csd-search-result-name";
+    name.textContent = entry.name;
+
+    const context = document.createElement("span");
+    context.className = "csd-search-result-context";
+    context.textContent = [entry.province, entry.type].filter(Boolean).join(" · ");
+
+    option.append(name, context);
+    option.addEventListener("click", (event) => {
+      event.preventDefault();
+      selectSearchResult(entry);
+    });
+    csdSearchList.append(option);
+  });
+
+  csdSearchList.hidden = results.length === 0;
+  csdSearchInput.setAttribute("aria-expanded", String(results.length > 0));
+}
+
+function updateSearchResults() {
+  const query = normalizedSearchText(csdSearchInput.value);
+  if (!query) {
+    closeSearchResults();
+    return;
+  }
+
+  const matches = csdSearchEntries
+    .filter((entry) => entry.normalizedName.includes(query))
+    .sort((a, b) => {
+      const prefixDifference =
+        Number(b.normalizedName.startsWith(query)) - Number(a.normalizedName.startsWith(query));
+      if (prefixDifference) return prefixDifference;
+
+      const nameDifference = a.name.localeCompare(b.name, "en-CA", {
+        sensitivity: "base",
+        numeric: true,
+      });
+      if (nameDifference) return nameDifference;
+
+      const provinceDifference = a.province.localeCompare(b.province, "en-CA", {
+        sensitivity: "base",
+      });
+      if (provinceDifference) return provinceDifference;
+      return a.uid.localeCompare(b.uid, "en-CA", { numeric: true });
+    })
+    .slice(0, MAX_SEARCH_RESULTS);
+
+  renderSearchResults(matches);
+}
+
+function handleSearchKeydown(event) {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeSearchResults();
+    return;
+  }
+
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    if (!searchResults.length) updateSearchResults();
+    if (!searchResults.length) return;
+    event.preventDefault();
+    const step = event.key === "ArrowDown" ? 1 : -1;
+    const nextIndex =
+      activeSearchResultIndex < 0
+        ? event.key === "ArrowDown"
+          ? 0
+          : searchResults.length - 1
+        : activeSearchResultIndex + step;
+    setActiveSearchResult(nextIndex);
+    return;
+  }
+
+  if (event.key === "Enter" && searchResults.length) {
+    event.preventDefault();
+    const selectedIndex = activeSearchResultIndex >= 0 ? activeSearchResultIndex : 0;
+    selectSearchResult(searchResults[selectedIndex]);
+  }
+}
 
 function escapeHtml(value) {
   return String(value ?? "Unknown")
@@ -327,6 +500,17 @@ async function loadMapData() {
       renderer: canvasRenderer,
       style: csdStyle,
       onEachFeature: (feature, layer) => {
+        const properties = feature.properties ?? {};
+        const name = String(properties.CSDNAME ?? "");
+        csdSearchEntries.push({
+          feature,
+          layer,
+          name,
+          normalizedName: normalizedSearchText(name),
+          province: String(properties.Province ?? ""),
+          type: String(properties.CSDTYPE ?? ""),
+          uid: normalizeUid(properties.CSDUID),
+        });
         layer.bindTooltip(csdDetails(feature.properties ?? {}), {
           sticky: true,
           direction: "top",
@@ -334,6 +518,9 @@ async function loadMapData() {
         layer.on("click", () => selectCsd(feature));
       },
     });
+
+    csdSearchInput.disabled = false;
+    csdSearchInput.placeholder = "Search CSD name";
 
     const municipalLayer = L.geoJSON(municipalResult.data, {
       renderer: canvasRenderer,
