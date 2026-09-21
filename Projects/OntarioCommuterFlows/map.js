@@ -6,7 +6,188 @@ const map = L.map("map", {
 }).setView([49.1, -84.6], 5);
 
 const statusElement = document.getElementById("status");
-const canvasRenderer = L.canvas({ padding: 0.4, tolerance: 5 });
+const FLOW_ARROW_FRACTION = 0.25;
+const FLOW_ARROW_MAX_PLACEMENT_SIZE = 6;
+const FLOW_ARROW_MIN_PLACEMENT_SIZE = 2.5;
+const FLOW_ARROW_MIN_VISIBLE_SIZE = 5.5;
+const FLOW_ARROW_MAX_VISIBLE_SIZE = 12;
+const FLOW_ARROW_ENDPOINT_GAP = 2;
+const FLOW_ARROW_MAX_HIT_RADIUS = 12;
+
+function flowArrowVisibleSize(lineWeight) {
+  return Math.min(
+    FLOW_ARROW_MAX_VISIBLE_SIZE,
+    Math.max(FLOW_ARROW_MIN_VISIBLE_SIZE, 5 + lineWeight),
+  );
+}
+
+function flowArrowGeometry(layer) {
+  const rings = layer._rings;
+  if (!rings?.length) return null;
+
+  let totalLength = 0;
+  for (const ring of rings) {
+    for (let index = 1; index < ring.length; index += 1) {
+      totalLength += ring[index - 1].distanceTo(ring[index]);
+    }
+  }
+
+  if (totalLength === 0) return null;
+
+  const placementSize = Math.min(
+    FLOW_ARROW_MAX_PLACEMENT_SIZE,
+    Math.max(FLOW_ARROW_MIN_PLACEMENT_SIZE, totalLength / 3),
+  );
+  const endpointPadding = placementSize + FLOW_ARROW_ENDPOINT_GAP;
+  const preferredDistance = totalLength * FLOW_ARROW_FRACTION;
+  const arrowDistance =
+    totalLength >= endpointPadding * 2
+      ? Math.min(
+          Math.max(preferredDistance, endpointPadding),
+          totalLength - endpointPadding,
+        )
+      : totalLength / 2;
+
+  let traversed = 0;
+  for (const ring of rings) {
+    for (let index = 1; index < ring.length; index += 1) {
+      const start = ring[index - 1];
+      const end = ring[index];
+      const segmentLength = start.distanceTo(end);
+      if (segmentLength === 0) continue;
+
+      if (traversed + segmentLength >= arrowDistance) {
+        const segmentFraction = (arrowDistance - traversed) / segmentLength;
+        const unitX = (end.x - start.x) / segmentLength;
+        const unitY = (end.y - start.y) / segmentLength;
+        const tip = L.point(
+          start.x + (end.x - start.x) * segmentFraction,
+          start.y + (end.y - start.y) * segmentFraction,
+        );
+        return {
+          tip,
+          unitX,
+          unitY,
+          hitCenter: L.point(
+            tip.x - unitX * placementSize * 0.45,
+            tip.y - unitY * placementSize * 0.45,
+          ),
+          hitRadius: Math.min(
+            FLOW_ARROW_MAX_HIT_RADIUS,
+            Math.max(6, totalLength * 0.35),
+          ),
+        };
+      }
+
+      traversed += segmentLength;
+    }
+  }
+
+  return null;
+}
+
+function flowContainsPoint(point, closed) {
+  if (L.Polyline.prototype._containsPoint.call(this, point, closed)) return true;
+
+  return flowArrowContainsPoint(this, point);
+}
+
+function flowArrowContainsPoint(layer, point) {
+  const arrow = layer._flowArrowGeometry;
+  return Boolean(arrow && point.distanceTo(arrow.hitCenter) <= arrow.hitRadius);
+}
+
+const FlowCanvasRenderer = L.Canvas.extend({
+  _updatePoly(layer, closed) {
+    L.Canvas.prototype._updatePoly.call(this, layer, closed);
+    if (!this._drawing || closed || !layer.options.flowArrow) return;
+
+    const arrow = layer._flowArrowGeometry;
+    if (!arrow) return;
+
+    const size = flowArrowVisibleSize(layer.options.weight);
+    const wingOffset = size * 0.55;
+    const wingBaseX = arrow.tip.x - arrow.unitX * size;
+    const wingBaseY = arrow.tip.y - arrow.unitY * size;
+    const context = this._ctx;
+    context.save();
+    context.beginPath();
+    context.moveTo(
+      wingBaseX - arrow.unitY * wingOffset,
+      wingBaseY + arrow.unitX * wingOffset,
+    );
+    context.lineTo(arrow.tip.x, arrow.tip.y);
+    context.lineTo(
+      wingBaseX + arrow.unitY * wingOffset,
+      wingBaseY - arrow.unitX * wingOffset,
+    );
+    context.setLineDash([]);
+    context.globalAlpha = layer.options.opacity;
+    context.strokeStyle = layer.options.color;
+    context.lineWidth = Math.max(0.5, Math.min(1.5, layer.options.weight * 0.8));
+    context.lineCap = "round";
+    context.lineJoin = "round";
+    context.stroke();
+    context.restore();
+  },
+
+  _interactiveLayerAtPoint(point) {
+    let arrowLayer;
+    let hitLayer;
+
+    for (let order = this._drawFirst; order; order = order.next) {
+      const layer = order.layer;
+      if (!layer.options.interactive) continue;
+
+      if (layer.options.flowArrow) {
+        if (flowArrowContainsPoint(layer, point)) {
+          arrowLayer = layer;
+          hitLayer = layer;
+        } else if (L.Polyline.prototype._containsPoint.call(layer, point)) {
+          hitLayer = layer;
+        }
+      } else if (layer._containsPoint(point)) {
+        hitLayer = layer;
+      }
+    }
+
+    return arrowLayer ?? hitLayer;
+  },
+
+  _onClick(event) {
+    const point = this._map.mouseEventToLayerPoint(event);
+    const layer = this._interactiveLayerAtPoint(point);
+    const isUndraggedClick =
+      !(event.type === "click" || event.type === "preclick") ||
+      !layer ||
+      !this._map._draggableMoved(layer);
+
+    this._fireEvent(layer && isUndraggedClick ? [layer] : false, event);
+  },
+
+  _handleMouseHover(event, point) {
+    if (this._mouseHoverThrottled) return;
+
+    const hoveredLayer = this._interactiveLayerAtPoint(point);
+    if (hoveredLayer !== this._hoveredLayer) {
+      this._handleMouseOut(event);
+
+      if (hoveredLayer) {
+        L.DomUtil.addClass(this._container, "leaflet-interactive");
+        this._fireEvent([hoveredLayer], event, "mouseover");
+        this._hoveredLayer = hoveredLayer;
+      }
+    }
+
+    this._fireEvent(this._hoveredLayer ? [this._hoveredLayer] : false, event);
+    this._mouseHoverThrottled = true;
+    setTimeout(() => {
+      this._mouseHoverThrottled = false;
+    }, 32);
+  },
+});
+
+const canvasRenderer = new FlowCanvasRenderer({ padding: 0.4, tolerance: 5 });
 const csdNames = new Map();
 const csdSearchEntries = [];
 const MAX_SEARCH_RESULTS = 10;
@@ -538,6 +719,14 @@ async function loadMapData() {
       renderer: canvasRenderer,
       style: flowStyle,
       onEachFeature: (feature, layer) => {
+        const projectLine = layer._project;
+        layer.options.flowArrow = true;
+        layer._project = function projectFlowLine() {
+          projectLine.call(this);
+          this._flowArrowGeometry = flowArrowGeometry(this);
+        };
+        layer._containsPoint = flowContainsPoint;
+
         const details = () => flowDetails(feature.properties ?? {});
         layer.bindTooltip(details, { sticky: true, direction: "top" });
         layer.bindPopup(details, { maxWidth: 280 });
