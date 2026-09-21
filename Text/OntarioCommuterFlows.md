@@ -14,7 +14,7 @@ Stats Can makes commuter flow data (home / work) between CSDs available.
 
 <https://www150.statcan.gc.ca/t1/tbl1/en/tv.action?pid=9810045901>
 
-This means that the data can be joined to CSD boundary files and mapped. This project uses this data to create a map representing home / work commutes as lines, weighted by the relative count of commutes in the context of each individual CSD.
+This means that the data can be joined to CSD boundary files and mapped. This project uses this data to create a map representing home / work commutes as lines, weighted by the relative count of commutes in the context of a CSD's total count of both outgoing and incoming commuters. 
 
 **Important note: this project only looks at commutes crossing CSDs boundaries. Commutes within a CSD are not considered, and the mapping does not show the relative share of within CSD commutes as compared to intra-CSD commutes. Such intra-CSD commutes are included in the Stats Can data, and are a significant factor that would need to be incorporated into any network analysis.**
 
@@ -98,7 +98,13 @@ This step is discussed in the Cross-walk CSDs and Municipalities project
 
 CreateWebMappingFiles.py
 
-This script creates a commuter flows file. It also addresses one interesting issue: Stats Can defines very large CSDs for different unincorporated areas. In deriving a representative point for these CSDs, the script takes into consideration where municipalities are situated and avoids arbitrarily creating points in the middle of these extensive CSDs.
+This script creates a commuter flows file. 
+
+Line thicknesses are scaled relative to a CSD's total count of both outgoing and incoming commuters. Thicknesses are therefore not comparable between CSDs.
+
+This script also addresses one interesting issue: Stats Can defines very large CSDs for different unincorporated areas. In deriving a representative point for these CSDs, the script takes into consideration where municipalities are situated and avoids arbitrarily creating points in the middle of these extensive CSDs.
+
+A search box enables users to seach by CSD name.
 
 **Important note: commutes within a CSD (i.e. where home and work CSDs) are discarded. However, while this makes sense for this project, such intra-CSD commutes are significant for many purposes.**
 

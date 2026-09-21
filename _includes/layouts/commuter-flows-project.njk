@@ -12,7 +12,10 @@ layout: layouts/base.njk
 {% set commuterMap %}
   <section class="project-section" aria-labelledby="commuter-map-title">
     <h2 id="commuter-map-title">Interactive commuter-flow map</h2>
-    <p>This map is busy! The best approach to exploring it is to open in a new page, select the Esri Lght Gray base layer, turn off the Commuter flows layers, then select a CSD and turn Commuter flows back on</p>
+    <p>This map is busy!</p> 
+    <p>The best approach to exploring it is to open it in a new page, select the Esri Lght Gray base layer, turn off the Commuter flows layers, then select a CSD, either with the search box or by clicking, and turn Commuter flows back on.</p>
+    <p>Once a CSD is selected incoming and outcoming commutes are distinguished.</p> 
+    
     <iframe
       class="map-embed"
       src="{{ '/projects/ontario-commuter-flows/map.html' | htmlBaseUrl }}"
