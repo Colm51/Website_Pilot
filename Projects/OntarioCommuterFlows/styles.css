@@ -82,7 +82,7 @@ body {
 .csd-search-control {
   position: relative;
   z-index: 1000;
-  width: min(240px, calc(100vw - 72px));
+  width: min(150px, calc(100vw - 72px));
   border: 0;
   background: #fff;
   box-shadow: 0 1px 5px rgb(0 0 0 / 35%);
