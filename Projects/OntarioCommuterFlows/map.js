@@ -687,7 +687,7 @@ function updateFlowModeButton() {
   if (!flowModeButton) return;
 
   const isMajorMode = flowDisplayMode === "major";
-  flowModeButton.textContent = isMajorMode ? "Major flows (50%)" : "All flows";
+  flowModeButton.textContent = isMajorMode ? "Select all flows" : "Select top 50% flows only";
   flowModeButton.title = isMajorMode
     ? "Show all incoming and outgoing flows"
     : "Emphasize incoming and outgoing flows that separately reach 50%";
