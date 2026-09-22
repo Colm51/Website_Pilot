@@ -225,6 +225,7 @@ const MAX_SEARCH_RESULTS = 10;
 let csdLayer;
 let flowLayer;
 let selectedCsdUid = null;
+let selectedWorkCsdUid = null;
 let selectedFlowRanks = new Map();
 let selectedMajorFlowFeatures = new Set();
 let selectedFlowSummary = null;
@@ -237,6 +238,10 @@ let csdSearchInput;
 let csdSearchList;
 let searchResults = [];
 let activeSearchResultIndex = -1;
+let workCsdSearchInput;
+let workCsdSearchList;
+let workSearchResults = [];
+let activeWorkSearchResultIndex = -1;
 
 const basemap = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
@@ -266,7 +271,11 @@ const CsdSearchControl = L.Control.extend({
 
   onAdd() {
     const container = L.DomUtil.create("div", "leaflet-bar csd-search-control");
+    const label = L.DomUtil.create("label", "csd-search-label", container);
+    label.htmlFor = "csd-search-input";
+    label.textContent = "Connections to/from a CSD";
     csdSearchInput = L.DomUtil.create("input", "csd-search-input", container);
+    csdSearchInput.id = "csd-search-input";
     csdSearchInput.type = "search";
     csdSearchInput.placeholder = "Loading CSD names…";
     csdSearchInput.setAttribute("aria-label", "Search census subdivisions by name");
@@ -294,6 +303,47 @@ const CsdSearchControl = L.Control.extend({
 });
 
 new CsdSearchControl().addTo(map);
+
+const WorkCsdSearchControl = L.Control.extend({
+  options: { position: "topleft" },
+
+  onAdd() {
+    const container = L.DomUtil.create(
+      "div",
+      "leaflet-bar csd-search-control work-csd-search-control",
+    );
+    const label = L.DomUtil.create("label", "csd-search-label", container);
+    label.htmlFor = "work-csd-search-input";
+    label.textContent = "Commuters travelling to a Work CSD";
+    workCsdSearchInput = L.DomUtil.create("input", "csd-search-input", container);
+    workCsdSearchInput.id = "work-csd-search-input";
+    workCsdSearchInput.type = "search";
+    workCsdSearchInput.placeholder = "Loading CSD names…";
+    workCsdSearchInput.setAttribute("aria-label", "Search work census subdivisions by name");
+    workCsdSearchInput.setAttribute("role", "combobox");
+    workCsdSearchInput.setAttribute("aria-autocomplete", "list");
+    workCsdSearchInput.setAttribute("aria-controls", "work-csd-search-results");
+    workCsdSearchInput.setAttribute("aria-expanded", "false");
+    workCsdSearchInput.autocomplete = "off";
+    workCsdSearchInput.spellcheck = false;
+    workCsdSearchInput.disabled = true;
+
+    workCsdSearchList = L.DomUtil.create("ul", "csd-search-results", container);
+    workCsdSearchList.id = "work-csd-search-results";
+    workCsdSearchList.setAttribute("role", "listbox");
+    workCsdSearchList.hidden = true;
+
+    L.DomEvent.disableClickPropagation(container);
+    L.DomEvent.disableScrollPropagation(container);
+    L.DomEvent.on(workCsdSearchInput, "input", updateWorkSearchResults);
+    L.DomEvent.on(workCsdSearchInput, "focus", updateWorkSearchResults);
+    L.DomEvent.on(workCsdSearchInput, "keydown", handleWorkSearchKeydown);
+
+    return container;
+  },
+});
+
+new WorkCsdSearchControl().addTo(map);
 
 const ClearSelectionControl = L.Control.extend({
   options: { position: "topleft" },
@@ -480,6 +530,135 @@ function handleSearchKeydown(event) {
   }
 }
 
+function closeWorkSearchResults() {
+  workSearchResults = [];
+  activeWorkSearchResultIndex = -1;
+  workCsdSearchList.replaceChildren();
+  workCsdSearchList.hidden = true;
+  workCsdSearchInput.setAttribute("aria-expanded", "false");
+  workCsdSearchInput.removeAttribute("aria-activedescendant");
+}
+
+function setActiveWorkSearchResult(index) {
+  if (!workSearchResults.length) return;
+
+  activeWorkSearchResultIndex = (index + workSearchResults.length) % workSearchResults.length;
+  const options = workCsdSearchList.querySelectorAll('[role="option"]');
+  options.forEach((option, optionIndex) => {
+    const isActive = optionIndex === activeWorkSearchResultIndex;
+    option.classList.toggle("is-active", isActive);
+    option.setAttribute("aria-selected", String(isActive));
+  });
+
+  const activeOption = options[activeWorkSearchResultIndex];
+  workCsdSearchInput.setAttribute("aria-activedescendant", activeOption.id);
+  activeOption.scrollIntoView({ block: "nearest" });
+}
+
+function selectWorkSearchResult(entry) {
+  workCsdSearchInput.value = entry.name;
+  closeWorkSearchResults();
+  selectWorkCsd(entry.feature);
+  map.flyToBounds(entry.layer.getBounds(), {
+    padding: [30, 30],
+    maxZoom: 11,
+    duration: 0.7,
+  });
+  workCsdSearchInput.blur();
+}
+
+function renderWorkSearchResults(results) {
+  workSearchResults = results;
+  activeWorkSearchResultIndex = -1;
+  workCsdSearchList.replaceChildren();
+
+  results.forEach((entry, index) => {
+    const option = document.createElement("li");
+    option.id = `work-csd-search-option-${index}`;
+    option.className = "csd-search-result";
+    option.setAttribute("role", "option");
+    option.setAttribute("aria-selected", "false");
+
+    const name = document.createElement("span");
+    name.className = "csd-search-result-name";
+    name.textContent = entry.name;
+
+    const context = document.createElement("span");
+    context.className = "csd-search-result-context";
+    context.textContent = [entry.province, entry.type].filter(Boolean).join(" · ");
+
+    option.append(name, context);
+    option.addEventListener("click", (event) => {
+      event.preventDefault();
+      selectWorkSearchResult(entry);
+    });
+    workCsdSearchList.append(option);
+  });
+
+  workCsdSearchList.hidden = results.length === 0;
+  workCsdSearchInput.setAttribute("aria-expanded", String(results.length > 0));
+}
+
+function updateWorkSearchResults() {
+  const query = normalizedSearchText(workCsdSearchInput.value);
+  if (!query) {
+    closeWorkSearchResults();
+    return;
+  }
+
+  const matches = csdSearchEntries
+    .filter((entry) => entry.normalizedName.includes(query))
+    .sort((a, b) => {
+      const prefixDifference =
+        Number(b.normalizedName.startsWith(query)) - Number(a.normalizedName.startsWith(query));
+      if (prefixDifference) return prefixDifference;
+
+      const nameDifference = a.name.localeCompare(b.name, "en-CA", {
+        sensitivity: "base",
+        numeric: true,
+      });
+      if (nameDifference) return nameDifference;
+
+      const provinceDifference = a.province.localeCompare(b.province, "en-CA", {
+        sensitivity: "base",
+      });
+      if (provinceDifference) return provinceDifference;
+      return a.uid.localeCompare(b.uid, "en-CA", { numeric: true });
+    })
+    .slice(0, MAX_SEARCH_RESULTS);
+
+  renderWorkSearchResults(matches);
+}
+
+function handleWorkSearchKeydown(event) {
+  if (event.key === "Escape") {
+    event.preventDefault();
+    closeWorkSearchResults();
+    return;
+  }
+
+  if (event.key === "ArrowDown" || event.key === "ArrowUp") {
+    if (!workSearchResults.length) updateWorkSearchResults();
+    if (!workSearchResults.length) return;
+    event.preventDefault();
+    const step = event.key === "ArrowDown" ? 1 : -1;
+    const nextIndex =
+      activeWorkSearchResultIndex < 0
+        ? event.key === "ArrowDown"
+          ? 0
+          : workSearchResults.length - 1
+        : activeWorkSearchResultIndex + step;
+    setActiveWorkSearchResult(nextIndex);
+    return;
+  }
+
+  if (event.key === "Enter" && workSearchResults.length) {
+    event.preventDefault();
+    const selectedIndex = activeWorkSearchResultIndex >= 0 ? activeWorkSearchResultIndex : 0;
+    selectWorkSearchResult(workSearchResults[selectedIndex]);
+  }
+}
+
 function escapeHtml(value) {
   return String(value ?? "Unknown")
     .replaceAll("&", "&amp;")
@@ -510,7 +689,9 @@ function flowDetails(properties) {
   const homeUid = normalizeUid(properties.Home_CSDUID);
   const workUid = normalizeUid(properties.Work_CSDUID);
   const isOutgoing = selectedCsdUid !== null && homeUid === selectedCsdUid;
-  const isIncoming = selectedCsdUid !== null && workUid === selectedCsdUid;
+  const isIncoming =
+    (selectedCsdUid !== null && workUid === selectedCsdUid) ||
+    (selectedWorkCsdUid !== null && workUid === selectedWorkCsdUid);
   let selectedRole = "";
 
   if (isOutgoing && isIncoming) {
@@ -546,7 +727,7 @@ function selectedFlowWeight(commuters) {
 }
 
 function flowStyle(feature) {
-  if (selectedCsdUid === null) {
+  if (selectedCsdUid === null && selectedWorkCsdUid === null) {
     return {
       color: "#c43d3d",
       weight: 1,
@@ -556,7 +737,8 @@ function flowStyle(feature) {
 
   const properties = feature.properties ?? {};
   const isOutgoing = normalizeUid(properties.Home_CSDUID) === selectedCsdUid;
-  const isIncoming = normalizeUid(properties.Work_CSDUID) === selectedCsdUid;
+  const isIncoming =
+    normalizeUid(properties.Work_CSDUID) === (selectedWorkCsdUid ?? selectedCsdUid);
   const isMajorFlow = selectedMajorFlowFeatures.has(feature);
   const selectedOpacity = flowDisplayMode === "all" || isMajorFlow ? 0.82 : 0.08;
 
@@ -584,7 +766,8 @@ function flowStyle(feature) {
 }
 
 function csdStyle(feature) {
-  const isSelected = normalizeUid(feature.properties?.CSDUID) === selectedCsdUid;
+  const isSelected =
+    normalizeUid(feature.properties?.CSDUID) === (selectedWorkCsdUid ?? selectedCsdUid);
 
   return isSelected
     ? {
@@ -622,6 +805,26 @@ function rankSelectedFlows(csdUid) {
   return {
     combined: rankFlowCounts(combinedCounts),
     outgoing: selectMajorFlows(outgoingFlows),
+    incoming: selectMajorFlows(incomingFlows),
+  };
+}
+
+function rankSelectedWorkFlows(csdUid) {
+  const incomingFlows = [];
+
+  flowLayer.eachLayer((layer) => {
+    const properties = layer.feature?.properties ?? {};
+    const commuters = Number(properties.Commuters);
+    if (
+      Number.isFinite(commuters) &&
+      normalizeUid(properties.Work_CSDUID) === csdUid
+    ) {
+      incomingFlows.push({ feature: layer.feature, commuters });
+    }
+  });
+
+  return {
+    ranks: rankFlowCounts(incomingFlows.map((flow) => flow.commuters)),
     incoming: selectMajorFlows(incomingFlows),
   };
 }
@@ -669,9 +872,12 @@ function updateFlowInteractivity() {
   flowLayer.eachLayer((layer) => {
     const homeUid = normalizeUid(layer.feature?.properties?.Home_CSDUID);
     const workUid = normalizeUid(layer.feature?.properties?.Work_CSDUID);
-    const isSelectedFlow = homeUid === selectedCsdUid || workUid === selectedCsdUid;
+    const isSelectedFlow =
+      selectedWorkCsdUid !== null
+        ? workUid === selectedWorkCsdUid
+        : homeUid === selectedCsdUid || workUid === selectedCsdUid;
     const isInteractive =
-      selectedCsdUid === null ||
+      (selectedCsdUid === null && selectedWorkCsdUid === null) ||
       (isSelectedFlow &&
         (flowDisplayMode === "all" || selectedMajorFlowFeatures.has(layer.feature)));
 
@@ -687,10 +893,15 @@ function updateFlowModeButton() {
   if (!flowModeButton) return;
 
   const isMajorMode = flowDisplayMode === "major";
+  const workMode = selectedWorkCsdUid !== null;
   flowModeButton.textContent = isMajorMode ? "Select all flows" : "Select top 50% flows only";
   flowModeButton.title = isMajorMode
-    ? "Show all incoming and outgoing flows"
-    : "Emphasize incoming and outgoing flows that separately reach 50%";
+    ? workMode
+      ? "Show all incoming flows"
+      : "Show all incoming and outgoing flows"
+    : workMode
+      ? "Emphasize incoming flows that reach 50% of incoming commuters"
+      : "Emphasize incoming and outgoing flows that separately reach 50%";
   flowModeButton.setAttribute("aria-pressed", String(isMajorMode));
   flowModeButton.classList.toggle("is-major-mode", isMajorMode);
 }
@@ -698,7 +909,16 @@ function updateFlowModeButton() {
 function updateSelectedFlowStatus() {
   if (!selectedFlowSummary) return;
 
-  const { name, outgoing, incoming } = selectedFlowSummary;
+  const { name, mode, outgoing, incoming } = selectedFlowSummary;
+  if (mode === "work") {
+    statusElement.textContent =
+      flowDisplayMode === "major"
+        ? `${name}: major incoming flows highlight ${incoming.majorCount.toLocaleString()} of ` +
+          `${incoming.count.toLocaleString()} records (${(incoming.cumulativeShare * 100).toFixed(1)}% of incoming commuters).`
+        : `${name}: ${incoming.count.toLocaleString()} incoming commuter-flow records highlighted.`;
+    return;
+  }
+
   if (flowDisplayMode === "major") {
     statusElement.textContent =
       `${name}: major flows highlight ${outgoing.majorCount.toLocaleString()} of ` +
@@ -714,7 +934,7 @@ function updateSelectedFlowStatus() {
 }
 
 function toggleFlowDisplayMode() {
-  if (selectedCsdUid === null) return;
+  if (selectedCsdUid === null && selectedWorkCsdUid === null) return;
 
   flowDisplayMode = flowDisplayMode === "all" ? "major" : "all";
   updateFlowModeButton();
@@ -724,6 +944,9 @@ function toggleFlowDisplayMode() {
 }
 
 function selectCsd(feature) {
+  selectedWorkCsdUid = null;
+  if (workCsdSearchInput) workCsdSearchInput.value = "";
+  if (workCsdSearchList) closeWorkSearchResults();
   selectedCsdUid = normalizeUid(feature.properties?.CSDUID);
   const rankedFlows = rankSelectedFlows(selectedCsdUid);
   selectedFlowRanks = rankedFlows.combined;
@@ -734,6 +957,7 @@ function selectCsd(feature) {
   const csdName = feature.properties?.CSDNAME ?? selectedCsdUid;
   selectedFlowSummary = {
     name: csdName,
+    mode: "csd",
     outgoing: rankedFlows.outgoing,
     incoming: rankedFlows.incoming,
   };
@@ -745,12 +969,52 @@ function selectCsd(feature) {
   clearSelectionButton.hidden = false;
   flowModeButton.hidden = false;
   flowLegendElement.hidden = false;
+  updateFlowLegend();
   updateFlowModeButton();
   updateSelectedFlowStatus();
 }
 
+function selectWorkCsd(feature) {
+  selectedCsdUid = null;
+  if (csdSearchInput) csdSearchInput.value = "";
+  if (csdSearchList) closeSearchResults();
+  selectedWorkCsdUid = normalizeUid(feature.properties?.CSDUID);
+  const rankedFlows = rankSelectedWorkFlows(selectedWorkCsdUid);
+  selectedFlowRanks = rankedFlows.ranks;
+  selectedMajorFlowFeatures = new Set(rankedFlows.incoming.features);
+  const csdName = feature.properties?.CSDNAME ?? selectedWorkCsdUid;
+  selectedFlowSummary = {
+    name: csdName,
+    mode: "work",
+    incoming: rankedFlows.incoming,
+  };
+
+  csdLayer.resetStyle();
+  flowLayer.setStyle(flowStyle);
+  updateFlowInteractivity();
+
+  clearSelectionButton.hidden = false;
+  flowModeButton.hidden = false;
+  flowLegendElement.hidden = false;
+  updateFlowLegend();
+  updateFlowModeButton();
+  updateSelectedFlowStatus();
+}
+
+function updateFlowLegend() {
+  if (!flowLegendElement) return;
+
+  flowLegendElement.innerHTML = selectedWorkCsdUid !== null
+    ? `<div class="flow-legend-title">Selected Work CSD flows</div>
+       <div><span class="flow-legend-swatch flow-legend-incoming"></span>Incoming commuters</div>`
+    : `<div class="flow-legend-title">Selected CSD flows</div>
+       <div><span class="flow-legend-swatch flow-legend-outgoing"></span>Home / outgoing commuters</div>
+       <div><span class="flow-legend-swatch flow-legend-incoming"></span>Work / incoming commuters</div>`;
+}
+
 function clearCsdSelection() {
   selectedCsdUid = null;
+  selectedWorkCsdUid = null;
   selectedFlowRanks = new Map();
   selectedMajorFlowFeatures = new Set();
   selectedFlowSummary = null;
@@ -833,7 +1097,9 @@ async function loadMapData() {
     });
 
     csdSearchInput.disabled = false;
-    csdSearchInput.placeholder = "Search CSD name";
+    csdSearchInput.placeholder = "Search CSD";
+    workCsdSearchInput.disabled = false;
+    workCsdSearchInput.placeholder = "Search Work CSD";
 
     const municipalLayer = L.geoJSON(municipalResult.data, {
       renderer: canvasRenderer,
