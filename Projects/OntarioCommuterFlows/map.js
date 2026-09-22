@@ -226,8 +226,12 @@ let csdLayer;
 let flowLayer;
 let selectedCsdUid = null;
 let selectedFlowRanks = new Map();
+let selectedMajorFlowFeatures = new Set();
+let selectedFlowSummary = null;
+let flowDisplayMode = "all";
 let baseStatusMessage = "";
 let clearSelectionButton;
+let flowModeButton;
 let flowLegendElement;
 let csdSearchInput;
 let csdSearchList;
@@ -308,6 +312,23 @@ const ClearSelectionControl = L.Control.extend({
 });
 
 new ClearSelectionControl().addTo(map);
+
+const FlowModeControl = L.Control.extend({
+  options: { position: "topleft" },
+
+  onAdd() {
+    flowModeButton = L.DomUtil.create("button", "leaflet-bar flow-mode-control");
+    flowModeButton.type = "button";
+    flowModeButton.hidden = true;
+
+    L.DomEvent.disableClickPropagation(flowModeButton);
+    L.DomEvent.on(flowModeButton, "click", toggleFlowDisplayMode);
+    updateFlowModeButton();
+    return flowModeButton;
+  },
+});
+
+new FlowModeControl().addTo(map);
 
 const FlowLegendControl = L.Control.extend({
   options: { position: "bottomright" },
@@ -536,12 +557,14 @@ function flowStyle(feature) {
   const properties = feature.properties ?? {};
   const isOutgoing = normalizeUid(properties.Home_CSDUID) === selectedCsdUid;
   const isIncoming = normalizeUid(properties.Work_CSDUID) === selectedCsdUid;
+  const isMajorFlow = selectedMajorFlowFeatures.has(feature);
+  const selectedOpacity = flowDisplayMode === "all" || isMajorFlow ? 0.82 : 0.08;
 
   if (isOutgoing) {
     return {
       color: "#d7301f",
       weight: selectedFlowWeight(properties.Commuters),
-      opacity: 0.82,
+      opacity: selectedOpacity,
     };
   }
 
@@ -549,7 +572,7 @@ function flowStyle(feature) {
     return {
       color: "#2166ac",
       weight: selectedFlowWeight(properties.Commuters),
-      opacity: 0.82,
+      opacity: selectedOpacity,
     };
   }
 
@@ -581,8 +604,8 @@ function csdStyle(feature) {
 
 function rankSelectedFlows(csdUid) {
   const combinedCounts = [];
-  let outgoingCount = 0;
-  let incomingCount = 0;
+  const outgoingFlows = [];
+  const incomingFlows = [];
 
   flowLayer.eachLayer((layer) => {
     const properties = layer.feature?.properties ?? {};
@@ -591,15 +614,39 @@ function rankSelectedFlows(csdUid) {
     const isOutgoing = normalizeUid(properties.Home_CSDUID) === csdUid;
     const isIncoming = normalizeUid(properties.Work_CSDUID) === csdUid;
 
-    if (isOutgoing) outgoingCount += 1;
-    if (isIncoming) incomingCount += 1;
+    if (isOutgoing) outgoingFlows.push({ feature: layer.feature, commuters });
+    if (isIncoming) incomingFlows.push({ feature: layer.feature, commuters });
     if (isOutgoing || isIncoming) combinedCounts.push(commuters);
   });
 
   return {
     combined: rankFlowCounts(combinedCounts),
-    outgoingCount,
-    incomingCount,
+    outgoing: selectMajorFlows(outgoingFlows),
+    incoming: selectMajorFlows(incomingFlows),
+  };
+}
+
+function selectMajorFlows(flows) {
+  const total = flows.reduce((sum, flow) => sum + flow.commuters, 0);
+  const features = new Set();
+  let cumulative = 0;
+
+  if (total > 0) {
+    const sortedFlows = [...flows].sort((a, b) => b.commuters - a.commuters);
+    for (const flow of sortedFlows) {
+      features.add(flow.feature);
+      cumulative += flow.commuters;
+      if (cumulative >= total * 0.5) break;
+    }
+  }
+
+  return {
+    features,
+    count: flows.length,
+    total,
+    majorCount: features.size,
+    cumulative,
+    cumulativeShare: total > 0 ? cumulative / total : 0,
   };
 }
 
@@ -622,31 +669,92 @@ function updateFlowInteractivity() {
   flowLayer.eachLayer((layer) => {
     const homeUid = normalizeUid(layer.feature?.properties?.Home_CSDUID);
     const workUid = normalizeUid(layer.feature?.properties?.Work_CSDUID);
-    layer.options.interactive =
-      selectedCsdUid === null || homeUid === selectedCsdUid || workUid === selectedCsdUid;
+    const isSelectedFlow = homeUid === selectedCsdUid || workUid === selectedCsdUid;
+    const isInteractive =
+      selectedCsdUid === null ||
+      (isSelectedFlow &&
+        (flowDisplayMode === "all" || selectedMajorFlowFeatures.has(layer.feature)));
+
+    layer.options.interactive = isInteractive;
+    if (!isInteractive) {
+      layer.closeTooltip();
+      layer.closePopup();
+    }
   });
+}
+
+function updateFlowModeButton() {
+  if (!flowModeButton) return;
+
+  const isMajorMode = flowDisplayMode === "major";
+  flowModeButton.textContent = isMajorMode ? "Major flows (50%)" : "All flows";
+  flowModeButton.title = isMajorMode
+    ? "Show all incoming and outgoing flows"
+    : "Emphasize incoming and outgoing flows that separately reach 50%";
+  flowModeButton.setAttribute("aria-pressed", String(isMajorMode));
+  flowModeButton.classList.toggle("is-major-mode", isMajorMode);
+}
+
+function updateSelectedFlowStatus() {
+  if (!selectedFlowSummary) return;
+
+  const { name, outgoing, incoming } = selectedFlowSummary;
+  if (flowDisplayMode === "major") {
+    statusElement.textContent =
+      `${name}: major flows highlight ${outgoing.majorCount.toLocaleString()} of ` +
+      `${outgoing.count.toLocaleString()} outgoing records (${(outgoing.cumulativeShare * 100).toFixed(1)}%) and ` +
+      `${incoming.majorCount.toLocaleString()} of ${incoming.count.toLocaleString()} incoming records ` +
+      `(${(incoming.cumulativeShare * 100).toFixed(1)}%).`;
+    return;
+  }
+
+  statusElement.textContent =
+    `${name}: ${outgoing.count.toLocaleString()} outgoing and ` +
+    `${incoming.count.toLocaleString()} incoming commuter-flow records highlighted.`;
+}
+
+function toggleFlowDisplayMode() {
+  if (selectedCsdUid === null) return;
+
+  flowDisplayMode = flowDisplayMode === "all" ? "major" : "all";
+  updateFlowModeButton();
+  flowLayer.setStyle(flowStyle);
+  updateFlowInteractivity();
+  updateSelectedFlowStatus();
 }
 
 function selectCsd(feature) {
   selectedCsdUid = normalizeUid(feature.properties?.CSDUID);
   const rankedFlows = rankSelectedFlows(selectedCsdUid);
   selectedFlowRanks = rankedFlows.combined;
+  selectedMajorFlowFeatures = new Set([
+    ...rankedFlows.outgoing.features,
+    ...rankedFlows.incoming.features,
+  ]);
+  const csdName = feature.properties?.CSDNAME ?? selectedCsdUid;
+  selectedFlowSummary = {
+    name: csdName,
+    outgoing: rankedFlows.outgoing,
+    incoming: rankedFlows.incoming,
+  };
 
   csdLayer.resetStyle();
   flowLayer.setStyle(flowStyle);
   updateFlowInteractivity();
 
   clearSelectionButton.hidden = false;
+  flowModeButton.hidden = false;
   flowLegendElement.hidden = false;
-  const csdName = feature.properties?.CSDNAME ?? selectedCsdUid;
-  statusElement.textContent =
-    `${csdName}: ${rankedFlows.outgoingCount.toLocaleString()} outgoing and ` +
-    `${rankedFlows.incomingCount.toLocaleString()} incoming commuter-flow records highlighted.`;
+  updateFlowModeButton();
+  updateSelectedFlowStatus();
 }
 
 function clearCsdSelection() {
   selectedCsdUid = null;
   selectedFlowRanks = new Map();
+  selectedMajorFlowFeatures = new Set();
+  selectedFlowSummary = null;
+  flowDisplayMode = "all";
 
   if (csdLayer) csdLayer.resetStyle();
   if (flowLayer) {
@@ -655,6 +763,10 @@ function clearCsdSelection() {
   }
 
   if (clearSelectionButton) clearSelectionButton.hidden = true;
+  if (flowModeButton) {
+    flowModeButton.hidden = true;
+    updateFlowModeButton();
+  }
   if (flowLegendElement) flowLegendElement.hidden = true;
   if (baseStatusMessage) statusElement.textContent = baseStatusMessage;
 }

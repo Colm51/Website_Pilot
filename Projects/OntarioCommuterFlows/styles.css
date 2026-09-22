@@ -58,7 +58,8 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-.clear-selection-control {
+.clear-selection-control,
+.flow-mode-control {
   width: auto;
   min-width: 44px;
   min-height: 36px;
@@ -71,12 +72,25 @@ body {
 }
 
 .clear-selection-control:hover,
-.clear-selection-control:focus-visible {
+.clear-selection-control:focus-visible,
+.flow-mode-control:hover,
+.flow-mode-control:focus-visible {
   background: #f2f4f5;
 }
 
-.clear-selection-control[hidden] {
+.clear-selection-control[hidden],
+.flow-mode-control[hidden] {
   display: none;
+}
+
+.flow-mode-control.is-major-mode {
+  background: #24323d;
+  color: #fff;
+}
+
+.flow-mode-control.is-major-mode:hover,
+.flow-mode-control.is-major-mode:focus-visible {
+  background: #344956;
 }
 
 .csd-search-control {
