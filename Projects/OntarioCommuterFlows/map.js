@@ -404,6 +404,7 @@ function normalizedSearchText(value) {
 function closeSearchResults() {
   searchResults = [];
   activeSearchResultIndex = -1;
+  csdSearchInput.closest(".csd-search-control").classList.remove("is-search-open");
   csdSearchList.replaceChildren();
   csdSearchList.hidden = true;
   csdSearchInput.setAttribute("aria-expanded", "false");
@@ -441,6 +442,9 @@ function selectSearchResult(entry) {
 function renderSearchResults(results) {
   searchResults = results;
   activeSearchResultIndex = -1;
+  csdSearchInput
+    .closest(".csd-search-control")
+    .classList.toggle("is-search-open", results.length > 0);
   csdSearchList.replaceChildren();
 
   results.forEach((entry, index) => {
@@ -533,6 +537,7 @@ function handleSearchKeydown(event) {
 function closeWorkSearchResults() {
   workSearchResults = [];
   activeWorkSearchResultIndex = -1;
+  workCsdSearchInput.closest(".csd-search-control").classList.remove("is-search-open");
   workCsdSearchList.replaceChildren();
   workCsdSearchList.hidden = true;
   workCsdSearchInput.setAttribute("aria-expanded", "false");
@@ -570,6 +575,9 @@ function selectWorkSearchResult(entry) {
 function renderWorkSearchResults(results) {
   workSearchResults = results;
   activeWorkSearchResultIndex = -1;
+  workCsdSearchInput
+    .closest(".csd-search-control")
+    .classList.toggle("is-search-open", results.length > 0);
   workCsdSearchList.replaceChildren();
 
   results.forEach((entry, index) => {
