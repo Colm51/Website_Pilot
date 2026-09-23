@@ -218,12 +218,16 @@ const FlowCanvasRenderer = L.Canvas.extend({
 });
 
 const canvasRenderer = new FlowCanvasRenderer({ padding: 0.4, tolerance: 5 });
+const municipalLabelPane = map.createPane("municipalLabels");
+municipalLabelPane.style.zIndex = "425";
 const csdNames = new Map();
 const csdSearchEntries = [];
 const MAX_SEARCH_RESULTS = 10;
 
 let csdLayer;
 let flowLayer;
+let municipalLayer;
+let municipalLabelLayer;
 let selectedCsdUid = null;
 let selectedWorkCsdUid = null;
 let selectedFlowRanks = new Map();
@@ -1066,6 +1070,305 @@ function registerOverlay(name, layer) {
   layerControl.addOverlay(layer, name);
 }
 
+class LabelCell {
+  constructor(x, y, halfSize, polygon) {
+    this.x = x;
+    this.y = y;
+    this.halfSize = halfSize;
+    this.distance = pointToPolygonDistance(x, y, polygon);
+    this.maximum = this.distance + halfSize * Math.SQRT2;
+  }
+}
+
+class MaxHeap {
+  constructor() {
+    this.items = [];
+  }
+
+  push(item) {
+    const items = this.items;
+    items.push(item);
+    let index = items.length - 1;
+
+    while (index > 0) {
+      const parentIndex = Math.floor((index - 1) / 2);
+      if (items[parentIndex].maximum >= item.maximum) break;
+      items[index] = items[parentIndex];
+      index = parentIndex;
+    }
+    items[index] = item;
+  }
+
+  pop() {
+    const items = this.items;
+    if (!items.length) return null;
+
+    const result = items[0];
+    const last = items.pop();
+    if (!items.length) return result;
+
+    let index = 0;
+    while (true) {
+      const left = index * 2 + 1;
+      const right = left + 1;
+      if (left >= items.length) break;
+      const child = right < items.length && items[right].maximum > items[left].maximum
+        ? right
+        : left;
+      if (items[child].maximum <= last.maximum) break;
+      items[index] = items[child];
+      index = child;
+    }
+    items[index] = last;
+    return result;
+  }
+
+  get length() {
+    return this.items.length;
+  }
+}
+
+function pointToSegmentDistanceSquared(x, y, first, second) {
+  let segmentX = second[0] - first[0];
+  let segmentY = second[1] - first[1];
+  if (segmentX !== 0 || segmentY !== 0) {
+    const fraction = Math.max(
+      0,
+      Math.min(
+        1,
+        ((x - first[0]) * segmentX + (y - first[1]) * segmentY) /
+          (segmentX * segmentX + segmentY * segmentY),
+      ),
+    );
+    segmentX = first[0] + segmentX * fraction - x;
+    segmentY = first[1] + segmentY * fraction - y;
+  } else {
+    segmentX = first[0] - x;
+    segmentY = first[1] - y;
+  }
+  return segmentX * segmentX + segmentY * segmentY;
+}
+
+function pointToPolygonDistance(x, y, polygon) {
+  let inside = false;
+  let minimumDistanceSquared = Infinity;
+
+  for (const ring of polygon) {
+    for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index++) {
+      const first = ring[index];
+      const second = ring[previous];
+      if (
+        (first[1] > y) !== (second[1] > y) &&
+        x < ((second[0] - first[0]) * (y - first[1])) / (second[1] - first[1]) + first[0]
+      ) {
+        inside = !inside;
+      }
+      minimumDistanceSquared = Math.min(
+        minimumDistanceSquared,
+        pointToSegmentDistanceSquared(x, y, first, second),
+      );
+    }
+  }
+
+  const distance = Math.sqrt(minimumDistanceSquared);
+  return inside ? distance : -distance;
+}
+
+function ringArea(ring) {
+  let twiceArea = 0;
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index++) {
+    twiceArea +=
+      ring[previous][0] * ring[index][1] - ring[index][0] * ring[previous][1];
+  }
+  return Math.abs(twiceArea / 2);
+}
+
+function polygonArea(polygon) {
+  if (!polygon.length) return 0;
+  return Math.max(
+    0,
+    ringArea(polygon[0]) - polygon.slice(1).reduce((area, ring) => area + ringArea(ring), 0),
+  );
+}
+
+function polygonCentroidCell(polygon) {
+  const ring = polygon[0];
+  let areaFactor = 0;
+  let x = 0;
+  let y = 0;
+
+  for (let index = 0, previous = ring.length - 1; index < ring.length; previous = index++) {
+    const cross =
+      ring[previous][0] * ring[index][1] - ring[index][0] * ring[previous][1];
+    areaFactor += cross;
+    x += (ring[previous][0] + ring[index][0]) * cross;
+    y += (ring[previous][1] + ring[index][1]) * cross;
+  }
+
+  if (areaFactor === 0) return new LabelCell(ring[0][0], ring[0][1], 0, polygon);
+  return new LabelCell(x / (3 * areaFactor), y / (3 * areaFactor), 0, polygon);
+}
+
+function poleOfInaccessibility(polygon) {
+  const outerRing = polygon[0];
+  let minimumX = Infinity;
+  let minimumY = Infinity;
+  let maximumX = -Infinity;
+  let maximumY = -Infinity;
+
+  for (const point of outerRing) {
+    minimumX = Math.min(minimumX, point[0]);
+    minimumY = Math.min(minimumY, point[1]);
+    maximumX = Math.max(maximumX, point[0]);
+    maximumY = Math.max(maximumY, point[1]);
+  }
+
+  const width = maximumX - minimumX;
+  const height = maximumY - minimumY;
+  const cellSize = Math.min(width, height);
+  if (cellSize === 0) return outerRing[0];
+
+  const queue = new MaxHeap();
+  const halfSize = cellSize / 2;
+  for (let x = minimumX; x < maximumX; x += cellSize) {
+    for (let y = minimumY; y < maximumY; y += cellSize) {
+      queue.push(new LabelCell(x + halfSize, y + halfSize, halfSize, polygon));
+    }
+  }
+
+  let bestCell = polygonCentroidCell(polygon);
+  const boundingBoxCell = new LabelCell(
+    minimumX + width / 2,
+    minimumY + height / 2,
+    0,
+    polygon,
+  );
+  if (boundingBoxCell.distance > bestCell.distance) bestCell = boundingBoxCell;
+
+  const precision = Math.max(25, cellSize / 200);
+  while (queue.length) {
+    const cell = queue.pop();
+    if (cell.distance > bestCell.distance) bestCell = cell;
+    if (cell.maximum - bestCell.distance <= precision) continue;
+
+    const childHalfSize = cell.halfSize / 2;
+    queue.push(new LabelCell(cell.x - childHalfSize, cell.y - childHalfSize, childHalfSize, polygon));
+    queue.push(new LabelCell(cell.x + childHalfSize, cell.y - childHalfSize, childHalfSize, polygon));
+    queue.push(new LabelCell(cell.x - childHalfSize, cell.y + childHalfSize, childHalfSize, polygon));
+    queue.push(new LabelCell(cell.x + childHalfSize, cell.y + childHalfSize, childHalfSize, polygon));
+  }
+
+  return [bestCell.x, bestCell.y];
+}
+
+function projectPolygon(coordinates) {
+  return coordinates.map((ring) =>
+    ring.map(([longitude, latitude]) => {
+      const point = L.CRS.EPSG3857.project(L.latLng(latitude, longitude));
+      return [point.x, point.y];
+    }),
+  );
+}
+
+function municipalLabelCandidate(feature, sourceIndex) {
+  const geometry = feature.geometry;
+  const polygons = geometry?.type === "Polygon"
+    ? [geometry.coordinates]
+    : geometry?.type === "MultiPolygon"
+      ? geometry.coordinates
+      : [];
+  if (!polygons.length) return null;
+
+  let largestPolygon;
+  let largestArea = -Infinity;
+  let totalArea = 0;
+  for (const coordinates of polygons) {
+    const polygon = projectPolygon(coordinates);
+    const area = polygonArea(polygon);
+    totalArea += area;
+    if (area > largestArea) {
+      largestArea = area;
+      largestPolygon = polygon;
+    }
+  }
+
+  const [x, y] = poleOfInaccessibility(largestPolygon);
+  const point = L.CRS.EPSG3857.unproject(L.point(x, y));
+  return {
+    name: String(feature.properties?.MUNICIPAL_NAME_SHORTFORM ?? ""),
+    point,
+    area: totalArea,
+    sourceIndex,
+  };
+}
+
+function rectanglesOverlap(first, second) {
+  return !(
+    first.right <= second.left ||
+    first.left >= second.right ||
+    first.bottom <= second.top ||
+    first.top >= second.bottom
+  );
+}
+
+const MunicipalLabelLayer = L.Layer.extend({
+  initialize(candidates) {
+    this._candidates = candidates;
+    this._redrawFrame = null;
+  },
+
+  onAdd(mapInstance) {
+    this._map = mapInstance;
+    this._container = L.DomUtil.create("div", "municipal-label-container");
+    mapInstance.getPane("municipalLabels").append(this._container);
+    mapInstance.on("moveend zoomend resize", this.scheduleRedraw, this);
+    this.scheduleRedraw();
+  },
+
+  onRemove(mapInstance) {
+    mapInstance.off("moveend zoomend resize", this.scheduleRedraw, this);
+    if (this._redrawFrame !== null) cancelAnimationFrame(this._redrawFrame);
+    this._redrawFrame = null;
+    this._container.remove();
+    this._container = null;
+    this._map = null;
+  },
+
+  scheduleRedraw() {
+    if (this._redrawFrame !== null) cancelAnimationFrame(this._redrawFrame);
+    this._redrawFrame = requestAnimationFrame(() => {
+      this._redrawFrame = null;
+      this.redraw();
+    });
+  },
+
+  redraw() {
+    if (!this._map || !this._container) return;
+    this._container.replaceChildren();
+    if (!municipalLayer || !this._map.hasLayer(municipalLayer)) return;
+
+    const acceptedRectangles = [];
+    const mapBounds = this._map.getBounds();
+    for (const candidate of this._candidates) {
+      if (!candidate.name || !mapBounds.contains(candidate.point)) continue;
+
+      const layerPoint = this._map.latLngToLayerPoint(candidate.point);
+      const label = L.DomUtil.create("span", "municipal-name-label", this._container);
+      label.textContent = candidate.name;
+      label.dataset.municipality = candidate.name;
+      label.style.left = `${layerPoint.x}px`;
+      label.style.top = `${layerPoint.y}px`;
+
+      const rectangle = label.getBoundingClientRect();
+      if (acceptedRectangles.some((accepted) => rectanglesOverlap(rectangle, accepted))) {
+        label.remove();
+        continue;
+      }
+      acceptedRectangles.push(rectangle);
+    }
+  },
+});
+
 async function loadMapData() {
   const startedAt = performance.now();
 
@@ -1109,7 +1412,7 @@ async function loadMapData() {
     workCsdSearchInput.disabled = false;
     workCsdSearchInput.placeholder = "Search Work CSD";
 
-    const municipalLayer = L.geoJSON(municipalResult.data, {
+    municipalLayer = L.geoJSON(municipalResult.data, {
       renderer: canvasRenderer,
       interactive: false,
       style: {
@@ -1120,6 +1423,19 @@ async function loadMapData() {
         fillOpacity: 0,
       },
     });
+
+    const municipalLabelCandidates = municipalResult.data.features
+      .map(municipalLabelCandidate)
+      .filter(Boolean)
+      .sort((first, second) =>
+        second.area - first.area ||
+        first.name.localeCompare(second.name, "en-CA", {
+          sensitivity: "base",
+          numeric: true,
+        }) ||
+        first.sourceIndex - second.sourceIndex,
+      );
+    municipalLabelLayer = new MunicipalLabelLayer(municipalLabelCandidates);
 
     const flowDirections = new Set(
       flowResult.data.features.map((feature) => {
@@ -1161,7 +1477,15 @@ async function loadMapData() {
 
     registerOverlay("CSD boundaries", csdLayer);
     registerOverlay("Ontario municipal boundaries", municipalLayer);
+    overlays["Municipal name labels"] = municipalLabelLayer;
+    layerControl.addOverlay(municipalLabelLayer, "Municipal name labels");
     registerOverlay("Commuter flows", flowLayer);
+
+    map.on("overlayadd overlayremove", (event) => {
+      if (event.layer === municipalLayer && map.hasLayer(municipalLabelLayer)) {
+        municipalLabelLayer.scheduleRedraw();
+      }
+    });
 
     const bounds = municipalLayer.getBounds();
     if (bounds.isValid()) map.fitBounds(bounds, { padding: [12, 12] });

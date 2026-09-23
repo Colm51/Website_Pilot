@@ -24,6 +24,35 @@ body {
   background: #e8eef2;
 }
 
+.leaflet-municipalLabels-pane,
+.municipal-label-container,
+.municipal-name-label {
+  pointer-events: none;
+  user-select: none;
+}
+
+.municipal-label-container {
+  position: absolute;
+  inset: 0;
+}
+
+.municipal-name-label {
+  position: absolute;
+  display: block;
+  transform: translate(-50%, -50%);
+  color: #263942;
+  font: 600 11px/1.15 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  letter-spacing: 0.015em;
+  text-align: center;
+  text-shadow:
+    -1px -1px 0 rgb(255 255 255 / 90%),
+    1px -1px 0 rgb(255 255 255 / 90%),
+    -1px 1px 0 rgb(255 255 255 / 90%),
+    1px 1px 0 rgb(255 255 255 / 90%),
+    0 0 3px rgb(255 255 255 / 95%);
+  white-space: nowrap;
+}
+
 #status {
   position: fixed;
   z-index: 1000;
