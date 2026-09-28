@@ -159,5 +159,21 @@ Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  t
   </ul>
 
 
+  <p class="dashboard-note">     Note on iPhone apps: </p>
+  <ul class="dashboard-list">
+    <li>
+    iPhone apps can be written in Swift and deployed using Apple's XCode Mac application.
+    </li>
+
+    <li>
+    Apple allows users to deploy home-made apps on their own phones using free developer accounts.
+    </li>
+
+    <li>
+    Free developer accounts have a number of limitations: apps installed on an iPhone expire after 7 days, at which point they need to be re-built (a straight-forward XCode process); only up to 3 apps may be installed on a phone; these apps can not be posted in the App Store for others to download.
+    </li>
+
+  </ul>
+
   </div>
 </section>
