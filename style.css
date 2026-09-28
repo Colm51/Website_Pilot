@@ -258,6 +258,27 @@ h2 {
   margin-bottom: 0.25rem;
 }
 
+.app-screenshot-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(1.5rem, 5vw, 3rem);
+  align-items: start;
+  margin-top: 1.6rem;
+}
+
+.app-screenshot-grid figure {
+  width: min(100%, 19rem);
+  margin-inline: auto;
+}
+
+.app-screenshot-grid img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--rule);
+  background: var(--paper-deep);
+}
+
 .ontario-cd-project .project-table-scroll {
   width: min(100vw - 2rem, 72rem);
   max-width: 100%;
@@ -612,6 +633,10 @@ figcaption {
 
   .ontario-cd-project .project-table-scroll {
     max-height: 24rem;
+  }
+
+  .app-screenshot-grid {
+    grid-template-columns: 1fr;
   }
 
   .site-header {
