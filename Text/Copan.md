@@ -106,7 +106,7 @@ photos:
   - thumbnail: /Photos/Copan/SmallPhotos/Stellae.jpg
     full: /Photos/Copan/SmallPhotos/Stellae.jpg
     alt: Stellae
-    caption: Stellae
+    caption: Stellae A
   - thumbnail: /Photos/Copan/SmallPhotos/Stellae2.jpg
     full: /Photos/Copan/SmallPhotos/Stellae2.jpg
     alt: Stellae2
@@ -166,6 +166,20 @@ The building of the enormous Mayan temples and other structures took an enormous
 That said, theories of the mayan world have often proven to be incomplete or simply inaacurate. And knowledge of the period has continued to make impressive progress.
 
 As Michael Coe writes in Breaking the Maya Code, for many years, the orthodox archaological opinion was that the Mayan were peaceable, focused on things like astronomy. And the glyphs found at the sites were seen as inscrutable, with images somehow representing complete thoughts. As progress was made deciphering the glyphs, this was found to be totally incorrect. Many of the glyphs represented sounds, other were sort of like our present-days emoticons, and familiarity with related languages and spanish-era texts eventually led to an impressive reconstruction of the written language. Not surprisinly, this formal mayan script was found to refer often to kings and warfare.
+
+For example, there is a picture below of a Stellae with two columns of extensive glyphs. This is Stellae A, which scholars have interpreted as refering to the 13th ruler of Copan and referencing dates around 730 CE, with the dates communicated in the so-called mayan long count. This glyphs, which include those in the photo along with others on other sides of the Stellae, are said to mean:
+
+>*On 1 February 731 CE, the Long Count stood at 9 baktuns, 14 katuns, 19 tuns, 8 uinals and 0 days.
+The lunar count recorded that fifteen days had passed since the moon’s arrival, in the sixth lunar grouping, and that the current lunar month had 29 days.
+On that day the stone was planted and raised upright. Yax Saak Tob’aj Huk Chapaaht Tz’ikiin K’inich Ajaw was the name of the deity of the stela.
+Sixty days earlier, on 3 December 730 CE, another banner stone had already been erected. K’an Witz’ … stood upright; that was its name. Its owner had already died: Tzip Ti’ Ch’ahom, Tzip Ti’ Nu’n, Hux Te’ Maax Ajaw, K’ahk’ Ti’ Kan Mam Ajaw.
+His bones and the blood of K’inich were repeatedly strengthened when his bones were cut. This was his death; he had already entered the road.
+Waxaklaju’n U B’aah K’awiil embraced his banner stone and impersonated the Fiery Precious Serpent, Yax Chiit … Tat, the Black God. He was the Sacred Lord of Copán, the First on Earth.
+Ten days remained until 20 August 731 CE, when the fifteenth k’atun would be completed.
+Then, on 19 October 731 CE, they witnessed the period-ending ceremony: the Four Mako’m, the Five …, and the Northern Mako’m.
+They were the Four Skies, the Four … Skies, the Four … Skies, and the Four Deer-Hoof Skies: the Sacred Lord of Copán, the Sacred Lord of Tikal, the Sacred Lord of Calakmul, and the Sacred Lord of Palenque.
+They were [perhaps] the resplendent sky and the resplendent earth. They were at the east, the west, the south and the north. They were the opener of the opening and the closer of the opening, at the half-diminishing period …*
+
 
 More recently, LIDAR has uncovered many previously-unexplored ruins, and it seems likely that the theories that have evolved about the relations among the mayan city-states will continue to need to be significantly revised.
 
