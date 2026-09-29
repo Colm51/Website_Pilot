@@ -123,10 +123,16 @@ h2 {
   font-weight: 600;
 }
 
-h1 {
+/* h1 {
   max-width: 11ch;
   font-size: clamp(2.4rem, 8vw, 5rem);
+} */
+
+h1 {
+  /* max-width: 11ch; */
+  font-size: clamp(1.5rem, 4 vw, 5rem);
 }
+
 
 h2 {
   font-size: clamp(1.45rem, 4vw, 2.1rem);
