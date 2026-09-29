@@ -132,13 +132,22 @@ h2 {
   font-size: clamp(1.45rem, 4vw, 2.1rem);
 }
 
+/* .lede {
+  /* max-width: 36rem; */
+  /* margin: 1.35rem 0 0;
+  color: #3d352f;
+  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  line-height: 1.55; */
+/* } */ 
+
 .lede {
   /* max-width: 36rem; */
   margin: 1.35rem 0 0;
   color: #3d352f;
-  font-size: clamp(1.15rem, 2.6vw, 1.45rem);
+  font-size: clamp(1 rem, 2 vw, 1.45rem);
   line-height: 1.55;
 }
+
 
 .essay {
   padding: clamp(2.8rem, 8vw, 5rem) 0;

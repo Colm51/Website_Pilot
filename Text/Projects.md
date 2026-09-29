@@ -6,12 +6,13 @@ permalink: /projects/index.html
 isProjects: true
 ---
 <section class="opening" aria-labelledby="page-title">
+
   <div class="measure">
     <p class="kicker">Projects</p>
     <h1 id="page-title">Projects</h1>
-    <p class="lede">All content posted here has been developed outside of work using personal devices and publicly-available data. 
+    <p class="lede"><em>Note: All content posted here has been developed outside of work hours using personal devices and publicly-available data. </em>
     </p>
-     <p class="lede">Some of the projects touch on municipal finance - an area of personal and professional interest - while others are more idiosyncrattic.
+     <p class="lede">Some of the projects touch on municipal finance - an area of personal and professional interest - while others are more idiosyncratic.
     </p>
     <p class="lede">For all the content, my intent has been mostly to explore tech and programming as opposed to exhausting any particular topic. or to provide the best possible on-line resource
     </p>
