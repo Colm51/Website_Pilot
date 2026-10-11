@@ -28,6 +28,11 @@ isProjects: true
   <h2 id="projects-title">Projects</h2>
   <div class="trip-list">
     <article class="trip-card">
+      <h3><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h3>
+      <p>An interactive map of 2021 Census dissemination-area data for Vancouver, with selectable variables and interactive Jenks-class filtering.</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/charge-duration/' | htmlBaseUrl }}">Charge Duration</a></h3>
       <p>A personal iPhone app that records battery levels over time and estimates how long a charge lasts.</p>
     </article>

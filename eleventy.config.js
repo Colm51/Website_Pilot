@@ -100,6 +100,8 @@ export default function (eleventyConfig) {
       "projects/ontario-municipal-csd-crosswalk",
     "Projects/OntarioMunicipalitiesCensusDivisions":
       "projects/ontario-municipalities-census-divisions",
+    "Projects/VancouverCensusMap":
+      "projects/vancouver-census-map",
   });
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Explore selected 2021 Census characteristics across Vancouver dissemination areas.">
+    <title>Vancouver Census Map</title>
+    <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="map-page">
+      <header class="map-header">
+        <div>
+          <p class="map-eyebrow">2021 Census of Population</p>
+          <h1>Vancouver Census Map</h1>
+        </div>
+        <div class="map-picker">
+          <label for="variable-select">Map variable</label>
+          <select id="variable-select">
+            <option value="C6">Population density</option>
+            <option value="C40">Median age</option>
+            <option value="C42">Single-detached houses</option>
+            <option value="C47">Apartments in buildings with five or more storeys</option>
+            <option value="C113">Median income (individuals)</option>
+          </select>
+        </div>
+      </header>
+
+      <section class="map-stage" aria-label="Interactive choropleth map of Vancouver dissemination areas">
+        <div id="map"></div>
+
+        <aside id="info-panel" class="info-panel" aria-live="polite">
+          <p class="panel-kicker">Dissemination area</p>
+          <p class="info-prompt">Hover over or tap a DA to see its value.</p>
+        </aside>
+
+        <aside class="legend" aria-label="Map legend">
+          <h2 id="legend-title">Population density</h2>
+          <div id="legend-classes"></div>
+        </aside>
+
+        <p class="map-source">Source: Statistics Canada, 2021 Census of Population.</p>
+      </section>
+    </main>
+
+    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/jenks.js"></script>
+    <script src="map.js"></script>
+  </body>
+</html>
