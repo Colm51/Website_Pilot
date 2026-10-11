@@ -15,7 +15,7 @@ tags:
     <p class="kicker">Projects</p>
     <h1 id="page-title">Vancouver Census Map</h1>
     <p class="lede">An interactive map of 2021 Census dissemination-area data for Vancouver.</p>
-    <p class="lede">Vancouver's neighbourhoods vary dramatically in terms of such things as density and age. The densest neighbourhoods aren't just slightly more dense than the least dense - they are 100s of times denser.</p>
+    <p class="lede">Vancouver's neighbourhoods vary dramatically in terms of such things as density and age. The densest neighbourhoods aren't just slightly more dense than the least dense - they are many times denser.</p>
         <p class="lede">In order to support exploring these factors, this page maps data available at the Stats Can Dessemination Area geography (2021).</p>
   </div>
 </section>

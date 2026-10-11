@@ -11,37 +11,77 @@
   <body>
     <main class="map-page">
       <header class="map-header">
-        <div>
+        <div class="map-heading">
           <p class="map-eyebrow">2021 Census of Population</p>
           <h1>Vancouver Census Map</h1>
+          <div class="mode-control" role="group" aria-label="Map display mode">
+            <button id="single-mode" type="button" aria-pressed="true">Single map</button>
+            <button id="compare-mode" type="button" aria-pressed="false">Compare</button>
+          </div>
         </div>
-        <div class="map-picker">
-          <label for="variable-select">Map variable</label>
-          <select id="variable-select">
-            <option value="C6">Population density</option>
-            <option value="C40">Median age</option>
-            <option value="C42">Single-detached houses</option>
-            <option value="C47">Apartments in buildings with five or more storeys</option>
-            <option value="C113">Median income (individuals)</option>
-          </select>
+        <div class="map-variable-controls">
+          <div class="map-picker">
+            <label for="variable-select">Map variable</label>
+            <select id="variable-select">
+              <option value="C6">Population density</option>
+              <option value="C40">Median age</option>
+              <option value="C42">Single-detached houses</option>
+              <option value="C47">Apartments in buildings with five or more storeys</option>
+              <option value="C113">Median income (individuals)</option>
+            </select>
+          </div>
+          <div id="compare-picker" class="map-picker" hidden>
+            <label for="compare-variable-select">Comparison variable</label>
+            <select id="compare-variable-select">
+              <option value="C6">Population density</option>
+              <option value="C40">Median age</option>
+              <option value="C42">Single-detached houses</option>
+              <option value="C47">Apartments in buildings with five or more storeys</option>
+              <option value="C113">Median income (individuals)</option>
+            </select>
+          </div>
         </div>
       </header>
 
-      <section class="map-stage" aria-label="Interactive choropleth map of Vancouver dissemination areas">
-        <div id="map"></div>
+      <div id="map-grid" class="map-grid">
+        <section class="map-stage" aria-label="Interactive choropleth map of Vancouver dissemination areas">
+          <div id="map" class="map-canvas"></div>
 
-        <aside id="info-panel" class="info-panel" aria-live="polite">
-          <p class="panel-kicker">Dissemination area</p>
-          <p class="info-prompt">Hover over or tap a DA to see its value.</p>
-        </aside>
+          <aside id="info-panel" class="info-panel" aria-live="polite" hidden></aside>
 
-        <aside class="legend" aria-label="Map legend">
-          <h2 id="legend-title">Population density</h2>
-          <div id="legend-classes"></div>
-        </aside>
+          <aside class="legend" aria-label="Map legend">
+            <div class="legend-header">
+              <h2 id="legend-title">Population density</h2>
+              <button id="legend-toggle" class="legend-toggle" type="button" aria-expanded="true" aria-controls="legend-content" aria-label="Collapse legend">−</button>
+            </div>
+            <div id="legend-content" class="legend-content">
+              <div id="legend-classes" class="legend-classes"></div>
+              <button id="clear-selection" class="legend-clear" type="button" hidden>Clear selection</button>
+            </div>
+          </aside>
 
-        <p class="map-source">Source: Statistics Canada, 2021 Census of Population.</p>
-      </section>
+          <p class="map-source">Source: Statistics Canada, 2021 Census of Population.</p>
+        </section>
+
+        <section id="compare-panel" class="map-stage" aria-label="Comparison choropleth map of Vancouver dissemination areas" hidden>
+          <div id="compare-map" class="map-canvas"></div>
+
+          <aside id="compare-info-panel" class="info-panel" aria-live="polite" hidden></aside>
+
+          <aside class="legend" aria-label="Comparison map legend">
+            <div class="legend-header">
+              <h2 id="compare-legend-title">Population density</h2>
+              <button id="compare-legend-toggle" class="legend-toggle" type="button" aria-expanded="true" aria-controls="compare-legend-content" aria-label="Collapse legend">−</button>
+            </div>
+            <div id="compare-legend-content" class="legend-content">
+              <div id="compare-legend-classes" class="legend-classes"></div>
+              <button id="compare-clear-selection" class="legend-clear" type="button" hidden>Clear selection</button>
+            </div>
+          </aside>
+
+          <p class="map-source">Source: Statistics Canada, 2021 Census of Population.</p>
+        </section>
+      </div>
     </main>
 
     <script src="vendor/leaflet/leaflet.js"></script>
