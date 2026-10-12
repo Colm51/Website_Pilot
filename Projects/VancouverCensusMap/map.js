@@ -43,6 +43,7 @@
       suffix: "",
     },
     C113: { label: "Median income (individuals)", decimals: 0, prefix: "$", suffix: " CAD" },
+    C1474: { label: "Median dwelling value", decimals: 0, prefix: "$", suffix: " CAD" },
   };
   var COLORS = ["#f1f8e9", "#c7e9c0", "#7fcdbb", "#41b6c4", "#2c7fb8", "#253494"];
   var NO_DATA_COLOR = "#d8dcda";

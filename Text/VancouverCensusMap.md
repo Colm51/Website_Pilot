@@ -15,8 +15,12 @@ tags:
     <p class="kicker">Projects</p>
     <h1 id="page-title">Vancouver Census Map</h1>
     <p class="lede">An interactive map of 2021 Census dissemination-area data for Vancouver.</p>
-    <p class="lede">Vancouver's neighbourhoods vary dramatically in terms of such things as density and age. The densest neighbourhoods aren't just slightly more dense than the least dense - they are many times denser.</p>
-        <p class="lede">In order to support exploring these factors, this page maps data available at the Stats Can Dessemination Area geography (2021).</p>
+    <p>Vancouver's neighbourhoods vary dramatically in terms of such things as density and age. The densest neighbourhoods aren't just slightly more dense than the least dense - they are many times denser.</p>
+        <p>In order to support exploring these factors, this page maps data available at the Stats Can Dessemination Area geography (2021).</p>
+        <p>Note: the "Median Dwelling Value" layer is a Stats Can data-point, not to BC Assessment data. According to Stats Can, this is owner estimated and refers to the dollar amount expected by the owner if the asset were to be sold. In the context of dwelling, it refers to the value of the entire dwelling, including the value of the land it is on and of any other structure, such as a garage, which is on the property. If the dwelling is located in a building which contains several dwellings, or a combination of residential and business premises, all of which the household owns, the value is estimated as a portion of the market value that applies only to the dwelling in which the household resides.</p>
+        <p>BC Assessment makes limited assessment data freely available - however, unlike some jurisdictions, it restricts access to bulk property assessment data, requiring special applications by researchers and charging fees to other governments for this data if they do not require it for tax administration purposes.</p>
+
+
   </div>
 </section>
 
