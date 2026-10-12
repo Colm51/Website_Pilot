@@ -166,6 +166,7 @@ body {
 
 .info-panel,
 .legend,
+.road-legend,
 .map-source {
   position: absolute;
   z-index: 700;
@@ -175,6 +176,77 @@ body {
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 5px 22px rgba(24, 42, 36, 0.13);
   backdrop-filter: blur(8px);
+}
+
+.road-legend {
+  position: absolute;
+  z-index: 700;
+  bottom: 2.9rem;
+  left: 0.75rem;
+  width: 9.5rem;
+  padding: 0.55rem 0.65rem;
+  pointer-events: none;
+}
+
+.transit-legend {
+  left: 11.75rem;
+  width: 10.5rem;
+}
+
+.road-legend[hidden] {
+  display: none;
+}
+
+.road-legend h2 {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  line-height: 1.2;
+}
+
+.transit-legend h3 {
+  margin: 0.42rem 0 0.18rem;
+  color: #35433f;
+  font-size: 0.64rem;
+  line-height: 1.15;
+}
+
+.road-legend-row {
+  display: grid;
+  grid-template-columns: 1.45rem 1fr;
+  gap: 0.4rem;
+  align-items: center;
+  min-height: 0.9rem;
+  color: #485550;
+  font-size: 0.62rem;
+  line-height: 1.15;
+}
+
+.road-legend-line {
+  display: block;
+  width: 1.35rem;
+  min-height: 1px;
+  border-radius: 999px;
+}
+
+.road-legend-status {
+  margin: 0.35rem 0 0;
+  color: #65716d;
+  font-size: 0.62rem;
+}
+
+.road-legend-status[hidden] {
+  display: none;
+}
+
+.road-popup {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.18rem 0.55rem;
+  min-width: 10rem;
+}
+
+.road-popup strong {
+  color: #485550;
 }
 
 .selection-overlap {
@@ -445,6 +517,16 @@ body {
     bottom: 3.2rem;
     width: min(16rem, calc(100% - 1.4rem));
     padding: 0.7rem 0.8rem 0.62rem;
+  }
+
+  .road-legend {
+    bottom: 3.2rem;
+    left: 0.55rem;
+  }
+
+  .transit-legend {
+    bottom: 7.2rem;
+    left: 0.55rem;
   }
 
   .map-source {

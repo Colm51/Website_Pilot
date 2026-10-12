@@ -47,9 +47,21 @@
   };
   var COLORS = ["#f1f8e9", "#c7e9c0", "#7fcdbb", "#41b6c4", "#2c7fb8", "#253494"];
   var NO_DATA_COLOR = "#d8dcda";
+  var ROAD_STYLES = {
+    "Arterial": { color: "#8b1d1d", weight: 1 },
+    "Secondary Arterial": { color: "#e87500", weight: 0.75 },
+  };
+  var SKYTRAIN_STYLES = {
+    "Expo Line": "#F2B500",
+    "Millennium Line": "#E0A1B8",
+    "Canada Line": "#1A83BD",
+  };
+  var RAPIDBUS_COLOR = "#8753B5";
   var classifications = {};
   var censusData = null;
   var cityBoundaryData = null;
+  var roadDataPromise = null;
+  var transitDataPromises = {};
   var primaryView = null;
   var comparisonView = null;
   var currentMode = "single";
@@ -158,6 +170,153 @@
     infoPanel.append(message);
   }
 
+  function loadRoadData() {
+    if (!roadDataPromise) {
+      roadDataPromise = fetch("data/vancouver_roads.geojson")
+        .then(function (response) {
+          if (!response.ok) throw new Error("Road GeoJSON request failed: " + response.status);
+          return response.json();
+        })
+        .catch(function (error) {
+          roadDataPromise = null;
+          throw error;
+        });
+    }
+    return roadDataPromise;
+  }
+
+  function loadTransitData(service) {
+    var urls = {
+      skytrain: "data/vancouver_skytrain.geojson",
+      rapidbus: "data/vancouver_rapidbus.geojson",
+    };
+    if (!transitDataPromises[service]) {
+      transitDataPromises[service] = fetch(urls[service])
+        .then(function (response) {
+          if (!response.ok) throw new Error(service + " GeoJSON request failed: " + response.status);
+          return response.json();
+        })
+        .catch(function (error) {
+          delete transitDataPromises[service];
+          throw error;
+        });
+    }
+    return transitDataPromises[service];
+  }
+
+  function roadStyle(feature) {
+    var streetUse = feature.properties && feature.properties.STREETUSE;
+    var style = ROAD_STYLES[streetUse];
+    return {
+      color: style.color,
+      weight: style.weight,
+      opacity: 0.65,
+    };
+  }
+
+  function roadPopup(layer) {
+    var properties = layer.feature.properties || {};
+    var container = document.createElement("div");
+    container.className = "road-popup";
+    var blockLabel = document.createElement("strong");
+    blockLabel.textContent = "HBLOCK";
+    var block = document.createElement("span");
+    block.textContent = properties.HBLOCK || "Not available";
+    var useLabel = document.createElement("strong");
+    useLabel.textContent = "STREETUSE";
+    var use = document.createElement("span");
+    use.textContent = properties.STREETUSE || "Not available";
+    container.append(blockLabel, block, useLabel, use);
+    return container;
+  }
+
+  function transitPopup(layer, includeRouteNumber) {
+    var properties = layer.feature.properties || {};
+    var container = document.createElement("div");
+    container.className = "road-popup";
+    var nameLabel = document.createElement("strong");
+    nameLabel.textContent = "Route";
+    var name = document.createElement("span");
+    name.textContent = properties.route_name || "Not available";
+    container.append(nameLabel, name);
+    if (includeRouteNumber) {
+      var numberLabel = document.createElement("strong");
+      numberLabel.textContent = "Route number";
+      var number = document.createElement("span");
+      number.textContent = properties.route_short_name || "Not available";
+      container.append(numberLabel, number);
+    }
+    return container;
+  }
+
+  function createRoadLegend(mapElement) {
+    var legend = document.createElement("aside");
+    legend.className = "road-legend";
+    legend.setAttribute("aria-label", "Road network legend");
+    legend.hidden = true;
+    var title = document.createElement("h2");
+    title.textContent = "Road Network";
+    legend.append(title);
+    Object.keys(ROAD_STYLES).forEach(function (classification) {
+      var row = document.createElement("div");
+      row.className = "road-legend-row";
+      var line = document.createElement("span");
+      line.className = "road-legend-line";
+      line.style.backgroundColor = ROAD_STYLES[classification].color;
+      line.style.height = ROAD_STYLES[classification].weight + "px";
+      var label = document.createElement("span");
+      label.textContent = classification;
+      row.append(line, label);
+      legend.append(row);
+    });
+    var status = document.createElement("p");
+    status.className = "road-legend-status";
+    status.hidden = true;
+    legend.append(status);
+    mapElement.parentElement.append(legend);
+    return { element: legend, status: status };
+  }
+
+  function createTransitLegend(mapElement) {
+    var legend = document.createElement("aside");
+    legend.className = "road-legend transit-legend";
+    legend.setAttribute("aria-label", "Transit legend");
+    legend.hidden = true;
+    var title = document.createElement("h2");
+    title.textContent = "Transit";
+    legend.append(title);
+
+    function createSection(label, styles) {
+      var section = document.createElement("section");
+      section.hidden = true;
+      var heading = document.createElement("h3");
+      heading.textContent = label;
+      section.append(heading);
+      Object.keys(styles).forEach(function (service) {
+        var row = document.createElement("div");
+        row.className = "road-legend-row";
+        var line = document.createElement("span");
+        line.className = "road-legend-line";
+        line.style.backgroundColor = styles[service];
+        var name = document.createElement("span");
+        name.textContent = service;
+        row.append(line, name);
+        section.append(row);
+      });
+      var status = document.createElement("p");
+      status.className = "road-legend-status";
+      status.hidden = true;
+      section.append(status);
+      legend.append(section);
+      return { element: section, status: status };
+    }
+
+    var skytrain = createSection("SkyTrain", SKYTRAIN_STYLES);
+    var rapidbus = createSection("RapidBus", { "RapidBus": RAPIDBUS_COLOR });
+    mapElement.parentElement.append(legend);
+    return { element: legend, skytrain: skytrain, rapidbus: rapidbus };
+  }
+
   function createMapView(options) {
     var currentField = options.select.value;
     var selectedClasses = new Set();
@@ -185,6 +344,119 @@
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
+
+    map.createPane("roadsPane");
+    map.getPane("roadsPane").style.zIndex = 450;
+    map.createPane("transitPane");
+    map.getPane("transitPane").style.zIndex = 460;
+    var roadLayer = L.layerGroup();
+    var skytrainLayer = L.layerGroup();
+    var rapidBusLayer = L.layerGroup();
+    var roadLegend = createRoadLegend(options.mapElement);
+    var transitLegend = createTransitLegend(options.mapElement);
+    var roadsPopulated = false;
+    var transitPopulated = { skytrain: false, rapidbus: false };
+    L.control.layers(null, {
+      "Road Network": roadLayer,
+      "SkyTrain": skytrainLayer,
+      "RapidBus": rapidBusLayer,
+    }, { position: "topright" }).addTo(map);
+
+    function populateRoadLayer(data) {
+      if (roadsPopulated) return;
+      var filteredRoadData = {
+        type: "FeatureCollection",
+        features: data.features.filter(function (feature) {
+          var streetUse = feature.properties && feature.properties.STREETUSE;
+          return Object.prototype.hasOwnProperty.call(ROAD_STYLES, streetUse);
+        }),
+      };
+      var roads = L.geoJSON(filteredRoadData, {
+        pane: "roadsPane",
+        style: roadStyle,
+        bubblingMouseEvents: false,
+        onEachFeature: function (feature, layer) {
+          layer.bindPopup(roadPopup);
+        },
+      });
+      roadLayer.addLayer(roads);
+      roadsPopulated = true;
+    }
+
+    function populateTransitLayer(service, data) {
+      if (transitPopulated[service]) return;
+      var isRapidBus = service === "rapidbus";
+      var targetLayer = isRapidBus ? rapidBusLayer : skytrainLayer;
+      var routes = L.geoJSON(data, {
+        pane: "transitPane",
+        style: function (feature) {
+          return {
+            color: isRapidBus
+              ? RAPIDBUS_COLOR
+              : SKYTRAIN_STYLES[feature.properties.route_name],
+            weight: 1.25,
+            opacity: 0.8,
+          };
+        },
+        bubblingMouseEvents: false,
+        onEachFeature: function (feature, layer) {
+          layer.bindPopup(function () { return transitPopup(layer, isRapidBus); });
+        },
+      });
+      targetLayer.addLayer(routes);
+      transitPopulated[service] = true;
+    }
+
+    function updateTransitLegend() {
+      var skytrainEnabled = map.hasLayer(skytrainLayer);
+      var rapidBusEnabled = map.hasLayer(rapidBusLayer);
+      transitLegend.skytrain.element.hidden = !skytrainEnabled;
+      transitLegend.rapidbus.element.hidden = !rapidBusEnabled;
+      transitLegend.element.hidden = !skytrainEnabled && !rapidBusEnabled;
+    }
+
+    function enableTransit(service, legendSection, label) {
+      updateTransitLegend();
+      legendSection.status.hidden = false;
+      legendSection.status.textContent = "Loading " + label + "…";
+      loadTransitData(service)
+        .then(function (data) {
+          populateTransitLayer(service, data);
+          legendSection.status.hidden = true;
+        })
+        .catch(function (error) {
+          console.error(error);
+          legendSection.status.textContent = label + " data unavailable.";
+        });
+    }
+
+    map.on("overlayadd", function (event) {
+      if (event.layer === roadLayer) {
+        roadLegend.element.hidden = false;
+        roadLegend.status.hidden = false;
+        roadLegend.status.textContent = "Loading roads…";
+        loadRoadData()
+          .then(function (data) {
+            populateRoadLayer(data);
+            roadLegend.status.hidden = true;
+          })
+          .catch(function (error) {
+            console.error(error);
+            roadLegend.status.textContent = "Road data unavailable.";
+          });
+      } else if (event.layer === skytrainLayer) {
+        enableTransit("skytrain", transitLegend.skytrain, "SkyTrain");
+      } else if (event.layer === rapidBusLayer) {
+        enableTransit("rapidbus", transitLegend.rapidbus, "RapidBus");
+      }
+    });
+
+    map.on("overlayremove", function (event) {
+      if (event.layer === roadLayer) roadLegend.element.hidden = true;
+      if (event.layer === skytrainLayer || event.layer === rapidBusLayer) {
+        updateTransitLegend();
+      }
+    });
 
     function hasLegendSelection() {
       return selectedClasses.size > 0 || noDataSelected;
