@@ -23,7 +23,8 @@ tags:
 <article class="essay measure">
   <section aria-labelledby="interactive-map-title">
     <h2 id="interactive-map-title">Interactive map</h2>
-    <p>Select a Census variable to update the map. Select the legend to filter the dissemination areas.</p>
+    <p>Select the legend or a dissemination area to filter the dissemination areas.</p>
+    <p>Select "Compare" to display side-by-side maps that can be filtered based on different variables. In order to support basic comparative exploration, a Jaccard Similarity Index is generated showing the degree of intersection in DAs between two maps.</p>
     <iframe
       class="map-embed"
       src="{{ '/projects/vancouver-census-map/map.html' | htmlBaseUrl }}"

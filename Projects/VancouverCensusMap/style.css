@@ -130,6 +130,8 @@ body {
 }
 
 .map-grid {
+  position: relative;
+  isolation: isolate;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   min-height: 0;
@@ -173,6 +175,26 @@ body {
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 5px 22px rgba(24, 42, 36, 0.13);
   backdrop-filter: blur(8px);
+}
+
+.selection-overlap {
+  position: absolute;
+  z-index: 1100;
+  box-sizing: border-box;
+  top: 20px;
+  left: 50%;
+  padding: 10px 14px;
+  border: 1px solid #d7ddda;
+  border-radius: 0.55rem;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(24, 42, 36, 0.08);
+  transform: translateX(-50%);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+}
+
+.selection-overlap[hidden] {
+  display: none;
 }
 
 .info-panel {

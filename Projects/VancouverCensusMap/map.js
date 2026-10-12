@@ -1,6 +1,38 @@
 (function () {
   "use strict";
 
+  function calculateSelectionOverlap(leftIds, rightIds) {
+    var common = 0;
+    leftIds.forEach(function (id) {
+      if (rightIds.has(id)) common += 1;
+    });
+    var either = leftIds.size + rightIds.size - common;
+    return {
+      percent: either ? Math.round((common / either) * 100) : 0,
+      common: common,
+      leftOnly: leftIds.size - common,
+      rightOnly: rightIds.size - common,
+      either: either,
+    };
+  }
+
+  function activeSelectionClasses(selectedBand, legendClasses, noDataSelected) {
+    if (legendClasses.size > 0 || noDataSelected) {
+      var activeClasses = new Set(legendClasses);
+      if (noDataSelected) activeClasses.add(-1);
+      return activeClasses;
+    }
+    return selectedBand === null ? null : new Set([selectedBand]);
+  }
+
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = {
+      calculateSelectionOverlap: calculateSelectionOverlap,
+      activeSelectionClasses: activeSelectionClasses,
+    };
+  }
+  if (typeof document === "undefined") return;
+
   var VARIABLES = {
     C6: { label: "Population density", decimals: 1, suffix: " people per km²" },
     C40: { label: "Median age", decimals: 1, suffix: " years" },
@@ -27,6 +59,51 @@
   var comparePicker = document.getElementById("compare-picker");
   var singleModeButton = document.getElementById("single-mode");
   var compareModeButton = document.getElementById("compare-mode");
+  var overlapPanel = document.getElementById("selection-overlap");
+
+  function updateSelectionOverlap() {
+    var leftIds = primaryView && primaryView.getActiveSelectionIds();
+    var rightIds = comparisonView && comparisonView.getActiveSelectionIds();
+    if (
+      currentMode !== "compare" ||
+      !leftIds ||
+      !rightIds ||
+      leftIds.size === 0 ||
+      rightIds.size === 0
+    ) {
+      overlapPanel.hidden = true;
+      overlapPanel.style.setProperty("display", "none", "important");
+      return;
+    }
+    var overlap = calculateSelectionOverlap(leftIds, rightIds);
+    overlapPanel.hidden = false;
+    overlapPanel.textContent =
+      "Jaccard Similarity — " + overlap.percent + "% — " +
+      leftIds.size + " left · " + rightIds.size + " right · " +
+      overlap.common + " shared · " + overlap.either + " total";
+    overlapPanel.title = "Share of selected DAs that appear in both selections.";
+    overlapPanel.style.setProperty("display", "block", "important");
+    overlapPanel.style.setProperty("visibility", "visible", "important");
+    overlapPanel.style.setProperty("opacity", "1", "important");
+    overlapPanel.style.setProperty("position", "absolute", "important");
+    overlapPanel.style.setProperty("top", "20px", "important");
+    overlapPanel.style.setProperty("right", "auto", "important");
+    overlapPanel.style.setProperty("bottom", "auto", "important");
+    overlapPanel.style.setProperty("left", "50%", "important");
+    overlapPanel.style.setProperty("transform", "translateX(-50%)", "important");
+    overlapPanel.style.setProperty("z-index", "2147483647", "important");
+    overlapPanel.style.setProperty("width", "auto", "important");
+    overlapPanel.style.setProperty("max-width", "none", "important");
+    overlapPanel.style.setProperty("padding", "10px 14px", "important");
+    overlapPanel.style.setProperty("color", "#17201e", "important");
+    overlapPanel.style.setProperty("background", "#fff", "important");
+    overlapPanel.style.setProperty("border", "1px solid #c8d1ce", "important");
+    overlapPanel.style.setProperty("border-radius", "0.55rem", "important");
+    overlapPanel.style.setProperty("outline", "none", "important");
+    overlapPanel.style.setProperty("box-shadow", "0 2px 8px rgba(24, 42, 36, 0.12)", "important");
+    overlapPanel.style.setProperty("font", "600 13px/1.4 Inter, ui-sans-serif, sans-serif", "important");
+    overlapPanel.style.setProperty("pointer-events", "none", "important");
+  }
 
   function isValue(value) {
     return value !== null && value !== undefined && Number.isFinite(Number(value));
@@ -127,6 +204,23 @@
         : null;
     }
 
+    function getActiveSelectionIds() {
+      // Legend selections take precedence because they define the visible/eligible DA set.
+      var activeClasses = activeSelectionClasses(
+        selectedBandIndex(),
+        selectedClasses,
+        noDataSelected
+      );
+      if (!activeClasses) return null;
+      var ids = new Set();
+      censusData.features.forEach(function (feature) {
+        if (activeClasses.has(classIndex(feature.properties[currentField], currentField))) {
+          ids.add(String(feature.properties.DAUID));
+        }
+      });
+      return ids;
+    }
+
     function baseStyle(feature) {
       var index = classIndex(feature.properties[currentField], currentField);
       var active = isClassEnabled(index);
@@ -178,6 +272,7 @@
       geojsonLayer.eachLayer(applyLayerStyle);
       updateDaSelectionControls();
       hideInfo();
+      updateSelectionOverlap();
     }
 
     function hideInfo() {
@@ -232,6 +327,7 @@
           updateDaSelectionControls();
           highlight(layer);
           showFeatureInfo(layer);
+          updateSelectionOverlap();
         },
       });
     }
@@ -339,6 +435,7 @@
       options.legendClasses.classList.toggle("has-selection", hasLegendSelection());
       options.clearSelectionButton.hidden = !hasLegendSelection();
       restyleMap();
+      updateSelectionOverlap();
     }
 
     function addLegendRow(color, text, index) {
@@ -388,6 +485,7 @@
       updateDaSelectionControls();
       scheduleInitialViewFit();
       hideInfo();
+      updateSelectionOverlap();
     }
 
     var bounds = geojsonLayer.getBounds();
@@ -432,11 +530,13 @@
     options.clearSelectionButton.addEventListener("click", function () {
       clearLegendSelection();
       restyleMap();
+      updateSelectionOverlap();
     });
     clearDaSelectionButton.addEventListener("click", clearDaSelection);
     map.on("click", clearDaSelection);
 
     return {
+      getActiveSelectionIds: getActiveSelectionIds,
       refreshLayout: function () {
         map.invalidateSize({ pan: false });
         scheduleInitialViewFit();
@@ -495,6 +595,7 @@
     singleModeButton.setAttribute("aria-pressed", String(!comparing));
     compareModeButton.setAttribute("aria-pressed", String(comparing));
     if (comparing) ensureComparisonView();
+    updateSelectionOverlap();
     refreshVisibleMaps();
   }
 
