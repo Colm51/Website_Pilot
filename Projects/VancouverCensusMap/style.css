@@ -185,7 +185,7 @@ body {
   left: 0.75rem;
   width: 9.5rem;
   padding: 0.55rem 0.65rem;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .transit-legend {
@@ -197,17 +197,42 @@ body {
   display: none;
 }
 
+.road-legend .legend-header {
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
 .road-legend h2 {
-  margin: 0 0 0.4rem;
+  margin: 0;
   font-size: 0.72rem;
   line-height: 1.2;
 }
 
+.transit-legend section .legend-header {
+  margin-top: 0.42rem;
+  margin-bottom: 0.18rem;
+}
+
 .transit-legend h3 {
-  margin: 0.42rem 0 0.18rem;
+  margin: 0;
   color: #35433f;
   font-size: 0.64rem;
   line-height: 1.15;
+}
+
+.road-legend .legend-toggle {
+  width: 1rem;
+  height: 1rem;
+  font-size: 0.75rem;
+}
+
+.road-legend.is-collapsed {
+  width: max-content;
+}
+
+.road-legend.is-collapsed .legend-header,
+.transit-legend section.is-collapsed .legend-header {
+  margin-bottom: 0;
 }
 
 .road-legend-row {
@@ -253,7 +278,7 @@ body {
   position: absolute;
   z-index: 1100;
   box-sizing: border-box;
-  top: 20px;
+  top: 84px;
   left: 50%;
   padding: 10px 14px;
   border: 1px solid #d7ddda;

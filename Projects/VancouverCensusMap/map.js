@@ -99,7 +99,7 @@
     overlapPanel.style.setProperty("visibility", "visible", "important");
     overlapPanel.style.setProperty("opacity", "1", "important");
     overlapPanel.style.setProperty("position", "absolute", "important");
-    overlapPanel.style.setProperty("top", "20px", "important");
+    overlapPanel.style.setProperty("top", "84px", "important");
     overlapPanel.style.setProperty("right", "auto", "important");
     overlapPanel.style.setProperty("bottom", "auto", "important");
     overlapPanel.style.setProperty("left", "50%", "important");
@@ -249,14 +249,49 @@
     return container;
   }
 
+  function createCollapsibleLegendSection(container, headingTag, label, contentId) {
+    var collapsed = false;
+    var header = document.createElement("div");
+    header.className = "legend-header";
+    var heading = document.createElement(headingTag);
+    heading.textContent = label;
+    var toggle = document.createElement("button");
+    toggle.className = "legend-toggle";
+    toggle.type = "button";
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-controls", contentId);
+    toggle.setAttribute("aria-label", "Collapse " + label + " legend");
+    toggle.textContent = "−";
+    var content = document.createElement("div");
+    content.className = "legend-content";
+    content.id = contentId;
+    toggle.addEventListener("click", function () {
+      collapsed = !collapsed;
+      container.classList.toggle("is-collapsed", collapsed);
+      content.hidden = collapsed;
+      toggle.textContent = collapsed ? "+" : "−";
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      toggle.setAttribute(
+        "aria-label",
+        (collapsed ? "Expand " : "Collapse ") + label + " legend"
+      );
+    });
+    header.append(heading, toggle);
+    container.append(header, content);
+    return content;
+  }
+
   function createRoadLegend(mapElement) {
     var legend = document.createElement("aside");
     legend.className = "road-legend";
     legend.setAttribute("aria-label", "Road network legend");
     legend.hidden = true;
-    var title = document.createElement("h2");
-    title.textContent = "Road Network";
-    legend.append(title);
+    var content = createCollapsibleLegendSection(
+      legend,
+      "h2",
+      "Road Network",
+      mapElement.id + "-road-legend-content"
+    );
     Object.keys(ROAD_STYLES).forEach(function (classification) {
       var row = document.createElement("div");
       row.className = "road-legend-row";
@@ -267,12 +302,12 @@
       var label = document.createElement("span");
       label.textContent = classification;
       row.append(line, label);
-      legend.append(row);
+      content.append(row);
     });
     var status = document.createElement("p");
     status.className = "road-legend-status";
     status.hidden = true;
-    legend.append(status);
+    content.append(status);
     mapElement.parentElement.append(legend);
     return { element: legend, status: status };
   }
@@ -289,9 +324,12 @@
     function createSection(label, styles) {
       var section = document.createElement("section");
       section.hidden = true;
-      var heading = document.createElement("h3");
-      heading.textContent = label;
-      section.append(heading);
+      var content = createCollapsibleLegendSection(
+        section,
+        "h3",
+        label,
+        mapElement.id + "-" + label.toLowerCase() + "-legend-content"
+      );
       Object.keys(styles).forEach(function (service) {
         var row = document.createElement("div");
         row.className = "road-legend-row";
@@ -301,12 +339,12 @@
         var name = document.createElement("span");
         name.textContent = service;
         row.append(line, name);
-        section.append(row);
+        content.append(row);
       });
       var status = document.createElement("p");
       status.className = "road-legend-status";
       status.hidden = true;
-      section.append(status);
+      content.append(status);
       legend.append(section);
       return { element: section, status: status };
     }
@@ -335,7 +373,6 @@
     var map = L.map(options.mapElement, {
       zoomControl: true,
       attributionControl: true,
-      maxBoundsViscosity: 1,
       preferCanvas: true,
       zoomSnap: 0.25,
     });
@@ -761,8 +798,6 @@
       updateSelectionOverlap();
     }
 
-    var bounds = geojsonLayer.getBounds();
-    map.setMaxBounds(bounds.pad(0.22));
     updateLegend();
     scheduleInitialViewFit();
 

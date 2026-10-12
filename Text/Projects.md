@@ -29,7 +29,7 @@ isProjects: true
   <div class="trip-list">
     <article class="trip-card">
       <h3><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h3>
-      <p>An interactive map of 2021 Census dissemination-area data for Vancouver, with selectable variables and interactive Jenks-class filtering.</p>
+      <p>An interactive map of 2021 Census dissemination area data for Vancouver.</p>
     </article>
 
     <article class="trip-card">
