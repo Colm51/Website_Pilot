@@ -86,12 +86,21 @@
     var noDataSelected = false;
     var selectedLayer = null;
     var legendCollapsed = false;
+    var userAdjustedView = false;
+    var fitFrame = null;
+    var clearDaSelectionButton = document.createElement("button");
+    clearDaSelectionButton.type = "button";
+    clearDaSelectionButton.className = "legend-clear";
+    clearDaSelectionButton.textContent = "Clear DA selection";
+    clearDaSelectionButton.hidden = true;
+    options.clearSelectionButton.insertAdjacentElement("afterend", clearDaSelectionButton);
 
     var map = L.map(options.mapElement, {
       zoomControl: true,
       attributionControl: true,
       maxBoundsViscosity: 1,
       preferCanvas: true,
+      zoomSnap: 0.25,
     });
 
     var basemap = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -112,6 +121,12 @@
       return isClassEnabled(classIndex(feature.properties[currentField], currentField));
     }
 
+    function selectedBandIndex() {
+      return selectedLayer
+        ? classIndex(selectedLayer.feature.properties[currentField], currentField)
+        : null;
+    }
+
     function baseStyle(feature) {
       var index = classIndex(feature.properties[currentField], currentField);
       var active = isClassEnabled(index);
@@ -126,13 +141,43 @@
 
     function applyLayerStyle(layer) {
       var style = baseStyle(layer.feature);
-      if (layer === selectedLayer && isFeatureActive(layer.feature)) {
+      var selectedClass = selectedBandIndex();
+      if (
+        selectedClass !== null &&
+        classIndex(layer.feature.properties[currentField], currentField) === selectedClass &&
+        isFeatureActive(layer.feature)
+      ) {
         style.color = "#152d28";
         style.weight = 2.2;
         style.opacity = 1;
         style.fillOpacity = 0.88;
       }
       layer.setStyle(style);
+    }
+
+    function updateDaSelectionControls() {
+      var selectedClass = selectedBandIndex();
+      options.legendClasses.querySelectorAll(".legend-row").forEach(function (row) {
+        var matchesSelectedBand =
+          selectedClass !== null && Number(row.dataset.classIndex) === selectedClass;
+        if (matchesSelectedBand) {
+          row.style.backgroundColor = "rgba(74, 116, 102, 0.16)";
+          row.style.outline = "2px solid rgba(21, 45, 40, 0.65)";
+          row.style.outlineOffset = "-2px";
+        } else {
+          row.style.removeProperty("background-color");
+          row.style.removeProperty("outline");
+          row.style.removeProperty("outline-offset");
+        }
+      });
+      clearDaSelectionButton.hidden = selectedClass === null;
+    }
+
+    function clearDaSelection() {
+      selectedLayer = null;
+      geojsonLayer.eachLayer(applyLayerStyle);
+      updateDaSelectionControls();
+      hideInfo();
     }
 
     function hideInfo() {
@@ -182,8 +227,9 @@
         },
         click: function (event) {
           L.DomEvent.stopPropagation(event.originalEvent);
-          if (selectedLayer && selectedLayer !== layer) applyLayerStyle(selectedLayer);
           selectedLayer = layer;
+          geojsonLayer.eachLayer(applyLayerStyle);
+          updateDaSelectionControls();
           highlight(layer);
           showFeatureInfo(layer);
         },
@@ -193,6 +239,7 @@
     var geojsonLayer = L.geoJSON(censusData, {
       style: baseStyle,
       onEachFeature: onEachFeature,
+      bubblingMouseEvents: false,
     }).addTo(map);
 
     var cityBoundaryLayer = L.geoJSON(cityBoundaryData, {
@@ -203,6 +250,56 @@
         weight: 1.25,
       },
     });
+
+    var cityBounds = cityBoundaryLayer.getBounds();
+
+    function initialViewPadding() {
+      var mapRect = options.mapElement.getBoundingClientRect();
+      var legendRect = options.legend.getBoundingClientRect();
+      var basePadding = Math.max(
+        10,
+        Math.min(20, Math.round(Math.min(mapRect.width, mapRect.height) * 0.025))
+      );
+      var horizontalOverlap = Math.max(
+        0,
+        Math.min(mapRect.right, legendRect.right) - Math.max(mapRect.left, legendRect.left)
+      );
+      var verticalOverlap = Math.max(
+        0,
+        Math.min(mapRect.bottom, legendRect.bottom) - Math.max(mapRect.top, legendRect.top)
+      );
+      if (!horizontalOverlap || !verticalOverlap) {
+        return {
+          paddingTopLeft: [basePadding, basePadding],
+          paddingBottomRight: [basePadding, basePadding],
+        };
+      }
+      var rightFootprint = Math.max(0, mapRect.right - legendRect.left) + basePadding;
+      var bottomFootprint = Math.max(0, mapRect.bottom - legendRect.top) + basePadding;
+      var widthBesideLegend = mapRect.width - rightFootprint - basePadding;
+      var legendNeedsBottomSpace = widthBesideLegend < Math.max(260, mapRect.width * 0.44);
+
+      return {
+        paddingTopLeft: [basePadding, basePadding],
+        paddingBottomRight: legendNeedsBottomSpace
+          ? [basePadding, bottomFootprint]
+          : [rightFootprint, basePadding],
+      };
+    }
+
+    function fitInitialView() {
+      fitFrame = null;
+      if (userAdjustedView || !cityBounds.isValid()) return;
+      map.invalidateSize({ pan: false });
+      map.setMinZoom(9);
+      map.fitBounds(cityBounds, Object.assign({ animate: false }, initialViewPadding()));
+      map.setMinZoom(Math.max(9, map.getZoom() - 1));
+    }
+
+    function scheduleInitialViewFit() {
+      if (userAdjustedView || fitFrame !== null) return;
+      fitFrame = window.requestAnimationFrame(fitInitialView);
+    }
 
     function restyleMap() {
       var filtered = hasLegendSelection();
@@ -248,6 +345,7 @@
       var row = document.createElement("button");
       row.type = "button";
       row.className = "legend-row";
+      row.dataset.classIndex = String(index);
       row.setAttribute("aria-pressed", "false");
       row.addEventListener("click", function () { toggleLegendClass(index, row); });
       var swatch = document.createElement("span");
@@ -278,22 +376,54 @@
         "aria-label",
         legendCollapsed ? "Expand legend" : "Collapse legend"
       );
+      scheduleInitialViewFit();
     }
 
     function updateVariable() {
       currentField = options.select.value;
+      selectedLayer = null;
       clearLegendSelection();
       restyleMap();
       updateLegend();
-      if (selectedLayer) showFeatureInfo(selectedLayer);
-      else hideInfo();
+      updateDaSelectionControls();
+      scheduleInitialViewFit();
+      hideInfo();
     }
 
     var bounds = geojsonLayer.getBounds();
-    map.fitBounds(bounds, { padding: [12, 12] });
     map.setMaxBounds(bounds.pad(0.22));
-    map.setMinZoom(Math.max(9, map.getZoom() - 1));
     updateLegend();
+    scheduleInitialViewFit();
+
+    function markUserAdjustedView() {
+      userAdjustedView = true;
+    }
+
+    function onMapKeyDown(event) {
+      if (event.altKey || event.ctrlKey || event.metaKey) return;
+      var viewKeys = [
+        "ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown",
+        "+", "-", "=", "_",
+      ];
+      if (viewKeys.indexOf(event.key) !== -1) markUserAdjustedView();
+    }
+
+    function onMapClickCapture(event) {
+      if (event.target.closest && event.target.closest(".leaflet-control-zoom")) {
+        markUserAdjustedView();
+      }
+    }
+
+    function onMapTouchMove(event) {
+      if (event.touches && event.touches.length > 1) markUserAdjustedView();
+    }
+
+    map.on("dragstart boxzoomstart", markUserAdjustedView);
+    options.mapElement.addEventListener("wheel", markUserAdjustedView, { passive: true });
+    options.mapElement.addEventListener("dblclick", markUserAdjustedView, true);
+    options.mapElement.addEventListener("keydown", onMapKeyDown, true);
+    options.mapElement.addEventListener("click", onMapClickCapture, true);
+    options.mapElement.addEventListener("touchmove", onMapTouchMove, { passive: true });
 
     options.select.addEventListener("change", updateVariable);
     options.legendToggle.addEventListener("click", function () {
@@ -303,15 +433,13 @@
       clearLegendSelection();
       restyleMap();
     });
-    map.on("click", function () {
-      if (selectedLayer) applyLayerStyle(selectedLayer);
-      selectedLayer = null;
-      hideInfo();
-    });
+    clearDaSelectionButton.addEventListener("click", clearDaSelection);
+    map.on("click", clearDaSelection);
 
     return {
-      invalidateSize: function () {
+      refreshLayout: function () {
         map.invalidateSize({ pan: false });
+        scheduleInitialViewFit();
       },
     };
   }
@@ -352,8 +480,8 @@
 
   function refreshVisibleMaps() {
     window.requestAnimationFrame(function () {
-      if (primaryView) primaryView.invalidateSize();
-      if (currentMode === "compare" && comparisonView) comparisonView.invalidateSize();
+      if (primaryView) primaryView.refreshLayout();
+      if (currentMode === "compare" && comparisonView) comparisonView.refreshLayout();
     });
   }
 
@@ -372,6 +500,7 @@
 
   singleModeButton.addEventListener("click", function () { setMode("single"); });
   compareModeButton.addEventListener("click", function () { setMode("compare"); });
+  window.addEventListener("resize", refreshVisibleMaps);
 
   Promise.all([
     fetch("data/vancouver_das.geojson"),
