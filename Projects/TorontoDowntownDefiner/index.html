@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Draw and compare your definition of downtown Toronto." />
+    <title>Toronto Downtown Definer</title>
+    <style>
+      .topbar-meta { max-width: 520px; text-align: right; }
+      .topbar-meta .intro { max-width: none; }
+      .site-return { color: #dca64e; font-weight: 700; text-decoration: none; }
+      .site-return:hover, .site-return:focus { text-decoration: underline; }
+    </style>
+    <script type="module" crossorigin src="./assets/index-2Fhv7kDD.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-YeAS32Om.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Interactive map</p>
+          <h1>Toronto Downtown Definer</h1>
+        </div>
+        <div class="topbar-meta">
+          <p class="intro">Trace the Toronto you call downtown, then compare it with two official definitions.</p>
+          <a class="site-return" href="../../">&larr; Main website</a>
+        </div>
+      </header>
+
+      <main class="workspace">
+        <section class="map-shell" aria-label="Interactive map of Toronto">
+          <div id="map"></div>
+          <div class="map-instruction" id="map-instruction" role="status">
+            Click the map to place your first boundary point.
+          </div>
+          <div class="legend is-hidden" id="legend" aria-label="Map legend">
+            <strong>Boundaries</strong>
+            <span><i class="swatch user"></i>Selected attempt</span>
+            <span><i class="swatch statscan"></i>Statistics Canada</span>
+            <span><i class="swatch ut"></i>University of Toronto</span>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="panel draw-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="step-label">Step 1</p>
+                <h2>Draw your downtown</h2>
+              </div>
+              <span class="vertex-count" id="vertex-count">0 points</span>
+            </div>
+            <p class="hint">Click around the map in order. Drag any point to fine-tune the shape before submitting.</p>
+            <div class="button-row">
+              <button id="undo-button" class="button secondary" type="button" disabled>Undo point</button>
+              <button id="clear-button" class="button secondary" type="button" disabled>Clear</button>
+              <button id="submit-button" class="button primary" type="button" disabled>Submit boundary</button>
+            </div>
+            <p class="feedback" id="feedback" aria-live="polite"></p>
+            <button id="draw-again-button" class="button primary full is-hidden" type="button">Draw again</button>
+          </section>
+
+          <section class="panel attempts-panel is-hidden" id="attempts-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="step-label">Your session</p>
+                <h2>Previous attempts</h2>
+              </div>
+              <span class="score-trend" id="score-trend"></span>
+            </div>
+            <label for="attempt-select">Selected boundary</label>
+            <select id="attempt-select"></select>
+          </section>
+
+          <section class="panel layers-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="step-label">Map context</p>
+                <h2>Boundary layers</h2>
+              </div>
+            </div>
+            <label class="check-row locked" id="statscan-row">
+              <input type="checkbox" id="statscan-toggle" disabled />
+              <span><i class="swatch statscan"></i>Statistics Canada</span>
+            </label>
+            <label class="check-row locked" id="ut-row">
+              <input type="checkbox" id="ut-toggle" disabled />
+              <span><i class="swatch ut"></i>University of Toronto</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="municipal-toggle" />
+              <span><i class="swatch municipal"></i>Toronto municipal boundary</span>
+            </label>
+            <label class="check-row">
+              <input type="checkbox" id="wards-toggle" />
+              <span><i class="swatch wards"></i>Toronto wards</span>
+            </label>
+            <p class="microcopy" id="official-note">Official definitions unlock after submission.</p>
+          </section>
+
+          <section class="panel results-panel is-hidden" id="results-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="step-label">Step 2</p>
+                <h2>Comparison</h2>
+              </div>
+              <span class="attempt-badge" id="attempt-badge">Attempt 1</span>
+            </div>
+            <div class="user-area-card">
+              <span>Your downtown area</span>
+              <strong id="user-area">—</strong>
+            </div>
+            <div id="comparison-cards"></div>
+          </section>
+
+          <section class="panel about-panel">
+            <details>
+              <summary>How scores are calculated</summary>
+              <p>Areas use Turf's geodesic calculation. IoU is the shared area divided by the total area covered by either boundary.</p>
+            </details>
+          </section>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

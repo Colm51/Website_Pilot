@@ -28,6 +28,11 @@ isProjects: true
   <h2 id="projects-title">Projects</h2>
   <div class="trip-list">
     <article class="trip-card">
+      <h3><a href="{{ '/projects/toronto-downtown-definer/' | htmlBaseUrl }}">Toronto Downtown Definer</a></h3>
+      <p>Draw your own definition of downtown Toronto and compare it with the boundaries used by Statistics Canada and the University of Toronto.</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h3>
       <p>An interactive map of 2021 Census dissemination area data for Vancouver.</p>
     </article>

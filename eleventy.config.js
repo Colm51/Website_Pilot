@@ -102,6 +102,8 @@ export default function (eleventyConfig) {
       "projects/ontario-municipalities-census-divisions",
     "Projects/VancouverCensusMap":
       "projects/vancouver-census-map",
+    "Projects/TorontoDowntownDefiner":
+      "projects/toronto-downtown-definer",
   });
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
