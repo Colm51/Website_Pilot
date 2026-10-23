@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Compare circular buffers with 50 km road-network catchments in Ontario." />
+    <title>Catchment Game</title>
+    <script type="module" crossorigin src="./assets/index-B0_Ji4Fi.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-kuISsfu4.css">
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">Interactive map</p>
+          <h1>Catchment Game</h1>
+        </div>
+        <p class="intro">How closely can a straight-line circle approximate a 50 km road-network catchment? Choose a municipality, tune the radius, and compare.</p>
+      </header>
+
+      <main class="workspace">
+        <section class="map-shell" aria-label="Interactive map of Ontario catchments">
+          <div id="map"></div>
+          <div class="map-instruction" id="map-instruction" role="status">Choose a municipality to begin.</div>
+          <div class="legend" aria-label="Map legend">
+            <strong>Map layers</strong>
+            <span><i class="swatch road"></i>Road-network catchment</span>
+            <span><i class="swatch circle"></i>Circular buffer</span>
+            <span><i class="swatch overlap"></i>Overlap after comparison</span>
+            <span><i class="swatch point"></i>Municipality</span>
+            <span><i class="swatch ontario"></i>Ontario boundary</span>
+          </div>
+        </section>
+
+        <aside class="sidebar">
+          <section class="panel controls-panel">
+            <div class="panel-heading">
+              <div>
+                <p class="step-label">Step 1</p>
+                <h2>Choose a municipality</h2>
+              </div>
+            </div>
+            <label for="municipality-select">Municipality</label>
+            <select id="municipality-select">
+              <option value="">Select a municipality…</option>
+            </select>
+
+            <div class="radius-control">
+              <div class="range-heading">
+                <label for="radius-slider">Circular radius</label>
+                <output id="radius-output" for="radius-slider">50 km</output>
+              </div>
+              <input id="radius-slider" type="range" min="5" max="100" step="1" value="50" disabled />
+              <div class="range-scale" aria-hidden="true"><span>5 km</span><span>100 km</span></div>
+            </div>
+
+            <div class="button-row">
+              <button id="compare-button" class="button primary" type="button" disabled>Compare catchments</button>
+              <button id="reset-button" class="button secondary" type="button" disabled>Reset radius</button>
+            </div>
+            <p class="feedback" id="feedback" aria-live="polite">Select a municipality to create a 50 km circular buffer.</p>
+          </section>
+
+          <section class="panel layers-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="step-label">Map context</p>
+                <h2>Layer visibility</h2>
+              </div>
+            </div>
+            <label class="check-row"><input type="checkbox" id="road-toggle" checked disabled /><span><i class="swatch road"></i>Road-network catchment</span></label>
+            <label class="check-row"><input type="checkbox" id="circle-toggle" checked disabled /><span><i class="swatch circle"></i>Circular buffer</span></label>
+            <label class="check-row"><input type="checkbox" id="overlap-toggle" checked disabled /><span><i class="swatch overlap"></i>Overlap</span></label>
+            <label class="check-row"><input type="checkbox" id="points-toggle" checked /><span><i class="swatch point"></i>Municipality locations</span></label>
+            <label class="check-row"><input type="checkbox" id="ontario-toggle" checked /><span><i class="swatch ontario"></i>Ontario boundary</span></label>
+          </section>
+
+          <section class="panel results-panel is-hidden" id="results-panel">
+            <div class="panel-heading compact">
+              <div>
+                <p class="step-label">Step 2</p>
+                <h2>Comparison results</h2>
+              </div>
+            </div>
+            <div class="score-card">
+              <span>Jaccard similarity</span>
+              <strong id="jaccard-score">—</strong>
+              <small>Shared area ÷ total area covered by either catchment</small>
+            </div>
+            <dl class="metrics">
+              <div><dt>Road-network catchment</dt><dd id="road-area">—</dd></div>
+              <div><dt>Circular buffer (clipped)</dt><dd id="circle-area">—</dd></div>
+              <div><dt>Overlapping area</dt><dd id="overlap-area">—</dd></div>
+              <div><dt>Circle outside road catchment</dt><dd id="circle-only-area">—</dd></div>
+              <div><dt>Road catchment outside circle</dt><dd id="road-only-area">—</dd></div>
+            </dl>
+            <p class="score-note" id="score-note"></p>
+          </section>
+
+          <section class="panel about-panel">
+            <details>
+              <summary>How the comparison works</summary>
+              <p>The circle is generated from a geodesic distance in kilometres, then both shapes are clipped to Ontario. A score of 100% means identical coverage; 0% means no overlap.</p>
+            </details>
+          </section>
+        </aside>
+      </main>
+    </div>
+  </body>
+</html>

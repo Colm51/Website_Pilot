@@ -28,6 +28,13 @@ isProjects: true
   <h2 id="projects-title">Projects</h2>
   <div class="trip-list">
     <article class="trip-card">
+      <h3><a href="{{ '/projects/catchment-game/' | htmlBaseUrl }}">Municipal Catchments: Comparing Catchments Based on the Road Network and on Simple Circular Buffers</a></h3>
+      <p>An interactive mapping exercise exploring how circular buffers compare with 50 km road-network catchments for selected Ontario municipalities. Choose a municipality, adjust a circular buffer, and measure its geographic similarity to the road-network catchment.</p>
+<p>In order to explore the connectivity between municipalities and their surrounding areas, it is interesting to consider buffers. Options for creating buffers including using geospatial programmes to follow the road network starting from a selected starting point, e.g. a downtown or, alternatively, simple cicular buffers starting from a centroid.</p>
+
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/toronto-downtown-definer/' | htmlBaseUrl }}">Toronto Downtown Definer</a></h3>
       <p>Draw your own definition of downtown Toronto and compare it with the boundaries used by Statistics Canada and the University of Toronto.</p>
     </article>

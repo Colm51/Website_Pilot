@@ -104,6 +104,8 @@ export default function (eleventyConfig) {
       "projects/vancouver-census-map",
     "Projects/TorontoDowntownDefiner":
       "projects/toronto-downtown-definer",
+    "Projects/CatchmentGame":
+      "projects/catchment-game",
   });
   eleventyConfig.addPassthroughCopy("Photos/**/SmallPhotos");
   eleventyConfig.addWatchTarget("Photos/Naples/SmallPhotos");
