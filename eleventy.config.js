@@ -102,6 +102,8 @@ export default function (eleventyConfig) {
       "projects/ontario-municipalities-census-divisions",
     "Projects/VancouverCensusMap":
       "projects/vancouver-census-map",
+    "Projects/VancouverElection":
+      "projects/vancouver-election",
     "Projects/TorontoDowntownDefiner":
       "projects/toronto-downtown-definer",
     "Projects/CatchmentGame":
@@ -121,6 +123,8 @@ export default function (eleventyConfig) {
 
   eleventyConfig.ignores.add("README.md");
   eleventyConfig.ignores.add("index-original.html");
+  eleventyConfig.ignores.add("Projects/VancouverElection/IMPLEMENTATION_REPORT.md");
+  eleventyConfig.ignores.add("Projects/VancouverElection/vendor/LICENSES.md");
   eleventyConfig.ignores.add("Text/.obsidian/**");
 }
 

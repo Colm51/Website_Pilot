@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="description" content="Explore 2026 Vancouver mayoral results by voting location alongside selected 2021 Census characteristics.">
+    <title>Vancouver Election Map</title>
+    <link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main class="map-page">
+      <header class="map-header">
+        <div class="map-heading">
+          <p class="map-eyebrow">2026 Municipal Election</p>
+          <h1>Vancouver Election Map</h1>
+          <div class="mode-control" role="group" aria-label="Map display mode">
+            <button type="button" data-mode="election" aria-pressed="true">Election</button>
+            <button type="button" data-mode="census" aria-pressed="false">Census</button>
+            <button type="button" data-mode="compare" aria-pressed="false">Compare</button>
+          </div>
+        </div>
+
+        <div class="map-controls">
+          <div id="election-controls" class="control-group">
+            <div class="map-picker candidate-picker">
+              <label for="candidate-select">Election display</label>
+              <select id="candidate-select" aria-label="Election display"></select>
+            </div>
+            <fieldset id="metric-control" class="metric-control">
+              <legend>Symbol metric</legend>
+              <div class="mode-control" role="group" aria-label="Election symbol metric">
+                <button id="share-metric" type="button" aria-pressed="true">Vote share</button>
+                <button id="votes-metric" type="button" aria-pressed="false">Votes</button>
+              </div>
+            </fieldset>
+          </div>
+
+          <div id="census-picker" class="map-picker">
+            <label for="census-variable-select">Census context</label>
+            <select id="census-variable-select">
+              <option value="C6">Population density</option>
+              <option value="C40">Median age</option>
+              <option value="C42">Single-detached houses</option>
+              <option value="C47">Apartments in buildings with five or more storeys</option>
+              <option value="C113">Median income (individuals)</option>
+              <option value="C1474">Median dwelling value</option>
+            </select>
+          </div>
+
+          <div id="compare-census-picker" class="map-picker" hidden>
+            <label for="compare-census-variable-select">Comparison Census variable</label>
+            <select id="compare-census-variable-select">
+              <option value="C6">Population density</option>
+              <option value="C40">Median age</option>
+              <option value="C42">Single-detached houses</option>
+              <option value="C47">Apartments in buildings with five or more storeys</option>
+              <option value="C113">Median income (individuals)</option>
+              <option value="C1474">Median dwelling value</option>
+            </select>
+          </div>
+
+          <fieldset class="layer-control">
+            <legend>Layers</legend>
+            <label><input id="election-layer-toggle" type="checkbox" checked> Election points</label>
+            <label><input id="census-layer-toggle" type="checkbox" checked> Census polygons</label>
+            <label><input id="basemap-fade-toggle" type="checkbox"> Fade basemap</label>
+          </fieldset>
+        </div>
+      </header>
+
+      <p class="interpretation-warning">
+        Voting-place results show where ballots were recorded—not where voters live. Census comparison is contextual and does not establish demographic or neighbourhood voting patterns.
+      </p>
+
+      <div id="map-grid" class="map-grid">
+        <section class="map-stage" aria-label="Vancouver election and Census map">
+          <h2 id="primary-map-label" class="map-label">Election results with Census context</h2>
+          <div id="map" class="map-canvas"></div>
+          <aside id="summary-panel" class="summary-panel" aria-live="polite">
+            <button id="summary-toggle" class="panel-toggle" type="button" aria-expanded="true" aria-controls="summary-content">−</button>
+            <div id="summary-content"><p class="loading-message">Loading election summary…</p></div>
+          </aside>
+          <aside id="info-panel" class="info-panel" aria-live="polite" hidden></aside>
+          <aside id="legend" class="legend" aria-label="Map legends">
+            <div class="legend-header">
+              <h2>Map legend</h2>
+              <button id="legend-toggle" class="panel-toggle" type="button" aria-expanded="true" aria-controls="legend-content">−</button>
+            </div>
+            <div id="legend-content"></div>
+          </aside>
+          <p class="map-source">Sources: City of Vancouver, 2026 election results and voting places; Statistics Canada, 2021 Census.</p>
+        </section>
+
+        <section id="compare-panel" class="map-stage" aria-label="Census comparison map" hidden>
+          <h2 class="map-label">Census comparison</h2>
+          <div id="compare-map" class="map-canvas"></div>
+          <aside id="compare-info-panel" class="info-panel" aria-live="polite" hidden></aside>
+          <aside id="compare-legend" class="legend" aria-label="Comparison map legend">
+            <div class="legend-header">
+              <h2>Map legend</h2>
+              <button id="compare-legend-toggle" class="panel-toggle" type="button" aria-expanded="true" aria-controls="compare-legend-content">−</button>
+            </div>
+            <div id="compare-legend-content"></div>
+          </aside>
+          <p class="map-source">Source: Statistics Canada, 2021 Census of Population.</p>
+        </section>
+      </div>
+    </main>
+
+    <script src="vendor/leaflet/leaflet.js"></script>
+    <script src="vendor/jenks.js"></script>
+    <script src="map.js"></script>
+  </body>
+</html>

@@ -40,6 +40,11 @@ isProjects: true
     </article>
 
     <article class="trip-card">
+      <h3><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver Election Map</a></h3>
+      <p>Explore 2026 Vancouver mayoral results by voting location alongside selected 2021 Census characteristics.</p>
+    </article>
+
+    <article class="trip-card">
       <h3><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h3>
       <p>An interactive map of 2021 Census dissemination area data for Vancouver.</p>
     </article>
