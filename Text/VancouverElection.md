@@ -14,15 +14,16 @@ tags:
   <div class="measure">
     <p class="kicker">Projects</p>
     <h1 id="page-title">Vancouver Election Map</h1>
-    <p class="lede">Explore 2026 Vancouver mayoral results by voting location alongside selected 2021 Census characteristics.</p>
+    <p class="lede">Explore 2026 Vancouver mayoral results by precinct alongside selected 2021 Census characteristics.</p>
   </div>
 </section>
 
 <article class="essay measure">
   <section aria-labelledby="interactive-map-title">
     <h2 id="interactive-map-title">Interactive map</h2>
-    <p>Use Election mode to compare candidates, vote shares, vote counts, and the winning candidate at each mapped voting location. Census mode maps selected characteristics by dissemination area, while Compare mode places election results and Census context side by side.</p>
-    <p>Voting-place results show where ballots were recorded—not where voters live. Census comparison is contextual and does not establish demographic or neighbourhood voting patterns.</p>
+    <p>Compare votes and vote shares for mayoralty candidates, as well as selected 2021 Census characteristics by dissemination area.</p>
+    <p>Precinct results show where ballots were recorded—not where voters live. Census comparison is contextual and does not establish demographic or neighbourhood voting patterns.</p>
+    <p>Note that the winner was determined by total city-wide votes, not number of precincts won.</p>
     <iframe
       class="map-embed"
       src="{{ '/projects/vancouver-election/map.html' | htmlBaseUrl }}"

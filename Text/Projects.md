@@ -40,8 +40,8 @@ isProjects: true
     </article>
 
     <article class="trip-card">
-      <h3><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver Election Map</a></h3>
-      <p>Explore 2026 Vancouver mayoral results by voting location alongside selected 2021 Census characteristics.</p>
+      <h3><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver 2026 Municipal Election Map</a></h3>
+      <p>Explore 2026 Vancouver mayoral results by precinct (voting location) alongside selected 2021 Census characteristics.</p>
     </article>
 
     <article class="trip-card">
