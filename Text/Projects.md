@@ -24,97 +24,49 @@ isProjects: true
   </div>
 </section>
 
-<section class="essay measure" aria-labelledby="projects-title">
+<section class="essay measure projects-page" aria-labelledby="projects-title">
   <h2 id="projects-title">Projects</h2>
-  <div class="trip-list">
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/catchment-game/' | htmlBaseUrl }}">Municipal Catchments: Comparing Catchments Based on the Road Network and on Simple Circular Buffers</a></h3>
-      <p>An interactive mapping exercise exploring how circular buffers compare with 50 km road-network catchments for selected Ontario municipalities. Choose a municipality, adjust a circular buffer, and measure its geographic similarity to the road-network catchment.</p>
-<p>In order to explore the connectivity between municipalities and their surrounding areas, it is interesting to consider buffers. Options for creating buffers including using geospatial programmes to follow the road network starting from a selected starting point, e.g. a downtown or, alternatively, simple cicular buffers starting from a centroid.</p>
+  <section class="project-category" aria-labelledby="mapping-statistics-canada-data">
+    <h3 id="mapping-statistics-canada-data">Mapping Statistics Canada Data</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/catchment-game/' | htmlBaseUrl }}">Municipal Catchments: Comparing Catchments Based on the Road Network and on Simple Circular Buffers</a></h4>
+        <p>An interactive mapping exercise exploring how circular buffers compare with 50 km road-network catchments for selected Ontario municipalities. Choose a municipality, adjust a circular buffer, and measure its geographic similarity to the road-network catchment.</p>
+        <p>In order to explore the connectivity between municipalities and their surrounding areas, it is interesting to consider buffers. Options for creating buffers including using geospatial programmes to follow the road network starting from a selected starting point, e.g. a downtown or, alternatively, simple cicular buffers starting from a centroid.</p>
+      </article>
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h4>
+        <p>An interactive map of 2021 Census dissemination area data for Vancouver.</p>
+      </article>
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/ontario-commuter-flows/' | htmlBaseUrl }}">Mapping Stats Can Commuter Flow Data</a></h4>
+        <p>A walk-through and interactive map of Statistics Canada commuter flows between census subdivisions.</p>
+      </article>
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Municipal & Census Divisions cross-walk</a></h4>
+        <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario upper and single-tier municipalities using mapping</p>
+      </article>
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/ontario-municipal-csd-crosswalk/' | htmlBaseUrl }}">Municipal & Census subdivisions cross-walk</a></h4>
+        <p>Walk-through of cross-walking Stats Can Census Subdisions with Ontario lower and single-tier municipalities.</p>
+      </article>
+    </div>
+  </section>
 
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/toronto-downtown-definer/' | htmlBaseUrl }}">Toronto Downtown Definer</a></h3>
-      <p>Draw your own definition of downtown Toronto and compare it with the boundaries used by Statistics Canada and the University of Toronto.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver 2026 Municipal Election Map</a></h3>
-      <p>Explore 2026 Vancouver mayoral results by precinct (voting location) alongside selected 2021 Census characteristics.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h3>
-      <p>An interactive map of 2021 Census dissemination area data for Vancouver.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/charge-duration/' | htmlBaseUrl }}">Charge Duration</a></h3>
-      <p>A personal iPhone app that records battery levels over time and estimates how long a charge lasts.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/ontario-commuter-flows/' | htmlBaseUrl }}">Mapping Stats Can Commuter Flow Data</a></h3>
-      <p>A walk-through and interactive map of Statistics Canada commuter flows between census subdivisions.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Municipal & Census Divisions cross-walk</a></h3>
-      <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario upper and single-tier municipalities using mapping</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/ontario-municipal-csd-crosswalk/' | htmlBaseUrl }}">Municipal & Census subdvisions cross-walk</a></h3>
-      <p>Walk-through of cross-walking Stats Can Census Subdisions with Ontario lower and single-tier municipalities.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/music-library-dashboard/' | htmlBaseUrl }}">Music Library Dashboard</a></h3>
-      <p>An interactive exploration of my personal music collection, listening history, and manually curated playlists.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/books-dashboard/' | htmlBaseUrl }}">Books Dashboard</a></h3>
-      <p>An interactive exploration of my personal book library, including publication dates, manually curated Collections, Dewey subject classifications, languages, authors, and page counts.</p>
-    </article>
-
-    <article class="trip-card">
-      <h3><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h3>
-      <p>Demo of an iPhone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
-    </article>
-    
-
-<article class="trip-card">
-
-<h3>Draft Ontario Municipal Tax Receivables Dashboard (work in progress)</h3>
-
-<p>An interactive Streamlit dashboard for exploring Municipal Tax Receivables data from FIR schedules 10 and 72.
-
-It allows users to compare opening and closing balances, examine municipal trends over time, and explore mapping of the results.
-
-Data for 2020 needs to be incorporated. Data requires significant validation.
-
-It is recommended that users build their own version of the dashboard and conduct validation prior to usage.
-
-Source code available at <a href="https://github.com/Colm51/TaxReceivablesDashboard" target="_blank" rel="noopener noreferrer">GitHub</a>.
-
-</p>
-
-  
-
-<p>Built with Python, Parquet, GeoParquet, Streamlit, Polars, GeoPandas, and public Ontario Financial Information Return data.</p>
-
-<p><a class="project-link" href="https://ontario-tax-receivables.streamlit.app/" target="_blank" rel="noopener noreferrer">Open interactive dashboard</a></p>
-
-</article>
-
-
-<article class="trip-card">
-
-<h3>Draft Toronto Building Permits Tracker</h3>
-
-<p>This is an experimental mapping of City of Toronto Open Data on building permits.
+  <section class="project-category" aria-labelledby="other-municipal-mapping">
+    <h3 id="other-municipal-mapping">Other Municipal Mapping</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/toronto-downtown-definer/' | htmlBaseUrl }}">Toronto Downtown Definer</a></h4>
+        <p>Draw your own definition of downtown Toronto and compare it with the boundaries used by Statistics Canada and the University of Toronto.</p>
+      </article>
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver 2026 Municipal Election Map</a></h4>
+        <p>Explore 2026 Vancouver mayoral results by precinct (voting location) alongside selected 2021 Census characteristics.</p>
+      </article>
+      <article class="trip-card">
+        <h4>Draft Toronto Building Permits Tracker</h4>
+        <p>This is an experimental mapping of City of Toronto Open Data on building permits.
 
 The source data is: 
 
@@ -139,15 +91,69 @@ Instead, this mapping focuses on the units_created and units_lost field and cate
 Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  target="_blank" rel="noopener noreferrer">GitHub</a>.
 
 </p>
+        <p><a class="project-link" href="https://colm51.github.io/HousingPermitMap/" target="_blank" rel="noopener noreferrer">Open Toronto Permits Mapping</a></p>
+      </article>
+    </div>
+  </section>
 
-  
+  <section class="project-category" aria-labelledby="other-municipal">
+    <h3 id="other-municipal">Other Municipal</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4>Draft Ontario Municipal Tax Receivables Dashboard (work in progress)</h4>
+        <p>An interactive Streamlit dashboard for exploring Municipal Tax Receivables data from FIR schedules 10 and 72.
 
-<p><a class="project-link" href="https://colm51.github.io/HousingPermitMap/" target="_blank" rel="noopener noreferrer">Open Toronto Permits Mapping</a></p>
+It allows users to compare opening and closing balances, examine municipal trends over time, and explore mapping of the results.
 
-</article>
+Data for 2020 needs to be incorporated. Data requires significant validation.
 
+It is recommended that users build their own version of the dashboard and conduct validation prior to usage.
 
+Source code available at <a href="https://github.com/Colm51/TaxReceivablesDashboard" target="_blank" rel="noopener noreferrer">GitHub</a>.
 
+</p>
+        <p>Built with Python, Parquet, GeoParquet, Streamlit, Polars, GeoPandas, and public Ontario Financial Information Return data.</p>
+        <p><a class="project-link" href="https://ontario-tax-receivables.streamlit.app/" target="_blank" rel="noopener noreferrer">Open interactive dashboard</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="project-category" aria-labelledby="iphone-apps">
+    <h3 id="iphone-apps">iPhone Apps</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/charge-duration/' | htmlBaseUrl }}">Charge Duration</a></h4>
+        <p>A personal iPhone app that records battery levels over time and estimates how long a charge lasts.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="project-category" aria-labelledby="civic-tech">
+    <h3 id="civic-tech">Civic Tech</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h4>
+        <p>Demo of an iPhone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="project-category" aria-labelledby="personal-apps">
+    <h3 id="personal-apps">Personal Apps</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/music-library-dashboard/' | htmlBaseUrl }}">Music Library Dashboard</a></h4>
+        <p>An interactive exploration of my personal music collection, listening history, and manually curated playlists.</p>
+      </article>
+      <article class="trip-card">
+        <h4><a href="{{ '/projects/books-dashboard/' | htmlBaseUrl }}">Books Dashboard</a></h4>
+        <p>An interactive exploration of my personal book library, including publication dates, manually curated Collections, Dewey subject classifications, languages, authors, and page counts.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="development-notes" aria-labelledby="development-notes-title">
+  <h3 id="development-notes-title">Development Notes</h3>
 
   <p class="dashboard-note">  Note on dashboards: </p>
   <ul class="dashboard-list">
@@ -198,5 +204,6 @@ Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  t
 
   </ul>
 
-  </div>
+  </section>
+
 </section>
