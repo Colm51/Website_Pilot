@@ -1,4 +1,72 @@
 (function () {
+  const projectSelect = document.querySelector("[data-project-jump]");
+
+  if (!projectSelect) {
+    return;
+  }
+
+  const projectHeadings = document.querySelectorAll(".projects-page .trip-card > h4");
+  const usedIds = new Set(Array.from(document.querySelectorAll("[id]"), (element) => element.id));
+  let currentCategory = null;
+  let currentGroup = null;
+
+  function createHeadingId(heading) {
+    const baseId = `project-${heading.textContent
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)/g, "")}`;
+    let id = baseId;
+    let suffix = 2;
+
+    while (usedIds.has(id)) {
+      id = `${baseId}-${suffix}`;
+      suffix += 1;
+    }
+
+    heading.id = id;
+    usedIds.add(id);
+    return id;
+  }
+
+  projectHeadings.forEach((heading) => {
+    const category = heading.closest(".project-category");
+
+    if (category !== currentCategory) {
+      currentCategory = category;
+      currentGroup = null;
+
+      if (category) {
+        const categoryHeading = category.querySelector("h3");
+        currentGroup = document.createElement("optgroup");
+        currentGroup.label = categoryHeading ? categoryHeading.textContent.trim() : "Projects";
+        projectSelect.append(currentGroup);
+      }
+    }
+
+    const option = document.createElement("option");
+    option.value = heading.id || createHeadingId(heading);
+    option.textContent = heading.textContent.trim();
+    (currentGroup || projectSelect).append(option);
+  });
+
+  projectSelect.addEventListener("change", () => {
+    const heading = document.getElementById(projectSelect.value);
+
+    if (!heading) {
+      return;
+    }
+
+    if (window.location.hash === `#${heading.id}`) {
+      heading.scrollIntoView({ block: "start" });
+    } else {
+      window.location.hash = heading.id;
+    }
+  });
+})();
+
+(function () {
   const lightbox = document.getElementById("lightbox");
 
   if (!lightbox) {

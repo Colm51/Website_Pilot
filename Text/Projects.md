@@ -10,6 +10,12 @@ isProjects: true
   <div class="measure">
     <p class="kicker">Projects</p>
     <h1 id="page-title">Projects</h1>
+    <div class="project-jump">
+      <label for="project-jump-select">Jump to a project</label>
+      <select id="project-jump-select" data-project-jump>
+        <option value="">Select a project...</option>
+      </select>
+    </div>
     <p class="lede"><em>Note: All content posted here has been developed outside of work hours using personal devices and publicly-available data. </em>
     </p>
      <p class="lede">Some of the projects touch on municipal finance - an area of personal and professional interest - while others are more idiosyncratic.
@@ -30,24 +36,24 @@ isProjects: true
     <h3 id="mapping-statistics-canada-data">Mapping Statistics Canada Data</h3>
     <div class="trip-list">
       <article class="trip-card">
-        <h4><a href="{{ '/projects/catchment-game/' | htmlBaseUrl }}">Municipal Catchments: Comparing Catchments Based on the Road Network and on Simple Circular Buffers</a></h4>
+        <h4 id="project-catchment-game"><a href="{{ '/projects/catchment-game/' | htmlBaseUrl }}">Municipal Catchments: Comparing Catchments Based on the Road Network and on Simple Circular Buffers</a></h4>
         <p>An interactive mapping exercise exploring how circular buffers compare with 50 km road-network catchments for selected Ontario municipalities. Choose a municipality, adjust a circular buffer, and measure its geographic similarity to the road-network catchment.</p>
         <p>In order to explore the connectivity between municipalities and their surrounding areas, it is interesting to consider buffers. Options for creating buffers including using geospatial programmes to follow the road network starting from a selected starting point, e.g. a downtown or, alternatively, simple cicular buffers starting from a centroid.</p>
       </article>
       <article class="trip-card">
-        <h4><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h4>
+        <h4 id="project-vancouver-census-map"><a href="{{ '/projects/vancouver-census-map/' | htmlBaseUrl }}">Vancouver Census Map</a></h4>
         <p>An interactive map of 2021 Census dissemination area data for Vancouver.</p>
       </article>
       <article class="trip-card">
-        <h4><a href="{{ '/projects/ontario-commuter-flows/' | htmlBaseUrl }}">Mapping Stats Can Commuter Flow Data</a></h4>
+        <h4 id="project-ontario-commuter-flows"><a href="{{ '/projects/ontario-commuter-flows/' | htmlBaseUrl }}">Mapping Stats Can Commuter Flow Data</a></h4>
         <p>A walk-through and interactive map of Statistics Canada commuter flows between census subdivisions.</p>
       </article>
       <article class="trip-card">
-        <h4><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Municipal & Census Divisions cross-walk</a></h4>
+        <h4 id="project-ontario-municipalities-census-divisions"><a href="{{ '/projects/ontario-municipalities-census-divisions/' | htmlBaseUrl }}">Municipal & Census Divisions cross-walk</a></h4>
         <p>Walk-through of cross-walking Stats Can Census Divisions with Ontario upper and single-tier municipalities using mapping</p>
       </article>
       <article class="trip-card">
-        <h4><a href="{{ '/projects/ontario-municipal-csd-crosswalk/' | htmlBaseUrl }}">Municipal & Census subdivisions cross-walk</a></h4>
+        <h4 id="project-ontario-municipal-csd-crosswalk"><a href="{{ '/projects/ontario-municipal-csd-crosswalk/' | htmlBaseUrl }}">Municipal & Census subdivisions cross-walk</a></h4>
         <p>Walk-through of cross-walking Stats Can Census Subdisions with Ontario lower and single-tier municipalities.</p>
       </article>
     </div>
@@ -57,15 +63,15 @@ isProjects: true
     <h3 id="other-municipal-mapping">Other Municipal Mapping</h3>
     <div class="trip-list">
       <article class="trip-card">
-        <h4><a href="{{ '/projects/toronto-downtown-definer/' | htmlBaseUrl }}">Toronto Downtown Definer</a></h4>
+        <h4 id="project-toronto-downtown-definer"><a href="{{ '/projects/toronto-downtown-definer/' | htmlBaseUrl }}">Toronto Downtown Definer</a></h4>
         <p>Draw your own definition of downtown Toronto and compare it with the boundaries used by Statistics Canada and the University of Toronto.</p>
       </article>
       <article class="trip-card">
-        <h4><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver 2026 Municipal Election Map</a></h4>
+        <h4 id="project-vancouver-election"><a href="{{ '/projects/vancouver-election/' | htmlBaseUrl }}">Vancouver 2026 Municipal Election Map</a></h4>
         <p>Explore 2026 Vancouver mayoral results by precinct (voting location) alongside selected 2021 Census characteristics.</p>
       </article>
       <article class="trip-card">
-        <h4>Draft Toronto Building Permits Tracker</h4>
+        <h4 id="project-toronto-building-permits">Draft Toronto Building Permits Tracker</h4>
         <p>This is an experimental mapping of City of Toronto Open Data on building permits.
 
 The source data is: 
@@ -100,7 +106,7 @@ Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  t
     <h3 id="other-municipal">Other Municipal</h3>
     <div class="trip-list">
       <article class="trip-card">
-        <h4>Draft Ontario Municipal Tax Receivables Dashboard (work in progress)</h4>
+        <h4 id="project-ontario-municipal-tax-receivables">Draft Ontario Municipal Tax Receivables Dashboard (work in progress)</h4>
         <p>An interactive Streamlit dashboard for exploring Municipal Tax Receivables data from FIR schedules 10 and 72.
 
 It allows users to compare opening and closing balances, examine municipal trends over time, and explore mapping of the results.
@@ -122,7 +128,7 @@ Source code available at <a href="https://github.com/Colm51/TaxReceivablesDashbo
     <h3 id="iphone-apps">iPhone Apps</h3>
     <div class="trip-list">
       <article class="trip-card">
-        <h4><a href="{{ '/projects/charge-duration/' | htmlBaseUrl }}">Charge Duration</a></h4>
+        <h4 id="project-charge-duration"><a href="{{ '/projects/charge-duration/' | htmlBaseUrl }}">Charge Duration</a></h4>
         <p>A personal iPhone app that records battery levels over time and estimates how long a charge lasts.</p>
       </article>
     </div>
@@ -132,7 +138,7 @@ Source code available at <a href="https://github.com/Colm51/TaxReceivablesDashbo
     <h3 id="civic-tech">Civic Tech</h3>
     <div class="trip-list">
       <article class="trip-card">
-        <h4><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h4>
+        <h4 id="project-local-issue-reporter"><a href="{{ '/projects/local-issue-reporter/' | htmlBaseUrl }}">Local Issue Reporter</a></h4>
         <p>Demo of an iPhone App for Easily Reporting Local Issues, Including Bike Lane Issues and Potholes</p>
       </article>
     </div>
@@ -142,11 +148,11 @@ Source code available at <a href="https://github.com/Colm51/TaxReceivablesDashbo
     <h3 id="personal-apps">Personal Apps</h3>
     <div class="trip-list">
       <article class="trip-card">
-        <h4><a href="{{ '/projects/music-library-dashboard/' | htmlBaseUrl }}">Music Library Dashboard</a></h4>
+        <h4 id="project-music-library-dashboard"><a href="{{ '/projects/music-library-dashboard/' | htmlBaseUrl }}">Music Library Dashboard</a></h4>
         <p>An interactive exploration of my personal music collection, listening history, and manually curated playlists.</p>
       </article>
       <article class="trip-card">
-        <h4><a href="{{ '/projects/books-dashboard/' | htmlBaseUrl }}">Books Dashboard</a></h4>
+        <h4 id="project-books-dashboard"><a href="{{ '/projects/books-dashboard/' | htmlBaseUrl }}">Books Dashboard</a></h4>
         <p>An interactive exploration of my personal book library, including publication dates, manually curated Collections, Dewey subject classifications, languages, authors, and page counts.</p>
       </article>
     </div>
