@@ -252,6 +252,23 @@ button.legend-row:hover { background: rgba(8, 104, 172, 0.08); }
 }
 .legend-clear { display: block; margin: 0.4rem 0 0 auto; padding: 0.15rem; border: 0; color: #0868ac; background: transparent; font-size: 0.64rem; font-weight: 700; cursor: pointer; }
 .legend-note { margin: 0.4rem 0 0; color: #67736f; font-size: 0.61rem; line-height: 1.3; }
+.winner-share-compact { display: grid; gap: 0.58rem; width: 100%; margin-top: 0.36rem; }
+.intensity-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.13rem; }
+.intensity-label { color: #35433f; font-size: 0.65rem; font-weight: 750; line-height: 1.1; }
+.intensity-bar { display: flex; width: 100%; height: 0.72rem; overflow: hidden; border: 1px solid rgba(36,52,47,0.35); border-radius: 0.16rem; }
+.intensity-scale { display: flex; justify-content: space-between; width: 100%; color: #67736f; font-size: 0.54rem; line-height: 1; }
+.winner-detail-toggle { display: inline-flex; align-items: center; margin: 0.55rem 0 0; padding: 0.28rem 0.48rem; border: 1px solid rgba(8,104,172,0.28); border-radius: 0.3rem; color: #0868ac; background: #f5f9fb; font-size: 0.63rem; font-weight: 750; line-height: 1.1; cursor: pointer; }
+.winner-detail-toggle:hover { background: #eaf3f7; }
+.winner-share-details { margin-top: 0.3rem; }
+.winner-share-details[hidden] { display: none; }
+.winner-share-table { width: 100%; border-collapse: collapse; table-layout: fixed; color: #485550; font-size: 0.56rem; line-height: 1.15; }
+.winner-share-table th, .winner-share-table td { padding: 0.2rem 0.16rem; border-bottom: 1px solid #e5e9e7; vertical-align: middle; }
+.winner-share-table thead th { color: #35433f; font-weight: 750; text-align: center; }
+.winner-share-table thead th:first-child, .winner-share-table tbody th { width: 34%; text-align: left; }
+.winner-share-table tbody th { font-weight: 650; }
+.winner-share-table td { text-align: center; }
+.winner-share-swatch { display: block; width: 1.35rem; height: 0.66rem; margin: 0 auto 0.12rem; border: 2px solid #fffdf7; border-radius: 0.12rem; box-shadow: 0 0 0 1px rgba(27,34,31,0.72); }
+.winner-share-band-label { display: block; white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 .map-source { bottom: 0.65rem; left: 0.65rem; max-width: calc(100% - 1.3rem); margin: 0; padding: 0.34rem 0.5rem; color: #4e5c58; font-size: 0.59rem; line-height: 1.25; pointer-events: none; }
 

@@ -11,6 +11,49 @@
     return SHARE_BREAKS.length - 2;
   }
 
+  function mixHexWithWhite(hex, whiteAmount) {
+    var value = String(hex).replace("#", "");
+    var mixed = [0, 2, 4].map(function (offset) {
+      var channel = parseInt(value.slice(offset, offset + 2), 16);
+      return Math.round(channel + (255 - channel) * whiteAmount).toString(16).padStart(2, "0");
+    });
+    return "#" + mixed.join("");
+  }
+
+  function winnerShareColor(base, value, minimum, maximum) {
+    var span = Number(maximum) - Number(minimum);
+    var position = span > 0 ? (Number(value) - Number(minimum)) / span : 1;
+    position = Math.max(0, Math.min(1, position));
+    return mixHexWithWhite(base, 0.72 * (1 - position));
+  }
+
+  function buildWinnerShareRanges(features) {
+    var ranges = {};
+    features.forEach(function (feature) {
+      var properties = feature.properties;
+      if (!properties || properties.winner.status !== "winner") return;
+      var number = properties.winner.candidate_numbers[0];
+      var result = properties.all_candidates[number];
+      if (!result || !Number.isFinite(Number(result.share))) return;
+      if (!ranges[number]) ranges[number] = { min: result.share, max: result.share, count: 0 };
+      ranges[number].min = Math.min(ranges[number].min, result.share);
+      ranges[number].max = Math.max(ranges[number].max, result.share);
+      ranges[number].count += 1;
+    });
+    return ranges;
+  }
+
+  function winnerShareBands(range, count) {
+    var span = range.max - range.min;
+    return Array.from({ length: count }, function (_unused, index) {
+      return {
+        min: range.min + span * index / count,
+        max: range.min + span * (index + 1) / count,
+        sample: range.min + span * index / (count - 1),
+      };
+    });
+  }
+
   function voteRadius(votes, maximum, maxRadius) {
     if (!Number.isFinite(Number(votes)) || Number(votes) <= 0 || maximum <= 0) return 0;
     return maxRadius * Math.sqrt(Number(votes) / maximum);
@@ -38,8 +81,12 @@
     return union ? common / union : 0;
   }
 
+  function censusFillOpacity(active) {
+    return active ? 0.78 : 0;
+  }
+
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { shareClass: shareClass, voteRadius: voteRadius, voteBreaks: voteBreaks, voteClass: voteClass, jaccardIndex: jaccardIndex };
+    module.exports = { shareClass: shareClass, winnerShareColor: winnerShareColor, buildWinnerShareRanges: buildWinnerShareRanges, winnerShareBands: winnerShareBands, voteRadius: voteRadius, voteBreaks: voteBreaks, voteClass: voteClass, jaccardIndex: jaccardIndex, censusFillOpacity: censusFillOpacity };
   }
   if (typeof document === "undefined") return;
 
@@ -77,6 +124,7 @@
   var RAPIDBUS_COLOR = "#8753b5";
   var datasets = {};
   var classifications = {};
+  var winnerShareRanges = {};
   var dataPromises = {};
   var primaryView = null;
   var comparisonView = null;
@@ -186,7 +234,14 @@
     });
   }
 
-  function isWinnerDisplay() { return state.candidate === "winner"; }
+  function isWinnerDisplay() { return state.candidate === "winner" || state.candidate === "winner_share"; }
+
+  function isWinnerShareDisplay() { return state.candidate === "winner_share"; }
+
+  function winnerShare(properties) {
+    if (!properties.has_mayoral_results || !properties.winner.candidate_numbers.length) return null;
+    return properties.all_candidates[properties.winner.candidate_numbers[0]].share;
+  }
 
   function candidateStyle() {
     return CANDIDATE_STYLES[state.candidate] || CANDIDATE_STYLES["51"];
@@ -239,7 +294,9 @@
           return allCandidateByNumber(number).name;
         });
         var winnerLabel = properties.winner.status === "tie" ? "Tie: " : "Winning candidate: ";
-        container.append(createElement("p", "popup-winner", winnerLabel + winnerNames.join(" and ") + " · " + formatInteger(properties.winner.votes) + " votes"));
+        var winnerText = winnerLabel + winnerNames.join(" and ") + " · " + formatInteger(properties.winner.votes) + " votes";
+        if (isWinnerShareDisplay()) winnerText += " · " + formatInteger(properties.total_votes) + " total valid · " + formatPercent(winnerShare(properties), 1);
+        container.append(createElement("p", "popup-winner", winnerText));
       }
       var table = createElement("table", "popup-results");
       var head = document.createElement("thead");
@@ -303,6 +360,7 @@
     var userAdjustedView = false;
     var hasFit = false;
     var legendCollapsed = false;
+    var winnerLegendDetailed = false;
 
     var map = L.map(options.mapElement, {
       zoomControl: true,
@@ -337,7 +395,7 @@
       return {
         pane: "censusPane",
         fillColor: index < 0 ? NO_DATA_COLOR : CENSUS_COLORS[index],
-        fillOpacity: active ? (showElection ? 0.55 : 0.78) : 0,
+        fillOpacity: censusFillOpacity(active),
         color: "#4e625c",
         opacity: active ? 0.65 : 0,
         weight: active ? 0.5 : 0.2,
@@ -414,7 +472,18 @@
       }
       if (isWinnerDisplay()) {
         var outcome = feature.properties.winner;
-        var fillColor = outcome.status === "tie" ? TIE_COLOR : CANDIDATE_STYLES[outcome.candidate_numbers[0]].base;
+        var fillColor;
+        if (isWinnerShareDisplay()) {
+          if (outcome.status === "tie") {
+            fillColor = TIE_COLOR;
+          } else {
+            var winnerNumber = outcome.candidate_numbers[0];
+            var range = winnerShareRanges[winnerNumber];
+            fillColor = winnerShareColor(CANDIDATE_STYLES[winnerNumber].base, winnerShare(feature.properties), range.min, range.max);
+          }
+        } else {
+          fillColor = outcome.status === "tie" ? TIE_COLOR : CANDIDATE_STYLES[outcome.candidate_numbers[0]].base;
+        }
         return { pane: "electionPane", radius: 9, fillColor: fillColor, fillOpacity: 0.88, color: ELECTION_MARKER_OUTLINE, weight: 2 };
       }
       var result = feature.properties.candidates[state.candidate];
@@ -574,7 +643,70 @@
         rows.append(row);
       }
 
-      if (isWinnerDisplay()) {
+      if (isWinnerShareDisplay()) {
+        section.append(createElement("h3", "", "Winning candidate · vote share"));
+        var compactLegend = createElement("div", "winner-share-compact");
+        ["51", "54"].forEach(function (number) {
+          var candidate = allCandidateByNumber(number);
+          var range = winnerShareRanges[number];
+          var barRow = createElement("div", "intensity-row");
+          var bar = createElement("div", "intensity-bar");
+          var lightest = winnerShareColor(CANDIDATE_STYLES[number].base, range.min, range.min, range.max);
+          var strongest = winnerShareColor(CANDIDATE_STYLES[number].base, range.max, range.min, range.max);
+          bar.style.backgroundImage = "linear-gradient(to right, " + lightest + ", " + strongest + ")";
+          var scale = createElement("div", "intensity-scale");
+          scale.append(createElement("span", "", formatPercent(range.min, 1)), createElement("span", "", formatPercent(range.max, 1)));
+          barRow.append(createElement("span", "intensity-label", candidate.name), bar, scale);
+          compactLegend.append(barRow);
+        });
+        section.append(compactLegend);
+
+        var detailToggle = createElement("button", "winner-detail-toggle", winnerLegendDetailed ? "Hide detailed legend" : "Show detailed legend");
+        detailToggle.type = "button";
+        detailToggle.setAttribute("aria-expanded", String(winnerLegendDetailed));
+        var details = createElement("div", "winner-share-details");
+        details.hidden = !winnerLegendDetailed;
+        var table = createElement("table", "winner-share-table");
+        var head = document.createElement("thead");
+        var headRow = document.createElement("tr");
+        ["Winning vote share", "Pete Fry", "Ken Sim"].forEach(function (label) {
+          var heading = createElement("th", "", label);
+          heading.scope = "col";
+          headRow.append(heading);
+        });
+        head.append(headRow);
+        var body = document.createElement("tbody");
+        var candidateNumbers = ["51", "54"];
+        var bands = candidateNumbers.map(function (number) { return winnerShareBands(winnerShareRanges[number], 7); });
+        bands[0].forEach(function (_band, index) {
+          var row = document.createElement("tr");
+          var rowHeading = createElement("th", "", "Range " + (index + 1) + (index === 0 ? " · lightest" : index === 6 ? " · strongest" : ""));
+          rowHeading.scope = "row";
+          row.append(rowHeading);
+          candidateNumbers.forEach(function (number, candidateIndex) {
+            var band = bands[candidateIndex][index];
+            var range = winnerShareRanges[number];
+            var label = formatPercent(band.min, 1) + "–" + formatPercent(band.max, 1);
+            var cell = document.createElement("td");
+            var swatch = createElement("span", "winner-share-swatch");
+            swatch.style.backgroundColor = winnerShareColor(CANDIDATE_STYLES[number].base, band.sample, range.min, range.max);
+            swatch.setAttribute("aria-label", allCandidateByNumber(number).name + ": " + label);
+            cell.append(swatch, createElement("span", "winner-share-band-label", label));
+            row.append(cell);
+          });
+          body.append(row);
+        });
+        table.append(head, body);
+        details.append(table);
+        detailToggle.addEventListener("click", function () {
+          winnerLegendDetailed = !winnerLegendDetailed;
+          details.hidden = !winnerLegendDetailed;
+          detailToggle.textContent = winnerLegendDetailed ? "Hide detailed legend" : "Show detailed legend";
+          detailToggle.setAttribute("aria-expanded", String(winnerLegendDetailed));
+        });
+        details.append(createElement("p", "legend-note", "Each candidate column subdivides its own observed winning range. Swatches use the same continuous colour calculation as map markers. Ties and no-result locations are excluded from these ranges."));
+        section.append(detailToggle, details);
+      } else if (isWinnerDisplay()) {
         section.append(createElement("h3", "", "Winning candidate · combined location totals"));
         var winningNumbers = new Set();
         var hasTie = false;
@@ -702,6 +834,7 @@
 
     function updateElection() {
       selectedElectionCategories.clear();
+      winnerLegendDetailed = false;
       restyleElection();
       renderLegend();
       map.closePopup();
@@ -820,6 +953,10 @@
     winnerOption.value = "winner";
     winnerOption.textContent = "Winning Candidate";
     candidateSelect.append(winnerOption);
+    var winnerShareOption = document.createElement("option");
+    winnerShareOption.value = "winner_share";
+    winnerShareOption.textContent = "Winning Candidate: Vote Shares";
+    candidateSelect.append(winnerShareOption);
     datasets.summary.candidates.forEach(function (candidate) {
       var option = document.createElement("option");
       option.value = String(candidate.number);
@@ -885,7 +1022,8 @@
     datasets.summary = loaded[1];
     datasets.census = loaded[2];
     datasets.boundary = loaded[3];
-    state.candidate = String(datasets.summary.candidates[0].number);
+    winnerShareRanges = buildWinnerShareRanges(datasets.election.features);
+    state.candidate = "winner";
     buildClassifications();
     initializeControls();
     renderSummary();
