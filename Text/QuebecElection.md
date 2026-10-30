@@ -21,10 +21,10 @@ tags:
 <article class="essay measure">
   <section aria-labelledby="interactive-map-title">
     <h2 id="interactive-map-title">Interactive map</h2>
-    <p>Switch between electoral district totals and ordinary polling division results. Hover over a geography to see ranked party vote counts and percentages.</p>
+    <p>Switch between electoral district totals and ordinary polling division results. Select a geography to see ranked party vote counts and percentages.</p>
     <iframe
       class="map-embed"
-      src="{{ '/projects/quebec-election/map/' | htmlBaseUrl }}"
+      src="{{ '/projects/quebec-election/map/' | htmlBaseUrl }}?interaction=select"
       title="Interactive map of the 2026 Quebec provincial election"
       loading="lazy"
     ></iframe>

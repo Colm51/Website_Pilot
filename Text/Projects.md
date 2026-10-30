@@ -71,10 +71,6 @@ isProjects: true
         <p>Explore 2026 Vancouver mayoral results by precinct (voting location) alongside selected 2021 Census characteristics.</p>
       </article>
       <article class="trip-card">
-        <h4 id="project-quebec-election"><a href="{{ '/projects/quebec-election/' | htmlBaseUrl }}">Quebec 2026 Election Map</a></h4>
-        <p>Interactive map of the 2026 Quebec provincial election, showing electoral district and polling division results with party-level vote distributions.</p>
-      </article>
-      <article class="trip-card">
         <h4 id="project-toronto-building-permits">Draft Toronto Building Permits Tracker</h4>
         <p>This is an experimental mapping of City of Toronto Open Data on building permits.
 
@@ -102,6 +98,16 @@ Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  t
 
 </p>
         <p><a class="project-link" href="https://colm51.github.io/HousingPermitMap/" target="_blank" rel="noopener noreferrer">Open Toronto Permits Mapping</a></p>
+      </article>
+    </div>
+  </section>
+
+  <section class="project-category" aria-labelledby="other-election-mapping">
+    <h3 id="other-election-mapping">Other Election Mapping</h3>
+    <div class="trip-list">
+      <article class="trip-card">
+        <h4 id="project-quebec-election"><a href="{{ '/projects/quebec-election/' | htmlBaseUrl }}">Quebec 2026 Election Map</a></h4>
+        <p>Interactive map of the 2026 Quebec provincial election, showing electoral district and polling division results with party-level vote distributions.</p>
       </article>
     </div>
   </section>
