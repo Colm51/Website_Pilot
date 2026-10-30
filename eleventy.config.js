@@ -104,6 +104,8 @@ export default function (eleventyConfig) {
       "projects/vancouver-census-map",
     "Projects/VancouverElection":
       "projects/vancouver-election",
+    "Projects/QuebecElection/map":
+      "projects/quebec-election/map",
     "Projects/TorontoDowntownDefiner":
       "projects/toronto-downtown-definer",
     "Projects/CatchmentGame":
@@ -125,6 +127,7 @@ export default function (eleventyConfig) {
   eleventyConfig.ignores.add("index-original.html");
   eleventyConfig.ignores.add("Projects/VancouverElection/IMPLEMENTATION_REPORT.md");
   eleventyConfig.ignores.add("Projects/VancouverElection/vendor/LICENSES.md");
+  eleventyConfig.ignores.add("Projects/QuebecElection/README.md");
   eleventyConfig.ignores.add("Text/.obsidian/**");
 }
 

@@ -9,6 +9,7 @@
     "start": "eleventy --serve",
     "prebuild": "node scripts/sync-travels.js && node scripts/sync-books.js",
     "build": "eleventy",
+    "build:quebec-election": "../Quebec/InteractiveMap/node_modules/.bin/vite build --config scripts/vite.quebec-election.config.js",
     "sync-travels": "node scripts/sync-travels.js --geocode",
     "sync-books": "node scripts/sync-books.js",
     "sync-photos": "node scripts/sync-photos.js"
