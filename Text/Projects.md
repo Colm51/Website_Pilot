@@ -106,6 +106,10 @@ Source code available at <a href="https://github.com/Colm51/HousingPermitMap"  t
     <h3 id="other-election-mapping">Other Election Mapping</h3>
     <div class="trip-list">
       <article class="trip-card">
+        <h4 id="project-quebec-census-election"><a href="{{ '/projects/quebec-census-election/' | htmlBaseUrl }}">Quebec Election and Census Map</a></h4>
+        <p>Explore Quebec's 2026 provincial election results alongside selected 2021 Census characteristics in Census, Election, and Combined views.</p>
+      </article>
+      <article class="trip-card">
         <h4 id="project-quebec-election"><a href="{{ '/projects/quebec-election/' | htmlBaseUrl }}">Quebec 2026 Election Map</a></h4>
         <p>Interactive map of the 2026 Quebec provincial election, showing electoral district and polling division results with party-level vote distributions.</p>
       </article>

@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Interactive map of Quebec election results and 2021 Census characteristics."
+    />
+    <title>Quebec Election and Census Map</title>
+    <script type="module" crossorigin src="./assets/index-D17udrsN.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-D5BqphrH.css">
+  </head>
+  <body>
+    <main class="map-page">
+      <header class="map-header" aria-labelledby="map-title">
+        <div class="map-heading">
+          <p class="eyebrow">2026 election · 2021 Census</p>
+          <h1 id="map-title">Quebec Election and Census Map</h1>
+          <div class="segmented-control view-control" role="group" aria-label="Map view">
+            <button type="button" data-view="census" aria-pressed="false">Census</button>
+            <button type="button" data-view="election" aria-pressed="false">Election</button>
+            <button type="button" data-view="combined" class="is-active" aria-pressed="true">
+              Combined
+            </button>
+          </div>
+        </div>
+
+        <div class="map-controls">
+          <form id="dauid-search" class="dauid-search" role="search" novalidate>
+            <label for="dauid-query">Find a DAUID</label>
+            <div class="search-fields">
+              <input
+                id="dauid-query"
+                name="dauid"
+                type="text"
+                inputmode="numeric"
+                maxlength="8"
+                pattern="[0-9]{8}"
+                autocomplete="off"
+                placeholder="Eight-digit DAUID"
+                aria-describedby="search-status"
+                disabled
+                required
+              />
+              <button id="find-dauid" type="submit" disabled>Find DA</button>
+            </div>
+            <p id="search-status" class="search-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <div id="census-controls" class="census-controls" hidden>
+            <details id="characteristic-picker" class="characteristic-picker">
+              <summary>
+                <span class="control-label">Census characteristic</span>
+                <span id="characteristic-summary" class="characteristic-summary"></span>
+              </summary>
+              <fieldset>
+                <legend>Choose a Census characteristic</legend>
+                <div id="characteristic-options" class="characteristic-options"></div>
+              </fieldset>
+            </details>
+            <div class="statistic-picker">
+              <label for="statistic">Statistic</label>
+              <select id="statistic"></select>
+            </div>
+          </div>
+
+          <fieldset class="layer-control">
+            <legend>Layers</legend>
+            <label>
+              <input id="election-layer-toggle" type="checkbox" checked /> Election results
+            </label>
+            <label>
+              <input id="census-layer-toggle" type="checkbox" checked /> Census polygons
+            </label>
+          </fieldset>
+        </div>
+
+        <div class="map-status-row">
+          <p id="load-status" class="status" role="status" aria-live="polite">
+            Loading 13,806 boundaries…
+          </p>
+          <p id="election-status" class="status" role="status" aria-live="polite">
+            Election layer ready to load.
+          </p>
+          <section id="map-definition" class="map-definition" aria-live="polite" hidden>
+            <strong id="active-characteristic"></strong>
+            <span id="active-statistic"></span>
+            <span id="active-unit"></span>
+          </section>
+        </div>
+        <p class="interpretation-warning">
+          Election polling areas and Census dissemination areas are different geographies. Their
+          simultaneous display provides context and does not imply demographic or causal relationships.
+          Combined-view dots represent polling divisions and are not voting locations.
+        </p>
+      </header>
+
+      <section class="map-stage" aria-label="Quebec election and Census map">
+        <div id="map" aria-label="Interactive map of Quebec election and Census results"></div>
+
+        <div class="info-stack">
+          <aside id="selection" class="selection-panel" aria-live="polite" hidden>
+            <p class="panel-eyebrow">Selected dissemination area</p>
+            <h2>DA <span id="selected-dauid"></span></h2>
+            <dl class="selection-details">
+              <div class="selection-wide census-selection" hidden>
+                <dt>Characteristic</dt>
+                <dd id="selected-characteristic"></dd>
+              </div>
+              <div class="census-selection" hidden>
+                <dt>Statistic</dt>
+                <dd id="selected-statistic"></dd>
+              </div>
+              <div class="census-selection selection-value" hidden>
+                <dt>Value</dt>
+                <dd id="selected-value"></dd>
+              </div>
+              <div class="selection-wide census-selection" hidden>
+                <dt>Measurement unit</dt>
+                <dd id="selected-unit"></dd>
+              </div>
+              <div id="selected-flag-row" class="selection-wide census-selection" hidden>
+                <dt>Quality flag</dt>
+                <dd id="selected-flag"></dd>
+              </div>
+              <div id="selected-missing-row" class="selection-wide census-selection" hidden>
+                <dt>Why no numeric value?</dt>
+                <dd id="selected-missing"></dd>
+              </div>
+            </dl>
+          </aside>
+
+          <aside id="election-results-panel" class="election-results-panel" aria-live="polite" hidden></aside>
+        </div>
+
+        <aside id="legend" class="legend" aria-label="Map legends" hidden>
+          <div class="legend-header">
+            <h2>Map legend</h2>
+            <button
+              id="legend-toggle"
+              class="legend-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="legend-content"
+              aria-label="Collapse legend"
+            >−</button>
+          </div>
+          <div id="legend-content" class="legend-content">
+            <section id="election-legend-section" class="legend-section" hidden>
+              <h3 id="election-legend-title"></h3>
+              <div id="election-legend-list"></div>
+              <p id="election-legend-note" class="legend-note"></p>
+            </section>
+            <section id="census-legend-section" class="legend-section">
+              <h3 id="legend-title"></h3>
+              <p id="legend-unit" class="legend-unit"></p>
+              <div id="legend-ranges" class="legend-ranges"></div>
+              <p class="legend-note">
+                Natural breaks (Jenks) use positive values only. Zero has no fill; missing or suppressed values are grey. Select one or more classes to filter the map.
+              </p>
+              <button id="clear-legend" class="legend-clear" type="button" hidden>
+                Clear class filter
+              </button>
+            </section>
+            <p id="no-layers-message" class="legend-note" hidden>No thematic layer is visible.</p>
+          </div>
+        </aside>
+
+        <details id="performance" class="performance" hidden>
+          <summary>Initial browser timing</summary>
+          <dl id="performance-values"></dl>
+        </details>
+      </section>
+    </main>
+  </body>
+</html>

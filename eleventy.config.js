@@ -106,6 +106,8 @@ export default function (eleventyConfig) {
       "projects/vancouver-election",
     "Projects/QuebecElection/map":
       "projects/quebec-election/map",
+    "Projects/QuebecCensusElection/map":
+      "projects/quebec-census-election/map",
     "Projects/TorontoDowntownDefiner":
       "projects/toronto-downtown-definer",
     "Projects/CatchmentGame":
