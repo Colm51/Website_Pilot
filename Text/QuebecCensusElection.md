@@ -23,6 +23,9 @@ tags:
     <h2 id="interactive-map-title">Interactive map</h2>
     <p>Switch between Census, Election, and Combined views. Select Census characteristics and statistics, search by DAUID, inspect election results, and use the layer controls and legends to adjust the display.</p>
     <p>Election polling areas and Census dissemination areas are different geographies. Their combined display provides context and does not imply demographic or causal relationships. Combined-view dots represent polling divisions, not voting locations.</p>
+    <p>Important: votes represent votes attributed to specific polling areas - and do not include a significant number of votes cast at advance polls, overseas, etc, which are included in election district totals but not polling area totals.</p>
+
+
     <iframe
       class="map-embed"
       src="{{ '/projects/quebec-census-election/map/' | htmlBaseUrl }}"
