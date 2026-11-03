@@ -8,8 +8,8 @@
       content="Interactive map of Quebec election results and 2021 Census characteristics."
     />
     <title>Quebec Election and Census Map</title>
-    <script type="module" crossorigin src="./assets/index-D17udrsN.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-D5BqphrH.css">
+    <script type="module" crossorigin src="./assets/index-Eq5DP_Mi.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DDMYMVsm.css">
   </head>
   <body>
     <main class="map-page">
@@ -72,6 +72,14 @@
             </label>
             <label>
               <input id="census-layer-toggle" type="checkbox" checked /> Census polygons
+            </label>
+            <label class="election-display-control" for="election-representation">
+              <span>Election display</span>
+              <select id="election-representation" aria-label="Election display">
+                <option value="points">Representative dots</option>
+                <option value="polygons">Winning-party choropleth</option>
+                <option value="pqBubbles">PQ vote circles</option>
+              </select>
             </label>
           </fieldset>
         </div>
